@@ -22,29 +22,16 @@ const [Form, formApi] = useVbenForm({
   },
   schema: [
     {
-      component: 'RadioGroup',
-      componentProps: {
-        options: [
-          { label: '目录', value: 0 },
-          { label: '菜单', value: 1 },
-          { label: '按钮', value: 2 },
-        ],
-      },
-      defaultValue: 0,
-      fieldName: 'type',
-      label: '菜单类型',
-    },
-    {
       component: 'Input',
       fieldName: 'name',
-      label: '菜单名称',
+      label: '部门名称',
       help: '唯一标识，通常为英文',
       rules: 'required',
     },
     {
       component: 'Input',
       fieldName: 'title',
-      label: '菜单标题',
+      label: '标题',
       rules: 'required',
     },
     {
@@ -58,7 +45,7 @@ const [Form, formApi] = useVbenForm({
         treeData: [],
       },
       fieldName: 'parentId',
-      label: '上级菜单',
+      label: '上级部门',
     },
     {
       component: 'InputNumber',
@@ -72,22 +59,6 @@ const [Form, formApi] = useVbenForm({
       label: '图标',
     },
     {
-      component: 'Input',
-      fieldName: 'path',
-      label: '路由地址',
-      rules: 'required',
-    },
-    {
-      component: 'Input',
-      fieldName: 'component',
-      label: '组件路径',
-    },
-    {
-      component: 'Input',
-      fieldName: 'permission',
-      label: '权限标识',
-    },
-    {
       component: 'RadioGroup',
       componentProps: {
         options: [
@@ -98,18 +69,6 @@ const [Form, formApi] = useVbenForm({
       defaultValue: 1,
       fieldName: 'status',
       label: '状态',
-    },
-    {
-      component: 'Switch',
-      defaultValue: true,
-      fieldName: 'keepAlive',
-      label: '是否缓存',
-    },
-    {
-      component: 'Switch',
-      defaultValue: false,
-      fieldName: 'hideMenu',
-      label: '是否隐藏',
     },
   ],
 });

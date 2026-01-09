@@ -1,3 +1,5 @@
+import type { SearchRequest } from '#/api/common';
+
 import { requestClient } from '#/api/request';
 
 export interface DictItem {
@@ -11,6 +13,7 @@ export interface DictItem {
   parentCode?: null | string;
   typeCode?: string;
   createTime?: string;
+  version: number;
 }
 
 export interface DictType {
@@ -22,29 +25,21 @@ export interface DictType {
   remark?: string;
   createTime?: string;
   dictItems?: DictItem[];
-}
-
-export interface DictTypePageRequest {
-  pageNumber: number;
-  pageSize: number;
-  keywords?: string; // Generic search
-  name?: string;
-  code?: string;
-  status?: number;
+  version: number;
 }
 
 export interface PageResult<T> {
   pageNumber: number;
   pageSize: number;
-  total: number;
+  totalRow: number;
   records: T[];
 }
 
 /**
  * Get dict type page list
  */
-export function getDictTypePage(params: DictTypePageRequest) {
-  return requestClient.get<PageResult<DictType>>('/dict-type/page', { params });
+export function getDictTypePage(params: SearchRequest) {
+  return requestClient.post<PageResult<DictType>>('/dict-type/page', params);
 }
 
 /**

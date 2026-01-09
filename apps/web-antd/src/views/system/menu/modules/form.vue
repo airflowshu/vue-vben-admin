@@ -31,6 +31,25 @@ import { getMenuTypeOptions } from '../data';
 const emit = defineEmits<{
   success: [];
 }>();
+function toTree(list: SystemMenuApi.SystemMenu[]) {
+  const map = new Map<
+    string,
+    SystemMenuApi.SystemMenu & { children?: any[] }
+  >();
+  const roots: Array<SystemMenuApi.SystemMenu & { children?: any[] }> = [];
+  list.forEach((item) => {
+    map.set(item.id, { ...item, children: [] });
+  });
+  map.forEach((node) => {
+    const pid = (node as any).parentId;
+    if (pid && map.has(pid)) {
+      map.get(pid)!.children!.push(node);
+    } else {
+      roots.push(node);
+    }
+  });
+  return roots;
+}
 const formData = ref<SystemMenuApi.SystemMenu>();
 const titleSuffix = ref<string>();
 const schema: VbenFormSchema[] = [
@@ -69,7 +88,7 @@ const schema: VbenFormSchema[] = [
   {
     component: 'ApiTreeSelect',
     componentProps: {
-      api: getMenuList,
+      api: async () => toTree(await getMenuList()),
       class: 'w-full',
       filterTreeNode(input: string, node: Recordable<any>) {
         if (!input || input.length === 0) {

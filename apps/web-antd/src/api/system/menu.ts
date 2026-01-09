@@ -1,5 +1,7 @@
 import type { Recordable } from '@vben/types';
 
+import type { SearchRequest } from '#/api/common';
+
 import { requestClient } from '#/api/request';
 
 export namespace SystemMenuApi {
@@ -32,6 +34,7 @@ export namespace SystemMenuApi {
     component?: string;
     /** 菜单ID */
     id: string;
+    version: number;
     /** 菜单元数据 */
     meta?: {
       /** 激活时显示的图标 */
@@ -76,6 +79,7 @@ export namespace SystemMenuApi {
       query?: Recordable<any>;
       /** 菜单标题 */
       title?: string;
+      version: number;
     };
     /** 菜单名称 */
     name: string;
@@ -93,10 +97,63 @@ export namespace SystemMenuApi {
 /**
  * 获取菜单数据列表
  */
-async function getMenuList() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-    '/menu/list-route-all',
+async function getMenuList(params?: SearchRequest) {
+  const payload =
+    params ??
+    ({
+      orders: [],
+      pageNumber: 1,
+      pageSize: 10,
+    } as SearchRequest);
+  const raw = await requestClient.post<Array<Recordable>>(
+    '/menu/list',
+    payload,
   );
+  const mapType = (v: unknown): SystemMenuApi.SystemMenu['type'] => {
+    if (
+      typeof v === 'string' &&
+      ['button', 'catalog', 'embedded', 'link', 'menu'].includes(v)
+    ) {
+      return v as SystemMenuApi.SystemMenu['type'];
+    }
+    return 'menu';
+  };
+  return Array.isArray(raw)
+    ? raw.map((it) => {
+        const titleCandidate =
+          typeof it.title === 'string' && it.title.length > 0
+            ? it.title
+            : typeof it.name === 'string' && it.name.length > 0
+              ? it.name
+              : // eslint-disable-next-line unicorn/no-nested-ternary
+                typeof it.path === 'string' && it.path.length > 0
+                ? it.path
+                : 'Unknown';
+        const meta: Recordable = {
+          title: titleCandidate,
+          icon: it.icon,
+          version: it.version,
+          activeIcon: it.activeIcon,
+          keepAlive: it.keepAlive,
+          hideInMenu: it.hideMenu,
+          hideInTab: it.hideTab,
+          hideInBreadcrumb: it.hideBreadcrumb,
+          hideChildrenInMenu: it.hideChildrenInMenu,
+          iframeSrc: it.iframeSrc,
+          link: it.link,
+          badgeType: it.badgeType,
+          badge: it.badge,
+          badgeVariants: it.badgeVariants,
+          order: it.orderNo ?? it.order,
+        };
+        return {
+          ...it,
+          meta,
+          type: mapType(it.type),
+          children: undefined,
+        } as SystemMenuApi.SystemMenu & { parentId?: string };
+      })
+    : [];
 }
 
 async function isMenuNameExists(

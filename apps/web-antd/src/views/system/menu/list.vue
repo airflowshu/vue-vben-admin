@@ -3,6 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
+import type { SearchRequest } from '#/api/common';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon, Plus } from '@vben/icons';
@@ -33,17 +34,31 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async (_params) => {
-          const data = await getMenuList();
-          const normalize = (arr: SystemMenuApi.SystemMenu[]) =>
-            arr.map((item) => ({
-              ...item,
-              children: Array.isArray(item.children)
-                ? normalize(item.children)
-                : undefined,
-            }));
-          const items = Array.isArray(data) ? normalize(data) : [];
-          return { items, total: items.length };
+        query: async ({ sorts }) => {
+          try {
+            const params: SearchRequest = {
+              pageNumber: 1,
+              pageSize: 1000,
+              orders: sorts.map((item) => ({
+                asc: item.order === 'asc',
+                column: item.field,
+              })),
+            };
+            const data = await getMenuList(params);
+            // 转换 parentId 为 '0' 的节点为根节点，防止 vxe-table 无法识别
+            // 并且包装为 items 结构，以匹配 adapter/vxe-table.ts 中的全局 proxyConfig.response.list = 'items' 设置
+            return {
+              items: data.map((item) => {
+                if (item.parentId === '0') {
+                  return { ...item, parentId: null };
+                }
+                return item;
+              }),
+            };
+          } catch (error) {
+            console.error(error);
+            return [];
+          }
         },
       },
     },
@@ -57,9 +72,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
       zoom: true,
     },
     treeConfig: {
-      parentField: 'pid',
+      parentField: 'parentId',
       rowField: 'id',
-      transform: false,
+      transform: true,
     },
   } as VxeTableGridOptions,
 });

@@ -7,6 +7,7 @@ import { requestClient } from '#/api/request';
  * 参照 response.json 结构
  */
 export interface DeptRecord {
+  version: number;
   status: number;
   id: string;
   parentId: string;

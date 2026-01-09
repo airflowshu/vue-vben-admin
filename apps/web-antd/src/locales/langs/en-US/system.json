@@ -61,5 +61,8 @@
     "operation": "Operation",
     "permissions": "Permissions",
     "setPermissions": "Permissions"
+  },
+  "dict": {
+    "title": "Dict Management"
   }
 }
