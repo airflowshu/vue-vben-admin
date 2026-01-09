@@ -9,5 +9,9 @@
     "naive-ui": "Naive UI Version",
     "element-plus": "Element Plus Version",
     "tdesign": "TDesign Vue Version"
+  },
+  "access": {
+    "backendPermissions": "backendPermissions",
+    "pageAccess": "pageAccess"
   }
 }

@@ -1,0 +1,42 @@
+{
+  "pageNumber": 1,
+  "pageSize": 10,
+  "keyword": "test",
+  "searchFields": [
+    "name",
+    "code"
+  ],
+  "logic": "AND",
+  "items": [
+    {
+      "field": "status",
+      "op": "eq",
+      "val": 1
+    },
+    {
+      "logic": "OR",
+      "children": [
+        {
+          "field": "type",
+          "op": "eq",
+          "val": "A"
+        },
+        {
+          "field": "type",
+          "op": "eq",
+          "val": "B"
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "column": "createTime",
+      "asc": false
+    },
+    {
+      "column": "id",
+      "asc": true
+    }
+  ]
+}

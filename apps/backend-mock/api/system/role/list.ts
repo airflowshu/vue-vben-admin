@@ -25,7 +25,7 @@ function generateMockDataList(count: number) {
       name: faker.commerce.product(),
       status: faker.helpers.arrayElement([0, 1]),
       createTime: formatterCN.format(
-        faker.date.between({ from: '2022-01-01', to: '2025-01-01' }),
+        faker.date.between({ from: '2022-01-01', to: '2026-01-01' }),
       ),
       permissions: faker.helpers.arrayElements(menuIds),
       remark: faker.lorem.sentence(),

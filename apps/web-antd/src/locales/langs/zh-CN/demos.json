@@ -9,5 +9,9 @@
     "naive-ui": "Naive UI 版本",
     "element-plus": "Element Plus 版本",
     "tdesign": "TDesign Vue 版本"
+  },
+  "access": {
+    "backendPermissions": "后台权限",
+    "pageAccess": "页面访问"
   }
 }
