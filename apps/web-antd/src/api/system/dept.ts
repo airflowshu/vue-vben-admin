@@ -27,7 +27,7 @@ export function getDeptList(params: SearchRequest) {
  * 删除菜单
  */
 export function deleteDept(id: string) {
-  return requestClient.delete(`/dept/${id}`);
+  return requestClient.delete<boolean>(`/dept/${id}`);
 }
 
 /**

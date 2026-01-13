@@ -66,5 +66,23 @@
   },
   "dict": {
     "title": "字典管理"
+  },
+  "user": {
+    "title": "用户管理",
+    "list": "用户列表",
+    "name": "用户",
+    "username": "用户名",
+    "realName": "真实姓名",
+    "phone": "手机号",
+    "email": "邮箱",
+    "gender": "性别",
+    "dept": "所属部门",
+    "status": "状态",
+    "remark": "备注",
+    "createTime": "创建时间",
+    "operation": "操作",
+    "password": "密码",
+    "avatar": "头像",
+    "role": "角色"
   }
 }

@@ -5,7 +5,7 @@ import type { Recordable } from '@vben/types';
 
 import type { VbenFormSchema } from '#/adapter/form';
 
-import { computed, h, ref } from 'vue';
+import { computed, h, nextTick, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
@@ -52,6 +52,9 @@ function toTree(list: SystemMenuApi.SystemMenu[]) {
 }
 const formData = ref<SystemMenuApi.SystemMenu>();
 const titleSuffix = ref<string>();
+// 数据是否已加载完成（用于控制校验时机）
+const isDataLoaded = ref(false);
+
 const schema: VbenFormSchema[] = [
   {
     component: 'RadioGroup',
@@ -75,7 +78,13 @@ const schema: VbenFormSchema[] = [
       .max(30, $t('ui.formRules.maxLength', [$t('system.menu.menuName'), 30]))
       .refine(
         async (value: string) => {
-          return !(await isMenuNameExists(value, formData.value?.id));
+          // 数据未加载完成时，跳过校验
+          if (!isDataLoaded.value) {
+            return true;
+          }
+          // 编辑模式下，获取当前编辑的ID
+          const currentId = formData.value?.id;
+          return !(await isMenuNameExists(value, currentId));
         },
         (value) => ({
           message: $t('ui.formRules.alreadyExists', [
@@ -94,18 +103,18 @@ const schema: VbenFormSchema[] = [
         if (!input || input.length === 0) {
           return true;
         }
-        const title: string = node.meta?.title ?? '';
+        const title: string = node.title ?? '';
         if (!title) return false;
-        return title.includes(input) || $t(title).includes(input);
+        return title.includes(input) || $t(title || '').includes(input);
       },
       getPopupContainer,
-      labelField: 'meta.title',
+      labelField: 'title',
       showSearch: true,
       treeDefaultExpandAll: true,
       valueField: 'id',
       childrenField: 'children',
     },
-    fieldName: 'pid',
+    fieldName: 'parentId',
     label: $t('system.menu.parent'),
     renderComponentContent() {
       return {
@@ -132,7 +141,7 @@ const schema: VbenFormSchema[] = [
         },
       };
     },
-    fieldName: 'meta.title',
+    fieldName: 'title',
     label: $t('system.menu.menuTitle'),
     rules: 'required',
   },
@@ -158,7 +167,13 @@ const schema: VbenFormSchema[] = [
       )
       .refine(
         async (value: string) => {
-          return !(await isMenuPathExists(value, formData.value?.id));
+          // 数据未加载完成时，跳过校验
+          if (!isDataLoaded.value) {
+            return true;
+          }
+          // 编辑模式下，获取当前编辑的ID
+          const currentId = formData.value?.id;
+          return !(await isMenuPathExists(value, currentId));
         },
         (value) => ({
           message: $t('ui.formRules.alreadyExists', [
@@ -205,7 +220,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.icon',
+    fieldName: 'icon',
     label: $t('system.menu.icon'),
   },
   {
@@ -219,7 +234,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.activeIcon',
+    fieldName: 'activeIcon',
     label: $t('system.menu.activeIcon'),
   },
   {
@@ -300,7 +315,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.badgeType',
+    fieldName: 'badgeType',
     label: $t('system.menu.badgeType.title'),
   },
   {
@@ -318,7 +333,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.badge',
+    fieldName: 'badge',
     label: $t('system.menu.badge'),
   },
   {
@@ -337,7 +352,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.badgeVariants',
+    fieldName: 'badgeVariants',
     label: $t('system.menu.badgeVariants'),
   },
   {
@@ -365,7 +380,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.keepAlive',
+    fieldName: 'keepAlive',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.keepAlive'),
@@ -380,7 +395,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.affixTab',
+    fieldName: 'affixTab',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.affixTab'),
@@ -395,7 +410,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.hideInMenu',
+    fieldName: 'hideMenu',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInMenu'),
@@ -410,7 +425,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.hideChildrenInMenu',
+    fieldName: 'hideChildrenInMenu',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideChildrenInMenu'),
@@ -425,7 +440,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.hideInBreadcrumb',
+    fieldName: 'hideBreadcrumb',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInBreadcrumb'),
@@ -440,7 +455,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.hideInTab',
+    fieldName: 'hideTab',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInTab'),
@@ -465,22 +480,24 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onConfirm: onSubmit,
   onOpenChange(isOpen) {
     if (isOpen) {
+      isDataLoaded.value = false;
       const data = drawerApi.getData<SystemMenuApi.SystemMenu>();
-      if (data?.type === 'link') {
-        data.linkSrc = data.meta?.link;
-      } else if (data?.type === 'embedded') {
-        data.linkSrc = data.meta?.iframeSrc;
-      }
       if (data) {
         formData.value = data;
+        // 平铺字段直接设置，linkSrc 需要从数据中获取
         formApi.setValues(formData.value);
-        titleSuffix.value = formData.value.meta?.title
-          ? $t(formData.value.meta.title)
+        titleSuffix.value = formData.value.title
+          ? $t(formData.value.title)
           : '';
       } else {
+        formData.value = undefined;
         formApi.resetForm();
         titleSuffix.value = '';
       }
+      // 数据加载完成后启用校验
+      nextTick(() => {
+        isDataLoaded.value = true;
+      });
     }
   },
 });
@@ -491,14 +508,10 @@ async function onSubmit() {
     drawerApi.lock();
     const data =
       await formApi.getValues<
-        Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>
+        Omit<SystemMenuApi.SystemMenu, 'children' | 'id' | 'meta'>
       >();
-    if (data.type === 'link') {
-      data.meta = { ...data.meta, link: data.linkSrc };
-    } else if (data.type === 'embedded') {
-      data.meta = { ...data.meta, iframeSrc: data.linkSrc };
-    }
-    delete data.linkSrc;
+
+    // linkSrc 已经直接在表单中使用，无需额外处理
     try {
       await (formData.value?.id
         ? updateMenu(formData.value.id, data)

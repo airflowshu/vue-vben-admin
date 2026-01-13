@@ -27,7 +27,7 @@ export namespace SystemMenuApi {
   export interface SystemMenu {
     [key: string]: any;
     /** 后端权限标识 */
-    authCode: string;
+    authCode?: string;
     /** 子级 */
     children?: SystemMenu[];
     /** 组件 */
@@ -35,7 +35,7 @@ export namespace SystemMenuApi {
     /** 菜单ID */
     id: string;
     version: number;
-    /** 菜单元数据 */
+    /** 菜单元数据（用于列表展示） */
     meta?: {
       /** 激活时显示的图标 */
       activeIcon?: string;
@@ -85,12 +85,27 @@ export namespace SystemMenuApi {
     name: string;
     /** 路由路径 */
     path: string;
-    /** 父级ID */
-    pid: string;
+    /** 父级ID（提交给后端使用的字段） */
+    parentId?: string;
     /** 重定向 */
     redirect?: string;
     /** 菜单类型 */
     type: (typeof MenuTypes)[number];
+
+    // 平铺的元数据字段（后端接口返回的格式）
+    title?: string;
+    icon?: string;
+    activeIcon?: string;
+    badge?: string;
+    badgeType?: string;
+    badgeVariants?: string;
+    keepAlive?: boolean;
+    affixTab?: boolean;
+    hideMenu?: boolean;
+    hideChildrenInMenu?: boolean;
+    hideBreadcrumb?: boolean;
+    hideTab?: boolean;
+    orderNo?: number;
   }
 }
 
@@ -105,7 +120,7 @@ async function getMenuList(params?: SearchRequest) {
       pageNumber: 1,
       pageSize: 10,
     } as SearchRequest);
-  const raw = await requestClient.post<Array<Recordable>>(
+  const raw = await requestClient.post<Array<Recordable<any>>>(
     '/menu/list',
     payload,
   );
@@ -129,7 +144,7 @@ async function getMenuList(params?: SearchRequest) {
                 typeof it.path === 'string' && it.path.length > 0
                 ? it.path
                 : 'Unknown';
-        const meta: Recordable = {
+        const meta: Recordable<any> = {
           title: titleCandidate,
           icon: it.icon,
           version: it.version,
@@ -146,12 +161,15 @@ async function getMenuList(params?: SearchRequest) {
           badgeVariants: it.badgeVariants,
           order: it.orderNo ?? it.order,
         };
+        // 转换 parentId 为 '0' 的节点为根节点
+        const parentId = it.parentId === '0' ? null : it.parentId;
         return {
           ...it,
+          parentId,
           meta,
           type: mapType(it.type),
           children: undefined,
-        } as SystemMenuApi.SystemMenu & { parentId?: string };
+        } as SystemMenuApi.SystemMenu;
       })
     : [];
 }
@@ -202,7 +220,7 @@ async function updateMenu(
  * @param id 菜单 ID
  */
 async function deleteMenu(id: string) {
-  return requestClient.delete(`/menu/${id}`);
+  return requestClient.delete<boolean>(`/menu/${id}`);
 }
 
 export {

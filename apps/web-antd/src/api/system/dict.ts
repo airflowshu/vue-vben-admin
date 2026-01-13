@@ -60,7 +60,7 @@ export function updateDictType(id: string, data: Partial<DictType>) {
  * Delete dict type
  */
 export function deleteDictType(id: string) {
-  return requestClient.delete(`/dict-type/${id}`);
+  return requestClient.delete<boolean>(`/dict-type/${id}`);
 }
 
 /**

@@ -64,5 +64,23 @@
   },
   "dict": {
     "title": "Dict Management"
+  },
+  "user": {
+    "title": "User Management",
+    "list": "User List",
+    "name": "User",
+    "username": "Username",
+    "realName": "Real Name",
+    "phone": "Phone",
+    "email": "Email",
+    "gender": "Gender",
+    "dept": "Department",
+    "status": "Status",
+    "remark": "Remark",
+    "createTime": "Create Time",
+    "operation": "Operation",
+    "password": "Password",
+    "avatar": "Avatar",
+    "role": "Role"
   }
 }

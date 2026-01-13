@@ -45,9 +45,13 @@ const gridOptions: VxeGridProps<DictType> = {
   pagerConfig: {
     enabled: true,
   },
+  exportConfig: {
+    remote: true,
+    // params: search
+  },
   proxyConfig: {
     ajax: {
-      query: async ({ page, sorts, form }) => {
+      query: async ({ page, sorts: _sorts, form: _form }) => {
         try {
           const params: SearchRequest = {
             pageNumber: page.currentPage,

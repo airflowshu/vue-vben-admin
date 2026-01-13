@@ -13,7 +13,7 @@ import { deleteDictItem } from '#/api/system/dict';
 
 import ItemModal from './dict-item-modal.vue'; // We will create a small modal for editing items
 
-const props = defineProps<{
+defineProps<{
   dictItems?: DictItem[]; // Initial items if passed
   dictTypeId?: string;
 }>();

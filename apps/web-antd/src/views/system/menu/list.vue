@@ -112,7 +112,7 @@ function onCreate() {
   formDrawerApi.setData({}).open();
 }
 function onAppend(row: SystemMenuApi.SystemMenu) {
-  formDrawerApi.setData({ pid: row.id }).open();
+  formDrawerApi.setData({ parentId: row.id }).open();
 }
 
 function onDelete(row: SystemMenuApi.SystemMenu) {
@@ -153,20 +153,20 @@ function onDelete(row: SystemMenuApi.SystemMenu) {
               class="size-full"
             />
             <IconifyIcon
-              v-else-if="row.meta?.icon"
-              :icon="row.meta?.icon || 'carbon:circle-dash'"
+              v-else-if="row.icon"
+              :icon="row.icon || 'carbon:circle-dash'"
               class="size-full"
             />
           </div>
-          <span class="flex-auto">{{ $t(row.meta?.title) }}</span>
+          <span class="flex-auto">{{ row.title ? $t(row.title) : '-' }}</span>
           <div class="items-center justify-end"></div>
         </div>
         <MenuBadge
-          v-if="row.meta?.badgeType"
+          v-if="row.badgeType"
           class="menu-badge"
-          :badge="row.meta.badge"
-          :badge-type="row.meta.badgeType"
-          :badge-variants="row.meta.badgeVariants"
+          :badge="row.badge"
+          :badge-type="row.badgeType"
+          :badge-variants="row.badgeVariants"
         />
       </template>
     </Grid>

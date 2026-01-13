@@ -1,15 +1,10 @@
 {
   "pageNumber": 1,
   "pageSize": 10,
-  "keyword": "test",
-  "searchFields": [
-    "name",
-    "code"
-  ],
   "logic": "AND",
   "items": [
     {
-      "field": "status",
+      "field": "sysUser.status",
       "op": "eq",
       "val": 1
     },
@@ -17,9 +12,9 @@
       "logic": "OR",
       "children": [
         {
-          "field": "type",
+          "field": "sysDept.id",
           "op": "eq",
-          "val": "A"
+          "val": "xxx"
         },
         {
           "field": "type",
@@ -31,7 +26,7 @@
   ],
   "orders": [
     {
-      "column": "createTime",
+      "column": "sysUser.lastModifyTime",
       "asc": false
     },
     {
