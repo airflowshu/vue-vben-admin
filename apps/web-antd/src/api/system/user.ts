@@ -132,3 +132,13 @@ export function getRoleList(params: SearchRequest) {
 export function assignUserRole(userId: string, roleIds: string[]) {
   return requestClient.post(`/user-role/assign/${userId}`, roleIds);
 }
+
+/**
+ * 重置用户密码
+ */
+export function resetPasswordApi(data: {
+  newPassword: string;
+  userId?: string;
+}) {
+  return requestClient.post('/auth/admin/reset-password', data);
+}

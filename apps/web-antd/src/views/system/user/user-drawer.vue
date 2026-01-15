@@ -3,13 +3,15 @@ import type { UserRecord } from '#/api/system/user';
 
 import { ref, shallowRef } from 'vue';
 
+import { AccessControl } from '@vben/access';
 import { useVbenDrawer, useVbenForm, z } from '@vben/common-ui';
 
-import { message } from 'ant-design-vue';
+import { Button, Modal, message } from 'ant-design-vue';
 
 import {
   createUser,
   getDeptList,
+  resetPasswordApi,
   updateUser,
 } from '#/api/system/user';
 
@@ -55,6 +57,27 @@ const loadDeptTree = async () => {
   }
 };
 
+// 重置用户密码
+async function handleResetPassword() {
+  if (!recordId.value) return;
+
+  Modal.confirm({
+    title: '确认重置密码',
+    content: `是否确认将用户 "${currentRecord.value?.realName}" 的密码重置为 111111？`,
+    onOk: async () => {
+      try {
+        await resetPasswordApi({
+          newPassword: '111111',
+          userId: recordId.value,
+        });
+        message.success('密码重置成功');
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  });
+}
+
 const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
   schema: [
@@ -69,15 +92,6 @@ const [Form, formApi] = useVbenForm({
       fieldName: 'realName',
       label: '真实姓名',
       rules: 'required',
-    },
-    {
-      component: 'Input',
-      fieldName: 'password',
-      label: '密码',
-      componentProps: {
-        type: 'password',
-        placeholder: '编辑时留空则不修改密码',
-      },
     },
     {
       component: 'Input',
@@ -151,11 +165,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
       await formApi.validate();
       const data = await formApi.getValues();
 
-      // 如果是更新且密码为空，则删除密码字段
-      if (isUpdate.value && !data.password) {
-        delete data.password;
-      }
-
       if (isUpdate.value) {
         await updateUser(recordId.value, data);
         message.success('修改成功');
@@ -183,11 +192,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
         formApi.setValues({
           ...data.record,
-          password: '', // 清空密码
         });
       } else {
         recordId.value = '';
-        formApi.setFieldValue('password', '111111'); // 新增用户默认密码
+        formApi.resetForm();
       }
     }
   },
@@ -197,5 +205,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
 <template>
   <Drawer :title="isUpdate ? '编辑用户' : '新增用户'">
     <Form />
+
+    <!-- 重置密码按钮 - 仅超级管理员可见 -->
+    <AccessControl v-if="isUpdate" :codes="['super']" type="role">
+      <div class="mt-4 border-t border-gray-200 pt-4">
+        <Button type="primary" danger @click="handleResetPassword">
+          <span class="i-ant-design:key-outlined mr-1"></span>
+          重置密码
+        </Button>
+      </div>
+    </AccessControl>
   </Drawer>
 </template>
