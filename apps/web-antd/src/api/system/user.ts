@@ -125,3 +125,10 @@ export function getDeptList(params: SearchRequest) {
 export function getRoleList(params: SearchRequest) {
   return requestClient.post<RoleRecord[]>('/role/list', params);
 }
+
+/**
+ * 为用户分配角色（先清除该用户的所有角色关联，再批量新增）
+ */
+export function assignUserRole(userId: string, roleIds: string[]) {
+  return requestClient.post(`/user-role/assign/${userId}`, roleIds);
+}

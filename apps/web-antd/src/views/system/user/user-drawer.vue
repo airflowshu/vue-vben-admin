@@ -3,14 +3,13 @@ import type { UserRecord } from '#/api/system/user';
 
 import { ref, shallowRef } from 'vue';
 
-import { useVbenDrawer, useVbenForm } from '@vben/common-ui';
+import { useVbenDrawer, useVbenForm, z } from '@vben/common-ui';
 
 import { message } from 'ant-design-vue';
 
 import {
   createUser,
   getDeptList,
-  getRoleList,
   updateUser,
 } from '#/api/system/user';
 
@@ -22,8 +21,6 @@ const currentRecord = shallowRef<null | UserRecord>(null);
 
 // 部门列表
 const deptTreeData = ref<any[]>([]);
-// 角色列表
-const roleListData = ref<any[]>([]);
 
 // 转换列表为树形结构
 function listToTree(list: any[]) {
@@ -58,19 +55,6 @@ const loadDeptTree = async () => {
   }
 };
 
-// 获取角色列表
-const loadRoleList = async () => {
-  try {
-    const roles = await getRoleList({ pageNumber: 1, pageSize: 1000 });
-    roleListData.value = roles.map((role) => ({
-      label: role.roleName,
-      value: role.id,
-    }));
-  } catch (error) {
-    console.error('Failed to load role list', error);
-  }
-};
-
 const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
   schema: [
@@ -99,23 +83,23 @@ const [Form, formApi] = useVbenForm({
       component: 'Input',
       fieldName: 'email',
       label: '邮箱',
-      rules: [{ type: 'email', message: '请输入正确的邮箱地址' }],
+      rules: z.string().email('请输入正确的邮箱地址'),
     },
     {
       component: 'Input',
       fieldName: 'phone',
       label: '手机号',
-      rules: [{ pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号' }],
+      rules: z.string().regex(/^1[3-9]\d{9}$/, '请输入正确的手机号'),
     },
     {
       component: 'Select',
       fieldName: 'gender',
       label: '性别',
       componentProps: {
+        style: { width: '100%' },
         options: [
-          { label: '男', value: '1' },
-          { label: '女', value: '2' },
-          { label: '未知', value: '0' },
+          { label: '男', value: 'male' },
+          { label: '女', value: 'female' },
         ],
         placeholder: '请选择性别',
       },
@@ -125,6 +109,7 @@ const [Form, formApi] = useVbenForm({
       fieldName: 'deptId',
       label: '所属部门',
       componentProps: {
+        style: { width: '100%' },
         fieldNames: {
           children: 'children',
           label: 'deptName',
@@ -133,16 +118,6 @@ const [Form, formApi] = useVbenForm({
         treeData: deptTreeData,
         placeholder: '请选择部门',
         allowClear: true,
-      },
-    },
-    {
-      component: 'Select',
-      fieldName: 'roleIds',
-      label: '角色',
-      componentProps: {
-        mode: 'multiple',
-        options: roleListData,
-        placeholder: '请选择角色',
       },
     },
     {
@@ -176,12 +151,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
       await formApi.validate();
       const data = await formApi.getValues();
 
-      // 处理角色ID列表
-      if (data.roleIds && Array.isArray(data.roleIds)) {
-        data.roles = data.roleIds.map((id: string) => ({ id }));
-        delete data.roleIds;
-      }
-
       // 如果是更新且密码为空，则删除密码字段
       if (isUpdate.value && !data.password) {
         delete data.password;
@@ -204,7 +173,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange(isOpen) {
     if (isOpen) {
       loadDeptTree();
-      loadRoleList();
 
       const data = drawerApi.getData<any>();
       isUpdate.value = !!data?.isUpdate;
@@ -213,17 +181,13 @@ const [Drawer, drawerApi] = useVbenDrawer({
       if (isUpdate.value && data?.record) {
         recordId.value = data.record.id;
 
-        // 设置角色ID
-        const roleIds = data.record.roles?.map((r: any) => r.id) || [];
-
         formApi.setValues({
           ...data.record,
-          roleIds,
           password: '', // 清空密码
         });
       } else {
         recordId.value = '';
-        formApi.resetForm();
+        formApi.setFieldValue('password', '111111'); // 新增用户默认密码
       }
     }
   },

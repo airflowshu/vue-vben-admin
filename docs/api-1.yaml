@@ -1,0 +1,3971 @@
+openapi: 3.1.0
+info:
+  title: FlexBoot4 Admin API
+  description: Backend API for Vben Admin
+  version: v0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+tags:
+  - name: Authentication
+    description: User Login and Logout
+paths:
+  /api/user/{id}:
+    get:
+      tags:
+        - sys-user-controller
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysUser"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - sys-user-controller
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysUser"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-user-controller
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user-role/{id}:
+    get:
+      tags:
+        - sys-user-role-controller
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysUserRole"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - sys-user-role-controller
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysUserRole"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-user-role-controller
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role/{id}:
+    get:
+      tags:
+        - sys-role-controller
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysRole"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - sys-role-controller
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysRole"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-role-controller
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role-menu/{id}:
+    get:
+      tags:
+        - sys-role-menu-controller
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysRoleMenu"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - sys-role-menu-controller
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysRoleMenu"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-role-menu-controller
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu/{id}:
+    get:
+      tags:
+        - sys-menu-controller
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_4
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysMenu"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - sys-menu-controller
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_4
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysMenu"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-menu-controller
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_4
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-type/{id}:
+    get:
+      tags:
+        - sys-dict-type-controller
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_5
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysDictType"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - sys-dict-type-controller
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_5
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDictType"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-dict-type-controller
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_5
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-item/{id}:
+    get:
+      tags:
+        - sys-dict-item-controller
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_6
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysDictItem"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - sys-dict-item-controller
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_6
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDictItem"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-dict-item-controller
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_6
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dept/{id}:
+    get:
+      tags:
+        - sys-dept-controller
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_7
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysDept"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - sys-dept-controller
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_7
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDept"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-dept-controller
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_7
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user:
+    post:
+      tags:
+        - sys-user-controller
+      summary: Create
+      description: Create entity.
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysUser"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-user-controller
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user/page:
+    post:
+      tags:
+        - sys-user-controller
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysUser"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user/list:
+    post:
+      tags:
+        - sys-user-controller
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysUser"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user/export:
+    get:
+      tags:
+        - sys-user-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - sys-user-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user/batch:
+    post:
+      tags:
+        - sys-user-controller
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysUser"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user-role:
+    post:
+      tags:
+        - sys-user-role-controller
+      summary: Create
+      description: Create entity.
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysUserRole"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-user-role-controller
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user-role/page:
+    post:
+      tags:
+        - sys-user-role-controller
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_1
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysUserRole"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user-role/list:
+    post:
+      tags:
+        - sys-user-role-controller
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_1
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysUserRole"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user-role/export:
+    get:
+      tags:
+        - sys-user-role-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_1
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - sys-user-role-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_1
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user-role/batch:
+    post:
+      tags:
+        - sys-user-role-controller
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysUserRole"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user-role/assign/{userId}:
+    post:
+      tags:
+        - sys-user-role-controller
+      summary: 为用户分配角色
+      description: 先清除该用户的所有角色关联，再批量新增
+      operationId: assignRolesToUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role:
+    post:
+      tags:
+        - sys-role-controller
+      summary: Create
+      description: Create entity.
+      operationId: create_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysRole"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-role-controller
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role/page:
+    post:
+      tags:
+        - sys-role-controller
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_2
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysRole"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role/list:
+    post:
+      tags:
+        - sys-role-controller
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_2
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysRole"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role/export:
+    get:
+      tags:
+        - sys-role-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_2
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - sys-role-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_2
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role/batch:
+    post:
+      tags:
+        - sys-role-controller
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysRole"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role-menu:
+    post:
+      tags:
+        - sys-role-menu-controller
+      summary: Create
+      description: Create entity.
+      operationId: create_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysRoleMenu"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-role-menu-controller
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role-menu/page:
+    post:
+      tags:
+        - sys-role-menu-controller
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_3
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysRoleMenu"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role-menu/list:
+    post:
+      tags:
+        - sys-role-menu-controller
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_3
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysRoleMenu"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role-menu/export:
+    get:
+      tags:
+        - sys-role-menu-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_3
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - sys-role-menu-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_3
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/role-menu/batch:
+    post:
+      tags:
+        - sys-role-menu-controller
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysRoleMenu"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu:
+    post:
+      tags:
+        - sys-menu-controller
+      summary: Create
+      description: Create entity.
+      operationId: create_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysMenu"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-menu-controller
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu/page:
+    post:
+      tags:
+        - sys-menu-controller
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_4
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysMenu"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu/list:
+    post:
+      tags:
+        - sys-menu-controller
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_4
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysMenu"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu/export:
+    get:
+      tags:
+        - sys-menu-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_4
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - sys-menu-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_4
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu/batch:
+    post:
+      tags:
+        - sys-menu-controller
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysMenu"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-type:
+    post:
+      tags:
+        - sys-dict-type-controller
+      summary: Create
+      description: Create entity.
+      operationId: create_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDictType"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-dict-type-controller
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-type/page:
+    post:
+      tags:
+        - sys-dict-type-controller
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_5
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysDictType"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-type/list:
+    post:
+      tags:
+        - sys-dict-type-controller
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_5
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysDictType"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-type/export:
+    get:
+      tags:
+        - sys-dict-type-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_5
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - sys-dict-type-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_5
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-type/batch:
+    post:
+      tags:
+        - sys-dict-type-controller
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysDictType"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-item:
+    post:
+      tags:
+        - sys-dict-item-controller
+      summary: Create
+      description: Create entity.
+      operationId: create_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDictItem"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-dict-item-controller
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-item/page:
+    post:
+      tags:
+        - sys-dict-item-controller
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_6
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysDictItem"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-item/list:
+    post:
+      tags:
+        - sys-dict-item-controller
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_6
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysDictItem"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-item/export:
+    get:
+      tags:
+        - sys-dict-item-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_6
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - sys-dict-item-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_6
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dict-item/batch:
+    post:
+      tags:
+        - sys-dict-item-controller
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysDictItem"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dept:
+    post:
+      tags:
+        - sys-dept-controller
+      summary: Create
+      description: Create entity.
+      operationId: create_7
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDept"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - sys-dept-controller
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_7
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dept/page:
+    post:
+      tags:
+        - sys-dept-controller
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_7
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysDept"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dept/list:
+    post:
+      tags:
+        - sys-dept-controller
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_7
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysDept"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dept/export:
+    get:
+      tags:
+        - sys-dept-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_7
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - sys-dept-controller
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_7
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: type
+                      op: eq
+                      val: B
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/dept/batch:
+    post:
+      tags:
+        - sys-dept-controller
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_7
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysDept"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh Token
+      description: Refresh the current JWT token.
+      operationId: refresh
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: User Logout
+      description: Invalidate JWT token and clear cookie.
+      operationId: logout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User Login
+      description: Authenticate user and return JWT token. Sets HTTP-only cookie.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginReq"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultLoginResp"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/user/info:
+    get:
+      tags:
+        - sys-user-controller
+      summary: 获取用户信息
+      description: 获取登录认证用户信息
+      operationId: getUserInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultMapStringObject"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu/path-exists:
+    get:
+      tags:
+        - sys-menu-controller
+      summary: 菜单路径是否存在
+      description: 根据路径检测是否存在其他菜单，更新时可排除自身ID
+      operationId: isMenuPathExists
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu/name-exists:
+    get:
+      tags:
+        - sys-menu-controller
+      summary: 菜单名称是否存在
+      description: 根据名称检测是否存在其他菜单，更新时可排除自身ID
+      operationId: isMenuNameExists
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/menu/all:
+    get:
+      tags:
+        - sys-menu-controller
+      summary: 获取菜单权限
+      description: 获取登录认证用户所拥有的所有菜单访问数据
+      operationId: getAllMenus
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListVueRoute"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/auth/codes:
+    get:
+      tags:
+        - Authentication
+      summary: Get User Permission Codes
+      description: Fetch permission codes for the current user.
+      operationId: getCodes
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+components:
+  schemas:
+    ApiResultString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: string
+        error:
+          type: string
+    SysDept:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        deptName:
+          type: string
+          example: 研发部
+          title: 部门名称
+        orderNo:
+          type: integer
+          format: int32
+          example: 10
+          title: 排序
+        status:
+          type: integer
+          format: int32
+          example: 1
+          title: 状态值
+        statusStr:
+          type: string
+          readOnly: true
+          title: 状态
+        parentId:
+          type: string
+          example: 0
+          title: 父级ID
+    SysMenu:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        parentId:
+          type: string
+        path:
+          type: string
+        name:
+          type: string
+        component:
+          type: string
+        redirect:
+          type: string
+        title:
+          type: string
+        icon:
+          type: string
+        orderNo:
+          type: integer
+          format: int32
+        hideMenu:
+          type: boolean
+        keepAlive:
+          type: boolean
+        activeIcon:
+          type: string
+        badge:
+          type: string
+        badgeType:
+          type: string
+        badgeVariants:
+          type: string
+        link:
+          type: string
+        iframeSrc:
+          type: string
+        affixTab:
+          type: boolean
+        hideChildrenInMenu:
+          type: boolean
+        hideBreadcrumb:
+          type: boolean
+        hideTab:
+          type: boolean
+        menuVisibleWithForbidden:
+          type: boolean
+        authority:
+          type: string
+        authCode:
+          type: string
+        type:
+          type: string
+        status:
+          type: integer
+          format: int32
+        parent:
+          $ref: "#/components/schemas/SysMenu"
+          readOnly: true
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysMenu"
+          readOnly: true
+    SysRole:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        roleName:
+          type: string
+          title: 角色名
+        roleValue:
+          type: string
+          title: 角色值
+        status:
+          type: integer
+          format: int32
+          title: 角色状态
+        description:
+          type: string
+          title: 角色描述
+        orderNo:
+          type: integer
+          format: int32
+          title: 排序号
+        menus:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysMenu"
+          readOnly: true
+          title: 菜单按钮集合
+    SysUser:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        username:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+        realName:
+          type: string
+        avatar:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        gender:
+          type: string
+          example: 1
+          title: 性别值
+        genderStr:
+          type: string
+          readOnly: true
+        deptId:
+          type: string
+        status:
+          type: integer
+          format: int32
+        dept:
+          $ref: "#/components/schemas/SysDept"
+          readOnly: true
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysRole"
+          readOnly: true
+    ApiResultBoolean:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: boolean
+        error:
+          type: string
+    SysUserRole:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        userId:
+          type: integer
+          format: int64
+        roleId:
+          type: integer
+          format: int64
+    SysRoleMenu:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        roleId:
+          type: string
+        menuId:
+          type: string
+    SysDictItem:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        typeCode:
+          type: string
+        itemCode:
+          type: string
+        itemText:
+          type: string
+        itemValue:
+          type: string
+        status:
+          type: integer
+          format: int32
+        orderNo:
+          type: integer
+          format: int32
+        parentCode:
+          type: string
+    SysDictType:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        code:
+          type: string
+        name:
+          type: string
+        status:
+          type: integer
+          format: int32
+        orderNo:
+          type: integer
+          format: int32
+        dictItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysDictItem"
+          readOnly: true
+    OrderItem:
+      type: object
+      description: 排序项
+      properties:
+        column:
+          type: string
+          description: 排序字段名
+          example: createTime
+        asc:
+          type: boolean
+          default: true
+          description: 是否升序
+          example: false
+    SearchDto:
+      type: object
+      description: 通用搜索参数对象
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+          description: 当前页码
+          example: 1
+        pageSize:
+          type: integer
+          format: int32
+          description: 每页大小
+          example: 10
+        orders:
+          type: array
+          description: 多字段排序列表
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        items:
+          type: array
+          description: 高级搜索条件列表
+          items:
+            $ref: "#/components/schemas/SearchItem"
+        logic:
+          type: string
+          default: AND
+          description: items 条件之间的逻辑关系 (AND / OR)
+          example: AND
+    SearchItem:
+      type: object
+      description: 高级搜索条件项
+      properties:
+        field:
+          type: string
+          description: 字段名
+          example: status
+        op:
+          type: string
+          description: "操作符: eq(等于), ne(不等于), gt(大于), ge(大于等于), lt(小于), le(小于等于),
+            like(包含), notlike(不包含), in(包含于), notin(不包含于), isnull(为空),
+            notnull(不为空)"
+          example: eq
+        val:
+          description: 字段值
+          example: 1
+        logic:
+          type: string
+          description: 组内逻辑 (AND / OR)，仅当 children 不为空时有效
+          example: AND
+        children:
+          type: array
+          description: 子条件列表，用于构建嵌套查询
+          items:
+            $ref: "#/components/schemas/SearchItem"
+    ApiResultPageSysUser:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysUser"
+        error:
+          type: string
+    PageSysUser:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysUser"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysUser:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysUser"
+        error:
+          type: string
+    ApiResultPageSysUserRole:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysUserRole"
+        error:
+          type: string
+    PageSysUserRole:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysUserRole"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysUserRole:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysUserRole"
+        error:
+          type: string
+    ApiResultPageSysRole:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysRole"
+        error:
+          type: string
+    PageSysRole:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysRole"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysRole:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysRole"
+        error:
+          type: string
+    ApiResultPageSysRoleMenu:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysRoleMenu"
+        error:
+          type: string
+    PageSysRoleMenu:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysRoleMenu"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysRoleMenu:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysRoleMenu"
+        error:
+          type: string
+    ApiResultPageSysMenu:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysMenu"
+        error:
+          type: string
+    PageSysMenu:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysMenu"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysMenu:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysMenu"
+        error:
+          type: string
+    ApiResultPageSysDictType:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysDictType"
+        error:
+          type: string
+    PageSysDictType:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysDictType"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysDictType:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysDictType"
+        error:
+          type: string
+    ApiResultPageSysDictItem:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysDictItem"
+        error:
+          type: string
+    PageSysDictItem:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysDictItem"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysDictItem:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysDictItem"
+        error:
+          type: string
+    ApiResultPageSysDept:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysDept"
+        error:
+          type: string
+    PageSysDept:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysDept"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysDept:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysDept"
+        error:
+          type: string
+    LoginReq:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    ApiResultLoginResp:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/LoginResp"
+        error:
+          type: string
+    LoginResp:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        realName:
+          type: string
+        password:
+          type: string
+        accessToken:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+    ApiResultSysUser:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysUser"
+        error:
+          type: string
+    ApiResultMapStringObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties: {}
+        error:
+          type: string
+    ApiResultSysUserRole:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysUserRole"
+        error:
+          type: string
+    ApiResultSysRole:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysRole"
+        error:
+          type: string
+    ApiResultSysRoleMenu:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysRoleMenu"
+        error:
+          type: string
+    ApiResultSysMenu:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysMenu"
+        error:
+          type: string
+    ApiResultListVueRoute:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/VueRoute"
+        error:
+          type: string
+    RouteMeta:
+      type: object
+      properties:
+        title:
+          type: string
+        icon:
+          type: string
+        activeIcon:
+          type: string
+        hideMenu:
+          type: boolean
+        order:
+          type: integer
+          format: int32
+        badge:
+          type: string
+        badgeType:
+          type: string
+        badgeVariants:
+          type: string
+        link:
+          type: string
+        iframeSrc:
+          type: string
+        affixTab:
+          type: boolean
+        hideChildrenInMenu:
+          type: boolean
+        hideBreadcrumb:
+          type: boolean
+        hideTab:
+          type: boolean
+        keepAlive:
+          type: boolean
+        authority:
+          type: array
+          items:
+            type: string
+        menuVisibleWithForbidden:
+          type: boolean
+    VueRoute:
+      type: object
+      properties:
+        id:
+          type: string
+        pid:
+          type: string
+        path:
+          type: string
+        name:
+          type: string
+        component:
+          type: string
+        redirect:
+          type: string
+        type:
+          type: string
+        status:
+          type: integer
+          format: int32
+        authCode:
+          type: string
+        meta:
+          $ref: "#/components/schemas/RouteMeta"
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/VueRoute"
+    ApiResultSysDictType:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysDictType"
+        error:
+          type: string
+    ApiResultSysDictItem:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysDictItem"
+        error:
+          type: string
+    ApiResultSysDept:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysDept"
+        error:
+          type: string
+    ApiResultListString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+        error:
+          type: string

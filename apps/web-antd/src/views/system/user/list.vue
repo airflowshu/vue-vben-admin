@@ -5,6 +5,7 @@ import type { DeptRecord, UserRecord } from '#/api/system/user';
 
 import { computed, ref } from 'vue';
 
+import { AccessControl, useAccess } from '@vben/access';
 import { ColPage, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
@@ -28,9 +29,15 @@ import {
 } from '#/api/system/user';
 
 import UserDrawer from './user-drawer.vue';
-
+import RoleAssignDrawer from './role-assign-drawer.vue';
+const { hasAccessByCodes } = useAccess();
 const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: UserDrawer,
+  destroyOnClose: true,
+});
+
+const [RoleDrawer, roleDrawerApi] = useVbenDrawer({
+  connectedComponent: RoleAssignDrawer,
   destroyOnClose: true,
 });
 
@@ -184,7 +191,7 @@ const gridOptions: VxeGridProps<UserRecord> = {
       field: 'action',
       fixed: 'right',
       title: '操作',
-      width: 200,
+      width: 260,
       slots: { default: 'action' },
     },
   ],
@@ -212,15 +219,12 @@ const gridOptions: VxeGridProps<UserRecord> = {
     },
   },
   toolbarConfig: {
-    custom: true,
     export: true,
     refresh: true,
     resizable: true,
     zoom: true,
-    slots: { buttons: 'toolbar-buttons' },
-    checked: {
-      checkMethod: null,
-      strict: false,
+    slots: {
+      buttons: 'toolbar-buttons',
     },
   },
   stripe: true,
@@ -249,6 +253,11 @@ function handleAdd() {
 function handleEdit(row: UserRecord) {
   drawerApi.setData({ isUpdate: true, record: row });
   drawerApi.open();
+}
+
+function handleAssignRole(row: UserRecord) {
+  roleDrawerApi.setData(row);
+  roleDrawerApi.open();
 }
 
 function handleDelete(row: UserRecord) {
@@ -412,9 +421,16 @@ loadDeptTree();
           class="h-full rounded-[var(--radius)] border border-border bg-card p-4"
         >
           <Grid>
-            <template #toolbar-tools>
+            <template #toolbar-buttons>
+<!--      type声明code为权限码控制，type声明为role为角色控制        -->
+              <AccessControl :codes="['Sys:User:Create']" type="code">
+                <Button> Visible to Super account ["AC_1000001"] </Button>
+              </AccessControl>
+              <Button v-if="hasAccessByCodes(['Sys:User:Create'])" class="mr-4">
+                Super 账号可见 ["AC_100100"]
+              </Button>
               <Button type="primary" @click="handleAdd">新增用户</Button>
-              <Button class="ml-2" danger @click="handleBatchDelete">
+              <Button danger class="ml-2" @click="handleBatchDelete">
                 批量删除
               </Button>
             </template>
@@ -438,6 +454,9 @@ loadDeptTree();
               <Button size="small" type="link" @click="handleEdit(row)">
                 编辑
               </Button>
+              <Button size="small" type="link" @click="handleAssignRole(row)">
+                关联角色
+              </Button>
               <Button
                 danger
                 size="small"
@@ -453,6 +472,7 @@ loadDeptTree();
     </div>
 
     <Drawer @success="handleSuccess" />
+    <RoleDrawer @success="handleSuccess" />
   </ColPage>
 </template>
 

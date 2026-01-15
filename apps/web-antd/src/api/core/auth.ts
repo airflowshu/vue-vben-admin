@@ -49,3 +49,21 @@ export async function logoutApi() {
 export async function getAccessCodesApi() {
   return requestClient.get<string[]>('/auth/codes');
 }
+
+/**
+ * 忘记密码 - 发送重置邮件
+ */
+export async function forgetPasswordApi(email: string) {
+  return requestClient.post('/auth/forget-password', { email });
+}
+
+/**
+ * 重置密码 - 提交新密码
+ */
+export async function resetPasswordApi(data: {
+  token: string;
+  email: string;
+  newPassword: string;
+}) {
+  return requestClient.post('/auth/reset-password', data);
+}
