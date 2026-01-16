@@ -8,6 +8,7 @@ import { computed, ref } from 'vue';
 import { AccessControl, useAccess } from '@vben/access';
 import { ColPage, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
+import { downloadFileFromBlob } from '@vben/utils';
 
 import {
   Button,
@@ -24,6 +25,7 @@ import { buildSearchGroup, buildSearchItem } from '#/api/common';
 import {
   deleteUser,
   deleteUserBatch,
+  exportUsers,
   getDeptList,
   getUserPage,
 } from '#/api/system/user';
@@ -238,7 +240,41 @@ const gridOptions: VxeGridProps<UserRecord> = {
     },
   },
   exportConfig: {
-    modes: ['current', 'selected', 'all'],
+    remote: true,
+    useStyle: true,
+    exportMethod: async ({ options }) => {
+      const { mode } = options;
+      // 构建导出参数
+      const exportParams: any = buildSearchParams();
+
+      // 根据导出模式调整参数
+      if (mode === 'selected') {
+        // 导出选中行
+        const selectedRecords = gridApi.grid?.getCheckboxRecords();
+        if (selectedRecords && selectedRecords.length > 0) {
+          const ids = selectedRecords.map((row) => row.id);
+          exportParams.items = [
+            buildSearchGroup(
+              'OR',
+              ids.map((id) => buildSearchItem('sysUser.id', 'eq', id)),
+            ),
+          ];
+        }
+      }
+      // current 和 all 模式都导出全部数据，只是分页参数不同
+
+      const response = await exportUsers(exportParams);
+      // 从响应头中提取文件名
+      const contentDisposition =
+        (response.headers?.['content-disposition'] as string) || '';
+      const fileNameMatch = contentDisposition.match(
+        /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/,
+      );
+      const fileName = fileNameMatch?.[1]?.replaceAll('"', '') || '用户列表.xlsx';
+
+      // 触发下载
+      downloadFileFromBlob({ fileName, source: response.data });
+    },
   },
   stripe: true,
 };
