@@ -26,6 +26,10 @@ const MOCK_USER_OPTIONS: BasicOption[] = [
     label: 'User',
     value: 'jack',
   },
+  {
+    label: 'Test',
+    value: 'test',
+  },
 ];
 
 const formSchema = computed((): VbenFormSchema[] => {

@@ -112,7 +112,9 @@ function onCreate() {
   formDrawerApi.setData({}).open();
 }
 function onAppend(row: SystemMenuApi.SystemMenu) {
-  formDrawerApi.setData({ parentId: row.id }).open();
+  // 如果父级是目录类型，新增下一级默认为菜单；否则默认为按钮
+  const defaultType = row.type === 'catalog' ? 'menu' : 'button';
+  formDrawerApi.setData({ parentId: row.id, type: defaultType }).open();
 }
 
 function onDelete(row: SystemMenuApi.SystemMenu) {

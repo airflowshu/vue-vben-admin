@@ -28,8 +28,10 @@ import {
   getUserPage,
 } from '#/api/system/user';
 
-import UserDrawer from './user-drawer.vue';
 import RoleAssignDrawer from './role-assign-drawer.vue';
+import UserDrawer from './user-drawer.vue';
+import dayjs from "dayjs";
+
 const { hasAccessByCodes } = useAccess();
 const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: UserDrawer,
@@ -186,7 +188,15 @@ const gridOptions: VxeGridProps<UserRecord> = {
       width: 80,
       slots: { default: 'status' },
     },
-    { field: 'createTime', title: '创建时间', width: 180 },
+    {
+      field: 'createTime',
+      title: '创建时间',
+      width: 180,
+      formatter: ({ row }) =>
+        row.createTime
+          ? dayjs(row.createTime).format('YYYY-MM-DD HH:mm:ss')
+          : '-',
+    },
     {
       field: 'action',
       fixed: 'right',
@@ -226,6 +236,9 @@ const gridOptions: VxeGridProps<UserRecord> = {
     slots: {
       buttons: 'toolbar-buttons',
     },
+  },
+  exportConfig: {
+    modes: ['current', 'selected', 'all'],
   },
   stripe: true,
 };

@@ -278,7 +278,7 @@ const schema: VbenFormSchema[] = [
         return values.type === 'button' ? 'required' : null;
       },
       show: (values) => {
-        return ['button', 'catalog', 'embedded', 'menu'].includes(values.type);
+        return ['button', 'embedded'].includes(values.type);
       },
       triggerFields: ['type'],
     },
