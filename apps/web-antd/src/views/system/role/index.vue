@@ -403,9 +403,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
   <ColPage
     auto-content-height
     title="角色管理"
-    :left-width="200"
+    :left-width="75"
     :left-min-width="50"
     :left-max-width="85"
+    :right-width="25"
   >
     <template #left="{ isCollapsed, expand }">
       <!-- 搜索栏 -->

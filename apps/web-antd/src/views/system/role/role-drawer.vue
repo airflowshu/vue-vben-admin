@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import type { RoleRecord } from '#/api/system/role';
 
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 
-import { useVbenDrawer, useVbenForm } from '@vben/common-ui';
+import { useVbenDrawer, useVbenForm, z } from '@vben/common-ui';
 
 import { message } from 'ant-design-vue';
 
 import { createRole, updateRole } from '#/api/system/role';
+
+defineOptions({ name: 'RoleDrawer' });
 
 const emit = defineEmits(['success']);
 
@@ -32,15 +34,15 @@ const [Form, formApi] = useVbenForm({
     },
     {
       component: 'Input',
-      fieldName: 'roleCode',
+      fieldName: 'roleValue',
       label: '角色编码',
-      rules: [
-        { required: true, message: '请输入角色编码' },
-        {
-          pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
-          message: '角色编码必须以字母开头，只能包含字母、数字和下划线',
-        },
-      ],
+      rules: z
+        .string()
+        .min(1, '请输入角色编码')
+        .regex(
+          /^[a-zA-Z][a-zA-Z0-9_]*$/,
+          '角色编码必须以字母开头，只能包含字母、数字和下划线',
+        ),
     },
     {
       component: 'RadioGroup',
@@ -69,6 +71,9 @@ const [Form, formApi] = useVbenForm({
 });
 
 const [Drawer, drawerApi] = useVbenDrawer({
+  onCancel() {
+    drawerApi.close();
+  },
   onConfirm: async () => {
     try {
       await formApi.validate();
@@ -90,21 +95,23 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData<any>();
+      const data = drawerApi.getData<{ isUpdate: boolean; record?: RoleRecord }>();
       isUpdate.value = data?.isUpdate || false;
 
-      if (isUpdate.value && data?.record) {
-        recordId.value = data.record.id;
-        formApi.setValues({
-          roleName: data.record.roleName,
-          roleValue: data.record.roleValue,
-          status: data.record.status,
-          remark: data.record.remark,
-        });
-      } else {
-        recordId.value = '';
-        formApi.resetForm();
-      }
+      nextTick(() => {
+        if (isUpdate.value && data?.record) {
+          recordId.value = data.record.id;
+          formApi.setValues({
+            roleName: data.record.roleName,
+            roleValue: data.record.roleValue,
+            status: data.record.status,
+            remark: data.record.remark,
+          });
+        } else {
+          recordId.value = '';
+          formApi.resetForm();
+        }
+      });
     }
   },
 });
