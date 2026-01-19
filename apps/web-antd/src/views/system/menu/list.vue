@@ -19,6 +19,7 @@ import { deleteMenu, getMenuList, SystemMenuApi } from '#/api/system/menu';
 import { useColumns } from './data';
 import Form from './modules/form.vue';
 
+defineOptions({ name: 'SystemMenu' });
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
@@ -109,7 +110,7 @@ function onEdit(row: SystemMenuApi.SystemMenu) {
   formDrawerApi.setData(row).open();
 }
 function onCreate() {
-  formDrawerApi.setData({}).open();
+  formDrawerApi.setData({ type: 'catalog' }).open();
 }
 function onAppend(row: SystemMenuApi.SystemMenu) {
   // 如果父级是目录类型，新增下一级默认为菜单；否则默认为按钮

@@ -9,6 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 后端接口文档参照[api-1.yaml](docs/api-1.yaml)
 
 禁止修改[internal](internal)和[packages](packages)目录下的代码！
+
 # 自定义组件:如果你的业务组件库没有提供某个组件，你可以自行封装一个组件，然后加到表单内部。
 ```html
 <script lang="ts" setup>

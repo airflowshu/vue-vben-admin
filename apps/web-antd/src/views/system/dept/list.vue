@@ -12,6 +12,7 @@ import { deleteDept, getDeptList } from '#/api/system/dept';
 
 import DeptDrawer from './dept-drawer.vue';
 
+defineOptions({ name: 'SystemDept' });
 const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: DeptDrawer,
 });
@@ -79,6 +80,7 @@ const gridOptions: VxeGridProps<DeptRecord> = {
     parentField: 'parentId',
     rowField: 'id',
     transform: true,
+    expandAll: true,
   },
   stripe: true,
 };

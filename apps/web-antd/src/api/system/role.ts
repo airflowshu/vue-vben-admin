@@ -114,7 +114,7 @@ export function getRoleMenuIds(roleId: string) {
  * @param menuIds 菜单ID数组
  */
 export function saveRoleMenus(roleId: string, menuIds: string[]) {
-  return requestClient.post('/role-menu/assign', { roleId, menuIds });
+  return requestClient.post(`/role-menu/assign/${roleId}`, menuIds);
 }
 
 /**

@@ -19,6 +19,7 @@ import {
   Tag,
   Tree,
 } from 'ant-design-vue';
+import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { buildSearchGroup, buildSearchItem } from '#/api/common';
@@ -32,9 +33,9 @@ import {
 
 import RoleAssignDrawer from './role-assign-drawer.vue';
 import UserDrawer from './user-drawer.vue';
-import dayjs from "dayjs";
 
-const { hasAccessByCodes } = useAccess();
+defineOptions({ name: 'SystemUser' });
+
 const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: UserDrawer,
   destroyOnClose: true,
@@ -231,9 +232,9 @@ const gridOptions: VxeGridProps<UserRecord> = {
     },
   },
   toolbarConfig: {
+    custom: true,
     export: true,
     refresh: true,
-    resizable: true,
     zoom: true,
     slots: {
       buttons: 'toolbar-buttons',
@@ -270,7 +271,8 @@ const gridOptions: VxeGridProps<UserRecord> = {
       const fileNameMatch = contentDisposition.match(
         /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/,
       );
-      const fileName = fileNameMatch?.[1]?.replaceAll('"', '') || '用户列表.xlsx';
+      const fileName =
+        fileNameMatch?.[1]?.replaceAll('"', '') || '用户列表.xlsx';
 
       // 触发下载
       downloadFileFromBlob({ fileName, source: response.data });
@@ -471,17 +473,15 @@ loadDeptTree();
         >
           <Grid>
             <template #toolbar-buttons>
-<!--      type声明code为权限码控制，type声明为role为角色控制        -->
-              <AccessControl :codes="['Sys:User:Create']" type="code">
-                <Button> Visible to Super account ["AC_1000001"] </Button>
+              <!--      type声明code为权限码控制，type声明为role为角色控制        -->
+              <AccessControl :codes="['sys:user:create']" type="code">
+                <Button type="primary" @click="handleAdd">新增用户</Button>
               </AccessControl>
-              <Button v-if="hasAccessByCodes(['Sys:User:Create'])" class="mr-4">
-                Super 账号可见 ["AC_100100"]
-              </Button>
-              <Button type="primary" @click="handleAdd">新增用户</Button>
-              <Button danger class="ml-2" @click="handleBatchDelete">
-                批量删除
-              </Button>
+              <AccessControl :codes="['sys:user:delete']" type="code">
+                <Button danger class="ml-2" @click="handleBatchDelete">
+                  批量删除
+                </Button>
+              </AccessControl>
             </template>
 
             <template #gender="{ row }">
@@ -500,20 +500,22 @@ loadDeptTree();
             </template>
 
             <template #action="{ row }">
-              <Button size="small" type="link" @click="handleEdit(row)">
-                编辑
-              </Button>
-              <Button size="small" type="link" @click="handleAssignRole(row)">
-                关联角色
-              </Button>
-              <Button
-                danger
-                size="small"
-                type="link"
-                @click="handleDelete(row)"
-              >
-                删除
-              </Button>
+              <AccessControl :codes="['super', 'admin']" type="role">
+                <Button size="small" type="link" @click="handleEdit(row)">
+                  编辑
+                </Button>
+                <Button size="small" type="link" @click="handleAssignRole(row)">
+                  关联角色
+                </Button>
+                <Button
+                  danger
+                  size="small"
+                  type="link"
+                  @click="handleDelete(row)"
+                >
+                  删除
+                </Button>
+              </AccessControl>
             </template>
           </Grid>
         </div>

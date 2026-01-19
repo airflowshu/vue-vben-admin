@@ -5,11 +5,9 @@ import type { MenuTreeNode, RoleRecord } from '#/api/system/role';
 
 import { ref } from 'vue';
 
+import { AccessControl } from '@vben/access';
 import { ColPage, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
-import { $t } from '#/locales';
-
-import RoleDrawer from './role-drawer.vue';
 
 import {
   Button,
@@ -32,7 +30,11 @@ import {
   getRolePage,
   saveRoleMenus,
 } from '#/api/system/role';
+import { $t } from '#/locales';
 
+import RoleDrawer from './role-drawer.vue';
+
+defineOptions({ name: 'SystemRole' });
 // 搜索关键词
 const searchKeyword = ref('');
 // 选中的状态
@@ -55,6 +57,8 @@ const loadingMenu = ref(false);
 const checkedMenuKeys = ref<string[]>([]);
 // 右侧半选中的菜单Keys（父节点部分选中）
 const halfCheckedMenuKeys = ref<string[]>([]);
+// 默认展开的菜单Keys（根节点）
+const expandedMenuKeys = ref<string[]>([]);
 
 // 构建搜索参数
 const buildSearchParams = (): Partial<SearchRequest> => {
@@ -222,6 +226,8 @@ const loadMenuTree = async () => {
     const treeData = toTree(menus);
     // 转换数据格式，添加 key 字段，并清理 parent 引用避免循环
     menuTreeData.value = cleanMenuData(treeData);
+    // 设置根节点默认展开
+    expandedMenuKeys.value = menuTreeData.value.map((node) => node.key);
   } catch (error) {
     console.error('Failed to load menu tree', error);
     message.error('加载菜单树失败');
@@ -347,8 +353,17 @@ async function handleSavePermissions() {
     ];
     await saveRoleMenus(selectedRole.value.id, allCheckedKeys);
     message.success('保存成功');
-    // 重新加载以确保数据一致
-    loadRoleMenus(selectedRole.value.id);
+    // 刷新左侧角色列表，刷新后重新点击当前角色行以更新右侧数据
+    const currentRoleId = selectedRole.value?.id;
+    await gridApi.reload();
+    // 重新获取角色数据并模拟点击
+    if (currentRoleId) {
+      const tableData = gridApi.grid?.getData?.() || [];
+      const rowData = tableData.find((r: RoleRecord) => r.id === currentRoleId);
+      if (rowData) {
+        handleRoleRowClick(rowData);
+      }
+    }
   } catch (error) {
     console.error(error);
     message.error('保存失败');
@@ -389,10 +404,44 @@ const [Drawer, drawerApi] = useVbenDrawer({
     auto-content-height
     title="角色管理"
     :left-width="200"
-    :left-min-width="40"
-    :left-max-width="260"
+    :left-min-width="50"
+    :left-max-width="85"
   >
     <template #left="{ isCollapsed, expand }">
+      <!-- 搜索栏 -->
+      <div
+        class="mb-4 flex flex-wrap items-end gap-4 rounded-[var(--radius)] border border-border bg-card p-4"
+      >
+        <div class="min-w-[200px] flex-1">
+          <label class="mb-1.5 block text-sm text-muted-foreground">
+            关键词搜索
+          </label>
+          <Input
+            v-model:value="searchKeyword"
+            placeholder="角色名称/编码/备注"
+            allow-clear
+            @press-enter="handleSearch"
+          />
+        </div>
+        <div class="w-[150px]">
+          <label class="mb-1.5 block text-sm text-muted-foreground">状态</label>
+          <Select
+            v-model:value="selectedStatus"
+            :options="statusOptions"
+            style="width: 100%"
+          />
+        </div>
+        <div class="flex gap-2">
+          <Button type="primary" @click="handleSearch">
+            <span class="i-ant-design:search-outlined mr-1"></span>
+            搜索
+          </Button>
+          <Button @click="handleReset">
+            <span class="i-ant-design:reload-outlined mr-1"></span>
+            重置
+          </Button>
+        </div>
+      </div>
       <div v-if="isCollapsed" class="flex h-full items-center justify-center">
         <Button
           shape="circle"
@@ -414,52 +463,19 @@ const [Drawer, drawerApi] = useVbenDrawer({
           <span class="font-medium">角色列表</span>
         </div>
         <div class="flex flex-1 flex-col overflow-hidden">
-          <!-- 搜索栏 -->
-          <div class="p-3 pb-0">
-            <div class="flex items-end gap-2">
-              <div class="flex-1">
-                <label class="mb-1.5 block text-sm text-muted-foreground">
-                  关键词搜索
-                </label>
-                <Input
-                  v-model:value="searchKeyword"
-                  placeholder="角色名称/编码/备注"
-                  allow-clear
-                  @press-enter="handleSearch"
-                />
-              </div>
-              <div class="w-24">
-                <label class="mb-1.5 block text-sm text-muted-foreground">状态</label>
-                <Select
-                  v-model:value="selectedStatus"
-                  :options="statusOptions"
-                  style="width: 100%"
-                />
-              </div>
-              <div class="flex gap-2 pb-[1px]">
-                <Button type="primary" @click="handleSearch">
-                  <span class="i-ant-design:search-outlined mr-1"></span>
-                  搜索
-                </Button>
-                <Button @click="handleReset">
-                  <span class="i-ant-design:reload-outlined mr-1"></span>
-                  重置
-                </Button>
-              </div>
-            </div>
-          </div>
-
           <!-- 表格 -->
-          <div class="flex-1 overflow-hidden p-3 pt-0">
+          <div class="flex-1 overflow-hidden">
             <div
-              class="h-full rounded-[var(--radius)] border border-border bg-card p-3"
+              class="h-full rounded-[var(--radius)] border border-border bg-card p-4"
             >
               <Grid @cell-click="({ row }) => handleRoleRowClick(row)">
                 <template #toolbar-buttons>
-                  <Button type="primary" @click="handleAdd">
-                    <span class="i-ant-design:plus-outlined mr-1"></span>
-                    新增角色
-                  </Button>
+                  <AccessControl :codes="['super', 'admin']" type="role">
+                    <Button type="primary" @click="handleAdd">
+                      <span class="i-ant-design:plus-outlined mr-1"></span>
+                      新增角色
+                    </Button>
+                  </AccessControl>
                 </template>
 
                 <template #status="{ row }">
@@ -536,6 +552,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
             v-else
             v-model:checkedKeys="checkedMenuKeys"
             v-model:halfCheckedKeys="halfCheckedMenuKeys"
+            v-model:expandedKeys="expandedMenuKeys"
             :tree-data="menuTreeData"
             :field-names="{
               children: 'children',
