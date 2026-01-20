@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import { getDictItemList } from '#/api/system/dict';
 import type { DictItem } from '#/api/system/dict';
 
 import { ref } from 'vue';
@@ -10,11 +9,9 @@ import { useVbenDrawer } from '@vben/common-ui';
 import { Button, message, Modal, Tag } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteDictItem } from '#/api/system/dict';
+import { deleteDictItem, getDictItemList } from '#/api/system/dict';
 
 import ItemModal from './dict-item-modal.vue';
-
-const emit = defineEmits(['refresh']);
 
 const gridOptions: VxeGridProps<DictItem> = {
   columns: [
@@ -64,6 +61,7 @@ async function fetchItems() {
     const items = await getDictItemList({
       logic: 'and',
       items: [{ field: 'typeCode', op: 'eq', val: currentTypeCode.value }],
+      orders: [{ column: 'orderNo', asc: true }],
     });
     gridApi.setGridOptions({ data: items });
   } catch (error) {

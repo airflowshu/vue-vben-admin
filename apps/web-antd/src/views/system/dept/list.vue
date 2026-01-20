@@ -19,7 +19,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 const gridOptions: VxeGridProps<DeptRecord> = {
   columns: [
-    { field: 'deptName', width: 200, title: '部门名称', treeNode: true },
+    { field: 'deptName', width: 380, title: '部门名称', treeNode: true },
     { field: 'orderNo', title: '排序', width: 80 },
     { field: 'remark', title: '备注', minWidth: 220 },
     {
@@ -96,19 +96,21 @@ const collapseAll = () => {
 };
 
 function handleAdd() {
-  drawerApi.setData({ isUpdate: false });
+  const records = gridApi.grid?.getFullData() || [];
+  drawerApi.setData({ deptTree: records, isUpdate: false });
   drawerApi.open();
 }
 
 function handleEdit(row: DeptRecord) {
-  drawerApi.setData({ isUpdate: true, record: row });
+  const records = gridApi.grid?.getFullData() || [];
+  drawerApi.setData({ deptTree: records, isUpdate: true, record: row });
   drawerApi.open();
 }
 
 function handleDelete(row: DeptRecord) {
   Modal.confirm({
     title: '确认删除',
-    content: `是否确认删除菜单 "${row.title}"？`,
+    content: `是否确认删除部门 "${row.deptName}"？`,
     onOk: async () => {
       try {
         await deleteDept(row.id);
@@ -128,20 +130,13 @@ function handleSuccess() {
 
 <template>
   <Page auto-content-height>
-    <Grid table-title="组织列表">
+    <Grid table-title="部门列表">
       <template #toolbar-tools>
         <Button class="mr-2" type="primary" @click="handleAdd">
-          新增菜单
+          新增部门
         </Button>
         <Button class="mr-2" @click="expandAll"> 展开全部 </Button>
         <Button @click="collapseAll"> 折叠全部 </Button>
-      </template>
-
-      <template #type="{ row }">
-        <Tag v-if="row.type === 0" color="blue">目录</Tag>
-        <Tag v-else-if="row.type === 1" color="green">菜单</Tag>
-        <Tag v-else-if="row.type === 2" color="orange">按钮</Tag>
-        <span v-else>{{ row.type }}</span>
       </template>
 
       <template #status="{ row }">

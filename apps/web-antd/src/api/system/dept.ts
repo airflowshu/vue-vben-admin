@@ -11,7 +11,9 @@ export interface DeptRecord {
   status: number;
   id: string;
   parentId: string;
-  name: string;
+  deptName: string;
+  orderNo: number;
+  remark: string;
   children?: DeptRecord[];
   createTime?: string;
 }

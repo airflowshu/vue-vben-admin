@@ -6,7 +6,8 @@ import { useVbenDrawer } from '@vben/common-ui';
 import { message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { createDept, getDeptList, updateDept } from '#/api/system/dept';
+import { createDept, updateDept } from '#/api/system/dept';
+import type { DeptRecord } from '#/api/system/dept';
 
 const emit = defineEmits(['success']);
 
@@ -14,6 +15,7 @@ const isUpdate = ref(false);
 const recordId = ref('');
 
 const [Form, formApi] = useVbenForm({
+  showDefaultActions: false,
   commonConfig: {
     componentProps: {
       class: 'w-full',
@@ -23,24 +25,17 @@ const [Form, formApi] = useVbenForm({
   schema: [
     {
       component: 'Input',
-      fieldName: 'name',
+      fieldName: 'deptName',
       label: '部门名称',
-      help: '唯一标识，通常为英文',
-      rules: 'required',
-    },
-    {
-      component: 'Input',
-      fieldName: 'title',
-      label: '标题',
       rules: 'required',
     },
     {
       component: 'TreeSelect',
       componentProps: {
         fieldNames: {
-          children: 'children',
-          label: 'title',
+          label: 'deptName',
           value: 'id',
+          children: 'children',
         },
         treeData: [],
       },
@@ -54,11 +49,6 @@ const [Form, formApi] = useVbenForm({
       label: '排序',
     },
     {
-      component: 'Input',
-      fieldName: 'icon',
-      label: '图标',
-    },
-    {
       component: 'RadioGroup',
       componentProps: {
         options: [
@@ -70,13 +60,22 @@ const [Form, formApi] = useVbenForm({
       fieldName: 'status',
       label: '状态',
     },
+    {
+      component: 'Textarea',
+      fieldName: 'remark',
+      label: '备注',
+    },
   ],
 });
 
 const [Drawer, drawerApi] = useVbenDrawer({
+  onCancel: () => {
+    drawerApi.close();
+  },
   onConfirm: async () => {
     try {
-      const values = await formApi.validate();
+      await formApi.validate();
+      const values = await formApi.getValues();
       drawerApi.setState({ confirmLoading: true });
 
       if (isUpdate.value) {
@@ -97,23 +96,25 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onOpenChange: async (isOpen) => {
     if (isOpen) {
-      const data = drawerApi.getData();
+      const data = drawerApi.getData<{
+        deptTree: DeptRecord[];
+        isUpdate: boolean;
+        record?: DeptRecord;
+      }>();
       isUpdate.value = !!data?.isUpdate;
 
-      // Load tree data
-      try {
-        const depts = await getDeptList({ pageNumber: 1, pageSize: 1000 });
-        formApi.updateSchema({
-          componentProps: {
-            treeData: depts,
+      if (data?.deptTree) {
+        formApi.updateSchema([
+          {
+            componentProps: {
+              treeData: data.deptTree,
+            },
+            fieldName: 'parentId',
           },
-          fieldName: 'parentId',
-        });
-      } catch (error) {
-        console.error('Failed to load dept tree', error);
+        ]);
       }
 
-      if (isUpdate.value) {
+      if (isUpdate.value && data?.record) {
         recordId.value = data.record.id;
         await formApi.setValues(data.record);
       } else {
