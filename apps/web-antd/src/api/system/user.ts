@@ -1,6 +1,5 @@
 import type { SearchRequest } from '#/api/common';
 
-import axios from 'axios';
 import { requestClient } from '#/api/request';
 
 /**
@@ -147,10 +146,9 @@ export function resetPasswordApi(data: {
 /**
  * 导出用户列表
  */
-export function exportUsers(params: SearchRequest): Promise<axios.AxiosResponse<Blob>> {
-  return requestClient.download<Blob>('/user/export', {
+export function exportUsers(params: SearchRequest): Promise<Blob> {
+  return requestClient.download('/user/export', {
     method: 'POST',
-    data: { params },
-    responseReturn: 'raw',
-  }) as Promise<axios.AxiosResponse<Blob>>;
+    data: params,
+  });
 }

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { VxeGridProps } from '#/adapter/vxe-table';
+import { getDictItemList } from '#/api/system/dict';
 import type { DictItem } from '#/api/system/dict';
 
 import { ref } from 'vue';
@@ -11,19 +12,9 @@ import { Button, message, Modal, Tag } from 'ant-design-vue';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteDictItem } from '#/api/system/dict';
 
-import ItemModal from './dict-item-modal.vue'; // We will create a small modal for editing items
-
-defineProps<{
-  dictItems?: DictItem[]; // Initial items if passed
-  dictTypeId?: string;
-}>();
+import ItemModal from './dict-item-modal.vue';
 
 const emit = defineEmits(['refresh']);
-
-// Use a local state for items to allow updates without refreshing the parent every time if desired
-// But for now, we rely on the parent or re-fetching.
-// Since the requirement implies "manage items", we might receive the full list or fetch it.
-// Given the JSON structure, items are inside the type. We will display what is passed, or support local CRUD.
 
 const gridOptions: VxeGridProps<DictItem> = {
   columns: [
@@ -46,9 +37,9 @@ const gridOptions: VxeGridProps<DictItem> = {
       slots: { default: 'action' },
     },
   ],
-  data: [], // Will be set via setData or props
+  data: [],
   pagerConfig: {
-    enabled: false, // Items usually don't need pagination inside the drawer
+    enabled: false,
   },
   toolbarConfig: {
     custom: true,
@@ -62,24 +53,43 @@ const [ItemDrawer, itemDrawerApi] = useVbenDrawer({
   connectedComponent: ItemModal,
 });
 
-const currentTypeId = ref<string>('');
+const currentTypeCode = ref<string>('');
+
+async function fetchItems() {
+  if (!currentTypeCode.value) {
+    return;
+  }
+  try {
+    gridApi.setLoading(true);
+    const items = await getDictItemList({
+      logic: 'and',
+      items: [{ field: 'typeCode', op: 'eq', val: currentTypeCode.value }],
+    });
+    gridApi.setGridOptions({ data: items });
+  } catch (error) {
+    console.error('Failed to fetch dict items:', error);
+  } finally {
+    gridApi.setLoading(false);
+  }
+}
 
 const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange(isOpen) {
     if (isOpen) {
-      const { dictItems, typeId } = drawerApi.getData<any>() || {};
-      if (dictItems) {
-        gridApi.setGridOptions({ data: dictItems });
+      const { typeCode } = drawerApi.getData<any>() || {};
+      if (typeCode) {
+        currentTypeCode.value = typeCode;
+        fetchItems();
       }
-      if (typeId) {
-        currentTypeId.value = typeId;
-      }
+    } else {
+      currentTypeCode.value = '';
+      gridApi.setGridOptions({ data: [] });
     }
   },
 });
 
 function handleAdd() {
-  itemDrawerApi.setData({ isUpdate: false, typeId: currentTypeId.value });
+  itemDrawerApi.setData({ isUpdate: false, typeCode: currentTypeCode.value });
   itemDrawerApi.open();
 }
 
@@ -87,7 +97,7 @@ function handleEdit(row: DictItem) {
   itemDrawerApi.setData({
     isUpdate: true,
     record: row,
-    typeId: currentTypeId.value,
+    typeCode: currentTypeCode.value,
   });
   itemDrawerApi.open();
 }
@@ -100,9 +110,7 @@ function handleDelete(row: DictItem) {
       try {
         await deleteDictItem(row.id);
         message.success('删除成功');
-        emit('refresh'); // Tell parent to refresh
-        // Also remove from local grid for better UX
-        gridApi.grid?.remove(row);
+        fetchItems();
       } catch (error) {
         console.error(error);
       }
@@ -111,10 +119,7 @@ function handleDelete(row: DictItem) {
 }
 
 function handleItemSuccess() {
-  emit('refresh');
-  // In a real app we might need to re-fetch the item list here.
-  // But since the API design is not fully clear on item fetching (sub-resource vs embedded),
-  // we rely on the parent refreshing the type list which contains the items.
+  fetchItems();
 }
 </script>
 

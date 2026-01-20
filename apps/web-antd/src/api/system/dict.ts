@@ -65,11 +65,9 @@ export function deleteDictType(id: string) {
 
 /**
  * Get dict item list by type id or code
- * Note: Since dictItems are nested in the response json, we might not need this if we always load from the parent.
- * But typically there is a separate endpoint for items. Assuming standard REST structure.
  */
-export function getDictItemList(typeId: string) {
-  return requestClient.get<DictItem[]>(`/dict-type/${typeId}/items`);
+export function getDictItemList(params: SearchRequest) {
+  return requestClient.post<DictItem[]>('/dict-item/list', params);
 }
 
 /**

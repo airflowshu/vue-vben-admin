@@ -11,7 +11,7 @@ const emit = defineEmits(['success']);
 
 const isUpdate = ref(false);
 const recordId = ref('');
-const typeId = ref('');
+const typeCode = ref('');
 
 const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
@@ -77,7 +77,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         await updateDictItem(recordId.value, data);
         message.success('修改成功');
       } else {
-        await createDictItem({ ...data, typeCode: typeId.value }); // Assuming we link by code or id
+        await createDictItem({ ...data, typeCode: typeCode.value });
         message.success('新增成功');
       }
 
@@ -91,7 +91,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       const data = drawerApi.getData<any>();
       isUpdate.value = !!data?.isUpdate;
-      typeId.value = data?.typeId;
+      typeCode.value = data?.typeCode;
 
       if (isUpdate.value && data?.record) {
         recordId.value = data.record.id;

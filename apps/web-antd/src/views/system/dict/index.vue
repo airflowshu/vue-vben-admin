@@ -58,8 +58,8 @@ const gridOptions: VxeGridProps<DictType> = {
             pageSize: page.pageSize,
             orders: [
               {
-                column: 'sysDictType.id',
-                asc: true,
+                column: 'lastModifyTime',
+                asc: false,
               },
             ],
           };
@@ -115,8 +115,7 @@ function handleDelete(row: DictType) {
 
 function handleManageItems(row: DictType) {
   itemDrawerApi.setData({
-    dictItems: row.dictItems || [], // Pass current items if available
-    typeId: row.id, // Pass ID for creating new items
+    typeCode: row.code, // 传递字典编码用于关联字典项
   });
   itemDrawerApi.open();
 }
@@ -129,7 +128,7 @@ function handleSuccess() {
 <template>
   <Page auto-content-height>
     <Grid table-title="字典管理">
-      <template #toolbar-buttons>
+      <template #toolbar-tools>
         <Button type="primary" @click="handleAdd">新增字典</Button>
       </template>
 
