@@ -50,17 +50,17 @@ const [ItemDrawer, itemDrawerApi] = useVbenDrawer({
   connectedComponent: ItemModal,
 });
 
-const currentTypeCode = ref<string>('');
+const currentTypeId = ref<string>('');
 
 async function fetchItems() {
-  if (!currentTypeCode.value) {
+  if (!currentTypeId.value) {
     return;
   }
   try {
     gridApi.setLoading(true);
     const items = await getDictItemList({
       logic: 'and',
-      items: [{ field: 'typeCode', op: 'eq', val: currentTypeCode.value }],
+      items: [{ field: 'typeId', op: 'eq', val: currentTypeId.value }],
       orders: [{ column: 'orderNo', asc: true }],
     });
     gridApi.setGridOptions({ data: items });
@@ -72,22 +72,24 @@ async function fetchItems() {
 }
 
 const [Drawer, drawerApi] = useVbenDrawer({
+  showCancelButton: false,
+  showConfirmButton: false,
   onOpenChange(isOpen) {
     if (isOpen) {
-      const { typeCode } = drawerApi.getData<any>() || {};
-      if (typeCode) {
-        currentTypeCode.value = typeCode;
+      const { typeId } = drawerApi.getData<any>() || {};
+      if (typeId) {
+        currentTypeId.value = typeId;
         fetchItems();
       }
     } else {
-      currentTypeCode.value = '';
+      currentTypeId.value = '';
       gridApi.setGridOptions({ data: [] });
     }
   },
 });
 
 function handleAdd() {
-  itemDrawerApi.setData({ isUpdate: false, typeCode: currentTypeCode.value });
+  itemDrawerApi.setData({ isUpdate: false, typeId: currentTypeId.value });
   itemDrawerApi.open();
 }
 
@@ -95,7 +97,7 @@ function handleEdit(row: DictItem) {
   itemDrawerApi.setData({
     isUpdate: true,
     record: row,
-    typeCode: currentTypeCode.value,
+    typeId: currentTypeId.value,
   });
   itemDrawerApi.open();
 }

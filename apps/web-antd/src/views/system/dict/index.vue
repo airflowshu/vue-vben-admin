@@ -115,7 +115,7 @@ function handleDelete(row: DictType) {
 
 function handleManageItems(row: DictType) {
   itemDrawerApi.setData({
-    typeCode: row.code, // 传递字典编码用于关联字典项
+    typeId: row.id, // 传递字典ID用于关联字典项
   });
   itemDrawerApi.open();
 }
