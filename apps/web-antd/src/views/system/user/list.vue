@@ -5,7 +5,7 @@ import type { DeptRecord, UserRecord } from '#/api/system/user';
 
 import { computed, ref } from 'vue';
 
-import { AccessControl, useAccess } from '@vben/access';
+import { AccessControl } from '@vben/access';
 import { ColPage, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { downloadFileFromBlob } from '@vben/utils';
@@ -30,6 +30,7 @@ import {
   getDeptList,
   getUserPage,
 } from '#/api/system/user';
+import { $t } from '#/locales';
 
 import RoleAssignDrawer from './role-assign-drawer.vue';
 import UserDrawer from './user-drawer.vue';
@@ -386,7 +387,7 @@ loadDeptTree();
       >
         <div class="flex items-center gap-2 border-b border-border px-4 py-3">
           <IconifyIcon class="text-primary" icon="carbon:tree-view-alt" />
-          <span class="font-medium">部门组织</span>
+          <span class="font-medium">{{ $t('system.dept.list') }}</span>
         </div>
         <div class="flex-1 overflow-auto p-3">
           <Tree

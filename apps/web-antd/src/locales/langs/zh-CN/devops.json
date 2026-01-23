@@ -2,5 +2,8 @@
   "title": "运维管理",
   "log": {
     "title": "操作日志"
+  },
+  "aikey": {
+    "title": "aiAPI Key管理"
   }
 }

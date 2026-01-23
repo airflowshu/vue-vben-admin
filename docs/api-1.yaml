@@ -1,19 +1,39 @@
 openapi: 3.1.0
 info:
   title: FlexBoot4 Admin API
-  description: Backend API for Vben Admin
+  description: "Backend API (suitable for Front web # Vben Admin "
   version: v0.0.1
 servers:
   - url: http://localhost:8080
     description: Generated server url
 tags:
-  - name: Authentication
-    description: User Login and Logout
+  - name: 部门管理
+    description: SysDept - 部门管理
+  - name: 字典管理
+    description: SysDictType - 字典类型管理
+  - name: 角色管理
+    description: SysRole - 角色管理
+  - name: 菜单管理
+    description: SysMenu - 菜单管理
+  - name: 权限管理
+    description: SysUserRole - 用户角色关联管理
+  - name: 字典管理
+    description: SysDictItem - 字典项管理
+  - name: apiKey管理
+    description: AiApiKey - key管理
+  - name: 权限管理
+    description: SysRoleMenu - 角色菜单关联管理
+  - name: 操作日志
+    description: SysOperLog - 用户操作日志记录
+  - name: 认证管理
+    description: Authentication - 用户登录和注销
+  - name: 用户管理
+    description: SysUser - 用户管理
 paths:
   /api/user/{id}:
     get:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get
@@ -38,7 +58,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update
@@ -69,7 +89,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove
@@ -95,7 +115,7 @@ paths:
   /api/user-role/{id}:
     get:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_1
@@ -120,7 +140,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update_1
@@ -151,7 +171,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove_1
@@ -177,7 +197,7 @@ paths:
   /api/role/{id}:
     get:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_2
@@ -202,7 +222,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update_2
@@ -233,7 +253,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove_2
@@ -259,7 +279,7 @@ paths:
   /api/role-menu/{id}:
     get:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_3
@@ -284,7 +304,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update_3
@@ -315,7 +335,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove_3
@@ -341,7 +361,7 @@ paths:
   /api/menu/{id}:
     get:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_4
@@ -366,7 +386,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update_4
@@ -397,7 +417,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove_4
@@ -423,7 +443,7 @@ paths:
   /api/dict-type/{id}:
     get:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_5
@@ -448,7 +468,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update_5
@@ -479,7 +499,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove_5
@@ -505,7 +525,7 @@ paths:
   /api/dict-item/{id}:
     get:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_6
@@ -530,7 +550,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update_6
@@ -561,7 +581,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove_6
@@ -587,7 +607,7 @@ paths:
   /api/dept/{id}:
     get:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_7
@@ -612,7 +632,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update_7
@@ -643,7 +663,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove_7
@@ -666,10 +686,92 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/api-key/{id}:
+    get:
+      tags:
+        - apiKey管理
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_8
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultAiApiKey"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - apiKey管理
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_8
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiApiKey"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - apiKey管理
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_8
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/user:
     post:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Create
       description: Create entity.
       operationId: create
@@ -694,7 +796,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch
@@ -722,7 +824,7 @@ paths:
   /api/user/page:
     post:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Page Query
       description: Paged query with optional search parameters.
       operationId: page
@@ -745,9 +847,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -770,7 +872,7 @@ paths:
   /api/user/list:
     post:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list
@@ -793,9 +895,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -818,7 +920,7 @@ paths:
   /api/user/export:
     get:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -840,7 +942,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -864,9 +966,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -885,7 +987,7 @@ paths:
   /api/user/batch:
     post:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch
@@ -913,7 +1015,7 @@ paths:
   /api/user-role:
     post:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Create
       description: Create entity.
       operationId: create_1
@@ -938,7 +1040,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_1
@@ -966,7 +1068,7 @@ paths:
   /api/user-role/page:
     post:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Page Query
       description: Paged query with optional search parameters.
       operationId: page_1
@@ -989,9 +1091,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1014,7 +1116,7 @@ paths:
   /api/user-role/list:
     post:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_1
@@ -1037,9 +1139,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1062,7 +1164,7 @@ paths:
   /api/user-role/export:
     get:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -1084,7 +1186,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -1108,9 +1210,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1129,7 +1231,7 @@ paths:
   /api/user-role/batch:
     post:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_1
@@ -1157,7 +1259,7 @@ paths:
   /api/user-role/assign/{userId}:
     post:
       tags:
-        - sys-user-role-controller
+        - 权限管理
       summary: 为用户分配角色
       description: 先清除该用户的所有角色关联，再批量新增
       operationId: assignRolesToUser
@@ -1191,7 +1293,7 @@ paths:
   /api/role:
     post:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Create
       description: Create entity.
       operationId: create_2
@@ -1216,7 +1318,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_2
@@ -1244,7 +1346,7 @@ paths:
   /api/role/page:
     post:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Page Query
       description: Paged query with optional search parameters.
       operationId: page_2
@@ -1267,9 +1369,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1292,7 +1394,7 @@ paths:
   /api/role/list:
     post:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_2
@@ -1315,9 +1417,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1340,7 +1442,7 @@ paths:
   /api/role/export:
     get:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -1362,7 +1464,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -1386,9 +1488,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1407,7 +1509,7 @@ paths:
   /api/role/batch:
     post:
       tags:
-        - sys-role-controller
+        - 角色管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_2
@@ -1435,7 +1537,7 @@ paths:
   /api/role-menu:
     post:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Create
       description: Create entity.
       operationId: create_3
@@ -1460,7 +1562,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_3
@@ -1488,7 +1590,7 @@ paths:
   /api/role-menu/page:
     post:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Page Query
       description: Paged query with optional search parameters.
       operationId: page_3
@@ -1511,9 +1613,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1536,7 +1638,7 @@ paths:
   /api/role-menu/list:
     post:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_3
@@ -1559,9 +1661,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1584,7 +1686,7 @@ paths:
   /api/role-menu/export:
     get:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -1606,7 +1708,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -1630,9 +1732,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1651,7 +1753,7 @@ paths:
   /api/role-menu/batch:
     post:
       tags:
-        - sys-role-menu-controller
+        - 权限管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_3
@@ -1676,10 +1778,90 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/role-menu/assign/{roleId}:
+    post:
+      tags:
+        - 权限管理
+      summary: 为角色分配菜单
+      description: 先清除该角色的所有菜单关联，再批量新增
+      operationId: assignMenusToRole
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/oper-log/page:
+    post:
+      tags:
+        - 操作日志
+      summary: 分页查询日志记录
+      description: 通用分页查询日志记录，支持跨季度自动分表查询
+      operationId: page_4
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 0
+                - logic: AND
+                  children:
+                    - field: operTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+                    - field: operTime
+                      op: lt
+                      val: 2026-01-31 00:00:00
+              orders:
+                - column: operTime
+                  asc: false
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysOperLog"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/menu:
     post:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Create
       description: Create entity.
       operationId: create_4
@@ -1704,7 +1886,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_4
@@ -1732,10 +1914,10 @@ paths:
   /api/menu/page:
     post:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_4
+      operationId: page_5
       requestBody:
         description: Search parameters
         content:
@@ -1755,9 +1937,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1780,7 +1962,7 @@ paths:
   /api/menu/list:
     post:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_4
@@ -1803,9 +1985,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1828,7 +2010,7 @@ paths:
   /api/menu/export:
     get:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -1850,7 +2032,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -1874,9 +2056,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -1895,7 +2077,7 @@ paths:
   /api/menu/batch:
     post:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_4
@@ -1923,7 +2105,7 @@ paths:
   /api/dict-type:
     post:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Create
       description: Create entity.
       operationId: create_5
@@ -1948,7 +2130,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_5
@@ -1976,10 +2158,10 @@ paths:
   /api/dict-type/page:
     post:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_5
+      operationId: page_6
       requestBody:
         description: Search parameters
         content:
@@ -1999,9 +2181,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2024,7 +2206,7 @@ paths:
   /api/dict-type/list:
     post:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_5
@@ -2047,9 +2229,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2072,7 +2254,7 @@ paths:
   /api/dict-type/export:
     get:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2094,7 +2276,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2118,9 +2300,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2139,7 +2321,7 @@ paths:
   /api/dict-type/batch:
     post:
       tags:
-        - sys-dict-type-controller
+        - 字典管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_5
@@ -2167,7 +2349,7 @@ paths:
   /api/dict-item:
     post:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Create
       description: Create entity.
       operationId: create_6
@@ -2192,7 +2374,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_6
@@ -2220,10 +2402,10 @@ paths:
   /api/dict-item/page:
     post:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_6
+      operationId: page_7
       requestBody:
         description: Search parameters
         content:
@@ -2243,9 +2425,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2268,7 +2450,7 @@ paths:
   /api/dict-item/list:
     post:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_6
@@ -2291,9 +2473,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2316,7 +2498,7 @@ paths:
   /api/dict-item/export:
     get:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2338,7 +2520,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2362,9 +2544,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2383,7 +2565,7 @@ paths:
   /api/dict-item/batch:
     post:
       tags:
-        - sys-dict-item-controller
+        - 字典管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_6
@@ -2411,7 +2593,7 @@ paths:
   /api/dept:
     post:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Create
       description: Create entity.
       operationId: create_7
@@ -2436,7 +2618,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_7
@@ -2464,10 +2646,10 @@ paths:
   /api/dept/page:
     post:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_7
+      operationId: page_8
       requestBody:
         description: Search parameters
         content:
@@ -2487,9 +2669,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2512,7 +2694,7 @@ paths:
   /api/dept/list:
     post:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_7
@@ -2535,9 +2717,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2560,7 +2742,7 @@ paths:
   /api/dept/export:
     get:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2582,7 +2764,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2606,9 +2788,9 @@ paths:
                     - field: type
                       op: eq
                       val: A
-                    - field: type
-                      op: eq
-                      val: B
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
               orders:
                 - column: createTime
                   asc: false
@@ -2627,7 +2809,7 @@ paths:
   /api/dept/batch:
     post:
       tags:
-        - sys-dept-controller
+        - 部门管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_7
@@ -2652,10 +2834,38 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/auth/reset-password:
+    post:
+      tags:
+        - 系统管理
+        - 认证管理
+      summary: Reset Password
+      description: Reset password using token received via email.
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordReq"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/auth/refresh:
     post:
       tags:
-        - Authentication
+        - 系统管理
+        - 认证管理
       summary: Refresh Token
       description: Refresh the current JWT token.
       operationId: refresh
@@ -2675,17 +2885,11 @@ paths:
   /api/auth/logout:
     post:
       tags:
-        - Authentication
+        - 系统管理
+        - 认证管理
       summary: User Logout
       description: Invalidate JWT token and clear cookie.
       operationId: logout
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              additionalProperties:
-                type: boolean
       responses:
         "200":
           description: OK
@@ -2702,7 +2906,8 @@ paths:
   /api/auth/login:
     post:
       tags:
-        - Authentication
+        - 系统管理
+        - 认证管理
       summary: User Login
       description: Authenticate user and return JWT token. Sets HTTP-only cookie.
       operationId: login
@@ -2725,10 +2930,308 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/auth/forget-password:
+    post:
+      tags:
+        - 系统管理
+        - 认证管理
+      summary: Forget Password
+      description: Send password reset email to the registered email address.
+      operationId: forgetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgetPasswordReq"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/auth/admin/reset-password:
+    post:
+      tags:
+        - 系统管理
+        - 认证管理
+      summary: Super/Admin Reset User Password
+      description: Super/Admin can reset any user's password by user ID.
+      operationId: adminResetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminResetPasswordReq"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/api-key:
+    post:
+      tags:
+        - apiKey管理
+      summary: Create
+      description: Create entity.
+      operationId: create_8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiApiKey"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - apiKey管理
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/api-key/page:
+    post:
+      tags:
+        - apiKey管理
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_9
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageAiApiKey"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/api-key/list:
+    post:
+      tags:
+        - apiKey管理
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_8
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListAiApiKey"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/api-key/export:
+    get:
+      tags:
+        - apiKey管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_8
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - apiKey管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_8
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/api-key/batch:
+    post:
+      tags:
+        - apiKey管理
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/AiApiKey"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/user/info:
     get:
       tags:
-        - sys-user-controller
+        - 用户管理
       summary: 获取用户信息
       description: 获取登录认证用户信息
       operationId: getUserInfo
@@ -2748,7 +3251,7 @@ paths:
   /api/menu/path-exists:
     get:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: 菜单路径是否存在
       description: 根据路径检测是否存在其他菜单，更新时可排除自身ID
       operationId: isMenuPathExists
@@ -2779,7 +3282,7 @@ paths:
   /api/menu/name-exists:
     get:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: 菜单名称是否存在
       description: 根据名称检测是否存在其他菜单，更新时可排除自身ID
       operationId: isMenuNameExists
@@ -2810,7 +3313,7 @@ paths:
   /api/menu/all:
     get:
       tags:
-        - sys-menu-controller
+        - 菜单管理
       summary: 获取菜单权限
       description: 获取登录认证用户所拥有的所有菜单访问数据
       operationId: getAllMenus
@@ -2830,7 +3333,8 @@ paths:
   /api/auth/codes:
     get:
       tags:
-        - Authentication
+        - 系统管理
+        - 认证管理
       summary: Get User Permission Codes
       description: Fetch permission codes for the current user.
       operationId: getCodes
@@ -3093,7 +3597,7 @@ components:
           type: string
         gender:
           type: string
-          example: 1
+          example: male
           title: 性别值
         genderStr:
           type: string
@@ -3217,7 +3721,7 @@ components:
         remark:
           type: string
           title: 备注
-        typeCode:
+        typeId:
           type: string
         itemCode:
           type: string
@@ -3276,72 +3780,106 @@ components:
           items:
             $ref: "#/components/schemas/SysDictItem"
           readOnly: true
+    AiApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        keyName:
+          type: string
+        apiKey:
+          type: string
+        userId:
+          type: string
+        status:
+          type: integer
+          format: int32
+          example: 1
+          title: 状态值
+        statusStr:
+          type: string
+          readOnly: true
+          title: 状态
+        quote:
+          type: integer
+          format: int64
+        used:
+          type: integer
+          format: int64
+        modelScope:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        lastUsedTime:
+          type: string
+          format: date-time
+        notes:
+          type: string
+        user:
+          $ref: "#/components/schemas/SysUser"
+          readOnly: true
     OrderItem:
       type: object
-      description: 排序项
       properties:
         column:
           type: string
-          description: 排序字段名
-          example: createTime
         asc:
           type: boolean
-          default: true
-          description: 是否升序
-          example: false
     SearchDto:
       type: object
-      description: 通用搜索参数对象
       properties:
         pageNumber:
           type: integer
           format: int32
-          description: 当前页码
-          example: 1
         pageSize:
           type: integer
           format: int32
-          description: 每页大小
-          example: 10
         orders:
           type: array
-          description: 多字段排序列表
           items:
             $ref: "#/components/schemas/OrderItem"
         items:
           type: array
-          description: 高级搜索条件列表
           items:
             $ref: "#/components/schemas/SearchItem"
         logic:
           type: string
-          default: AND
-          description: items 条件之间的逻辑关系 (AND / OR)
-          example: AND
     SearchItem:
       type: object
-      description: 高级搜索条件项
       properties:
         field:
           type: string
-          description: 字段名
-          example: status
         op:
           type: string
-          description: "操作符: eq(等于), ne(不等于), gt(大于), ge(大于等于), lt(小于), le(小于等于),
-            like(包含), notlike(不包含), in(包含于), notin(不包含于), isnull(为空),
-            notnull(不为空)"
-          example: eq
-        val:
-          description: 字段值
-          example: 1
+        val: {}
         logic:
           type: string
-          description: 组内逻辑 (AND / OR)，仅当 children 不为空时有效
-          example: AND
         children:
           type: array
-          description: 子条件列表，用于构建嵌套查询
           items:
             $ref: "#/components/schemas/SearchItem"
     ApiResultPageSysUser:
@@ -3536,6 +4074,124 @@ components:
             $ref: "#/components/schemas/SysRoleMenu"
         error:
           type: string
+    ApiResultPageSysOperLog:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysOperLog"
+        error:
+          type: string
+    PageSysOperLog:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysOperLog"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    SysOperLog:
+      type: object
+      description: 操作日志
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        title:
+          type: string
+          title: 模块标题
+        businessType:
+          type: integer
+          format: int32
+          title: 业务类型（0其它 1新增 2修改 3删除 4调用api 5导出 6导入 7查询 8登录 9登出）
+        businessTypeStr:
+          type: string
+          title: 业务类型Str（0其它 1新增 2修改 3删除 4调用api 5导出 6导入 7查询 8登录 9登出）
+        method:
+          type: string
+          title: 方法名称
+        requestMethod:
+          type: string
+          title: 请求方式
+        operatorType:
+          type: integer
+          format: int32
+          title: 操作类别（0其它 1后台用户 2移动端用户）
+        operatorTypeStr:
+          type: string
+          title: 操作类别（0其它 1后台用户 2移动端用户）
+        operName:
+          type: string
+          title: 操作人员
+        operUserId:
+          type: string
+          title: 操作人员id
+        deptId:
+          type: string
+          title: 部门名称
+        operUrl:
+          type: string
+          title: 请求URL
+        operIp:
+          type: string
+          title: 主机地址
+        operLocation:
+          type: string
+          title: 操作地点
+        terminal:
+          type: object
+          additionalProperties:
+            type: string
+          title: 操作终端信息
+        operParam:
+          type: object
+          additionalProperties: {}
+          title: 请求参数
+        jsonResult:
+          type: object
+          additionalProperties: {}
+          title: 返回参数
+        status:
+          type: integer
+          format: int32
+          title: 操作状态（0正常 1异常）
+        errorMsg:
+          type: string
+          title: 错误消息
+        operTime:
+          type: string
+          format: date-time
+          title: 操作时间
+        costTime:
+          type: integer
+          format: int64
+          title: 消耗时间
+        extParams:
+          type: object
+          additionalProperties: {}
+          title: 扩展参数
+        remark:
+          type: string
+          title: 备注
     ApiResultPageSysMenu:
       type: object
       properties:
@@ -3728,6 +4384,21 @@ components:
             $ref: "#/components/schemas/SysDept"
         error:
           type: string
+    ResetPasswordReq:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Reset token received via email
+        newPassword:
+          type: string
+          description: New password
+          example: NewPass123!
+          maxLength: 100
+          minLength: 6
+      required:
+        - newPassword
+        - token
     LoginReq:
       type: object
       properties:
@@ -3764,6 +4435,79 @@ components:
           type: array
           items:
             type: string
+    ForgetPasswordReq:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: user@example.com
+      required:
+        - email
+    AdminResetPasswordReq:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User ID to reset password
+        newPassword:
+          type: string
+          description: New password
+          example: NewPass123!
+          maxLength: 100
+          minLength: 6
+      required:
+        - newPassword
+        - userId
+    ApiResultPageAiApiKey:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageAiApiKey"
+        error:
+          type: string
+    PageAiApiKey:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/AiApiKey"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListAiApiKey:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/AiApiKey"
+        error:
+          type: string
     ApiResultSysUser:
       type: object
       properties:
@@ -3969,3 +4713,29 @@ components:
             type: string
         error:
           type: string
+    ApiResultAiApiKey:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/AiApiKey"
+        error:
+          type: string
+x-tagGroups:
+  - name: 系统管理
+    tags:
+      - 认证管理
+      - 用户管理
+      - 部门管理
+      - 角色管理
+      - 菜单管理
+      - 字典管理
+      - 权限管理
+  - name: 运维管理
+    tags:
+      - 操作日志
+      - apiKey管理

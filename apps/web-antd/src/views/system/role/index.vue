@@ -461,7 +461,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       >
         <div class="flex items-center gap-2 border-b border-border px-4 py-3">
           <IconifyIcon class="text-primary" icon="carbon:user-role" />
-          <span class="font-medium">角色列表</span>
+          <span class="font-medium">{{ $t('system.role.list') }}</span>
         </div>
         <div class="flex flex-1 flex-col overflow-hidden">
           <!-- 表格 -->

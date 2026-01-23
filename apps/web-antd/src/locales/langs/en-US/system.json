@@ -1,6 +1,7 @@
 {
   "title": "System Management",
   "dept": {
+    "list": "Department list",
     "name": "Department",
     "title": "Department Management",
     "deptName": "Department Name",

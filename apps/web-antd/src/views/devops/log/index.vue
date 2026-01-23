@@ -3,14 +3,16 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SearchRequest } from '#/api/common';
 
+import { ref } from 'vue';
+
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { Tag } from 'ant-design-vue';
 import dayjs from 'dayjs';
-import { ref } from 'vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getOperLogPage } from '#/api/system/operlog';
+import { $t } from '#/locales';
 
 import DetailDrawer from './detail-drawer.vue';
 
@@ -279,7 +281,7 @@ const [Grid] = useVbenVxeGrid({
 
 <template>
   <Page auto-content-height>
-    <Grid table-title="操作日志">
+    <Grid :table-title="$t('devops.log.title')">
       <template #businessType="{ row }">
         <Tag color="blue">{{ row.businessTypeStr }}</Tag>
       </template>

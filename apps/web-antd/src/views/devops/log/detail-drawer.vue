@@ -173,20 +173,22 @@ const [Drawer, drawerApi] = useVbenDrawer({
       </Card>
 
       <!-- 返回结果 -->
-      <Card title="返回结果" size="small">
+      <Card
+        v-if="jsonResultValue && Object.keys(jsonResultValue).length > 0"
+        title="返回结果"
+        size="small"
+      >
         <JsonViewer
-          v-if="jsonResultValue && Object.keys(jsonResultValue).length > 0"
           :value="jsonResultValue"
           copyable
           :expand-depth="2"
           boxed
         />
-        <Empty v-else description="无返回结果" />
       </Card>
 
       <!-- 错误信息 -->
       <Card v-if="errorMsgValue" title="错误信息" size="small">
-        <div class="text-red-500">{{ errorMsgValue }}</div>
+        <div class="error-message text-red-600">{{ errorMsgValue }}</div>
       </Card>
 
       <!-- 扩展参数 -->
@@ -204,17 +206,22 @@ const [Drawer, drawerApi] = useVbenDrawer({
               v-html="terminalIconSvg"
             ></div>
             <div class="terminal-title">
-              <span class="device-name">{{ terminalValue.agentName }}
-                {{ terminalValue.agentVersion }}</span>
-              <span class="device-brand">{{ terminalValue.deviceBrand }}
-                {{ terminalValue.deviceName }}</span>
+              <span class="device-name">
+                {{ terminalValue.agentName }}
+                {{ terminalValue.agentVersion }}
+              </span>
+              <span class="device-brand">
+                {{ terminalValue.deviceBrand }}
+                {{ terminalValue.deviceName }}
+              </span>
             </div>
           </div>
           <div class="terminal-info">
             <div class="info-item">
               <span class="label">操作系统</span>
-              <span class="value">{{ terminalValue.osName }}
-                {{ terminalValue.osVersion }}</span>
+              <span class="value"
+                >{{ terminalValue.osName }} {{ terminalValue.osVersion }}</span
+              >
             </div>
           </div>
         </div>
@@ -292,5 +299,13 @@ const [Drawer, drawerApi] = useVbenDrawer({
       }
     }
   }
+}
+
+.error-message {
+  word-break: break-all;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow-y: auto;
 }
 </style>
