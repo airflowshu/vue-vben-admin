@@ -56,8 +56,21 @@ export function createSSEConnection(config: SSEConfig): AbortController {
         signal: abortController.signal,
       });
 
+      // 如果状态码不是 2xx，尝试读取错误响应体
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorText = await response.text();
+          // 尝试解析 JSON 错误响应
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch {
+          // 如果不是 JSON，使用原始响应文本
+          if (errorText) {
+            errorMessage = errorText;
+          }
+        }
+        throw new Error(errorMessage);
       }
 
       onOpen?.();

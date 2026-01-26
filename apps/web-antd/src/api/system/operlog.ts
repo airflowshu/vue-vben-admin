@@ -38,5 +38,5 @@ export interface PageResult<T> {
  * Get oper log page list
  */
 export function getOperLogPage(params: SearchRequest) {
-  return requestClient.post<PageResult<OperLog>>('/oper-log/page', params);
+  return requestClient.post<PageResult<OperLog>>('/admin/oper-log/page', params);
 }

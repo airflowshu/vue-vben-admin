@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 
-import { Button, Input, Spin, Tooltip } from 'ant-design-vue';
-
 import { useUserStore } from '@vben/stores';
+
+import { Button, Input, Spin, Tooltip, message } from 'ant-design-vue';
 
 import { createSSEConnection } from '#/utils/sse';
 
@@ -20,6 +20,7 @@ const userStore = useUserStore();
 const messages = ref<ChatMessage[]>([]);
 const inputValue = ref('');
 const isLoading = ref(false);
+const isStreaming = ref(false);
 const chatContainerRef = ref<HTMLElement | null>(null);
 const inputRef = ref<any>(null);
 let abortController: AbortController | null = null;
@@ -42,6 +43,20 @@ const closeEventSource = () => {
     abortController.abort();
     abortController = null;
   }
+  // 重置流式状态
+  isStreaming.value = false;
+  isLoading.value = false;
+};
+
+// 停止流式传输
+const stopStreaming = () => {
+  closeEventSource();
+  // 更新所有流式消息的状态
+  messages.value.forEach((msg) => {
+    if (msg.isStreaming) {
+      msg.isStreaming = false;
+    }
+  });
 };
 
 // 处理SSE响应
@@ -60,8 +75,13 @@ const handleSSEResponse = (chunk: string, messageId: string) => {
 
 // 发送消息到后端SSE接口
 const sendMessage = async () => {
-  const trimmedValue = inputValue.value.trim();
+  // 如果正在流式传输，点击按钮则停止
+  if (isStreaming.value) {
+    stopStreaming();
+    return;
+  }
 
+  const trimmedValue = inputValue.value.trim();
   if (!trimmedValue || isLoading.value) return;
 
   const userMessage: ChatMessage = {
@@ -82,13 +102,10 @@ const sendMessage = async () => {
   messages.value.push(userMessage, loadingMessage);
   inputValue.value = '';
   isLoading.value = true;
+  isStreaming.value = true;
   await scrollToBottom();
 
   closeEventSource();
-
-  // 获取认证信息
-  // const accessToken = localStorage.getItem('accessToken') || '';
-  // const aiApiKey = userStore.userInfo?.aiApiKey || '';
 
   // 创建SSE连接（使用 fetch 实现，支持自定义请求头）
   const url = `/api/ai/sse/time`;
@@ -96,15 +113,23 @@ const sendMessage = async () => {
 
   abortController = createSSEConnection({
     url,
-    // headers: {
-    //   // Authorization: `Bearer ${accessToken}`,
-    //   'X-AI-API-KEY': aiApiKey,
-    // },
     onOpen: () => {
       console.warn('SSE连接已建立');
     },
-    onMessage: (data, _event) => {
+    onMessage: (data, event) => {
       try {
+        // 处理错误事件
+        if (event === 'error' || data.startsWith('{')) {
+          try {
+            const errorData = JSON.parse(data);
+            const errorMsg = errorData.message || errorData.error || '请求失败';
+            message.error(errorMsg);
+            stopStreaming();
+            return;
+          } catch {
+            // 解析失败，继续作为普通消息处理
+          }
+        }
         if (data) {
           handleSSEResponse(data, aiMessageId);
         }
@@ -113,8 +138,19 @@ const sendMessage = async () => {
       }
     },
     onError: (error) => {
-      console.error('SSE错误:', error);
+      // 尝试解析后端返回的错误信息
+      let errorMessage = 'SSE 连接失败';
+      if (error?.message) {
+        try {
+          const errorData = JSON.parse(error.message);
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch {
+          errorMessage = error.message;
+        }
+      }
+      message.error(errorMessage);
       isLoading.value = false;
+      isStreaming.value = false;
 
       // 更新消息状态
       const msgIndex = messages.value.findIndex(
@@ -129,6 +165,7 @@ const sendMessage = async () => {
     },
     onComplete: () => {
       isLoading.value = false;
+      isStreaming.value = false;
       const msgIndex = messages.value.findIndex(
         (m: ChatMessage) => m.id === aiMessageId,
       );
@@ -140,23 +177,6 @@ const sendMessage = async () => {
       }
     },
   });
-
-  // 超时处理（如果后端没有发送完成事件）
-  setTimeout(() => {
-    if (abortController && isLoading.value) {
-      isLoading.value = false;
-      const msgIndex = messages.value.findIndex(
-        (m: ChatMessage) => m.id === aiMessageId,
-      );
-      if (msgIndex !== -1) {
-        const msg = messages.value[msgIndex];
-        if (msg) {
-          msg.isStreaming = false;
-        }
-      }
-      closeEventSource();
-    }
-  }, 30_000); // 30秒超时
 };
 
 // 键盘事件处理
@@ -311,13 +331,21 @@ onMounted(() => {
               </svg>
             </div>
           </Tooltip>
-          <Tooltip title="发送">
-            <div
+          <Tooltip :title="isStreaming ? '停止生成' : '发送'">
+            <Button
               class="tool-button send-button"
-              :class="{ disabled: !inputValue.trim() || isLoading }"
+              :class="{
+                disabled: !inputValue.trim() && !isStreaming,
+                loading: isLoading || isStreaming,
+              }"
+              :disabled="!inputValue.trim() && !isStreaming"
+              html-type="button"
               @click="sendMessage"
             >
+              <!-- 发送图标 -->
+              <Spin v-if="isLoading || isStreaming" size="small" />
               <svg
+                v-else
                 viewBox="0 0 24 24"
                 width="18"
                 height="18"
@@ -325,7 +353,7 @@ onMounted(() => {
               >
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>
-            </div>
+            </Button>
           </Tooltip>
         </div>
       </div>
@@ -571,6 +599,9 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.2s ease;
   color: #666;
+  padding: 0;
+  border: none;
+  background: transparent;
 
   &:hover {
     background: #f0f0f0;
@@ -586,7 +617,8 @@ onMounted(() => {
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    &.disabled {
+    &.disabled,
+    &[disabled]:not(.ant-btn-loading) {
       opacity: 0.4;
       cursor: not-allowed;
 
@@ -594,6 +626,15 @@ onMounted(() => {
         background: #1a1a1a;
         box-shadow: none;
         transform: none;
+      }
+    }
+
+    // loading 状态保持可点击
+    &.ant-btn-loading {
+      cursor: pointer !important;
+
+      &:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       }
     }
   }
