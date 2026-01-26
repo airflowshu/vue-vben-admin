@@ -39,54 +39,54 @@ export interface PageResult<T> {
  * Get dict type page list
  */
 export function getDictTypePage(params: SearchRequest) {
-  return requestClient.post<PageResult<DictType>>('/dict-type/page', params);
+  return requestClient.post<PageResult<DictType>>('/admin/dict-type/page', params);
 }
 
 /**
  * Create dict type
  */
 export function createDictType(data: Partial<DictType>) {
-  return requestClient.post('/dict-type', data);
+  return requestClient.post('/admin/dict-type', data);
 }
 
 /**
  * Update dict type
  */
 export function updateDictType(id: string, data: Partial<DictType>) {
-  return requestClient.put(`/dict-type/${id}`, data);
+  return requestClient.put(`/admin/dict-type/${id}`, data);
 }
 
 /**
  * Delete dict type
  */
 export function deleteDictType(id: string) {
-  return requestClient.delete<boolean>(`/dict-type/${id}`);
+  return requestClient.delete<boolean>(`/admin/dict-type/${id}`);
 }
 
 /**
  * Get dict item list by type id or code
  */
 export function getDictItemList(params: SearchRequest) {
-  return requestClient.post<DictItem[]>('/dict-item/list', params);
+  return requestClient.post<DictItem[]>('/admin/dict-item/list', params);
 }
 
 /**
  * Create dict item
  */
 export function createDictItem(data: Partial<DictItem>) {
-  return requestClient.post('/dict-item', data);
+  return requestClient.post('/admin/dict-item', data);
 }
 
 /**
  * Update dict item
  */
 export function updateDictItem(id: string, data: Partial<DictItem>) {
-  return requestClient.put(`/dict-item/${id}`, data);
+  return requestClient.put(`/admin/dict-item/${id}`, data);
 }
 
 /**
  * Delete dict item
  */
 export function deleteDictItem(id: string) {
-  return requestClient.delete(`/dict-item/${id}`);
+  return requestClient.delete(`/admin/dict-item/${id}`);
 }

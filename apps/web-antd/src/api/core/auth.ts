@@ -22,23 +22,26 @@ export namespace AuthApi {
  * 登录
  */
 export async function loginApi(data: AuthApi.LoginParams) {
-  return requestClient.post<AuthApi.LoginResult>('/auth/login', data);
+  return requestClient.post<AuthApi.LoginResult>('/admin/auth/login', data);
 }
 
 /**
  * 刷新accessToken
  */
 export async function refreshTokenApi() {
-  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/auth/refresh', {
-    withCredentials: true,
-  });
+  return baseRequestClient.post<AuthApi.RefreshTokenResult>(
+    '/admin/auth/refresh',
+    {
+      withCredentials: true,
+    },
+  );
 }
 
 /**
  * 退出登录
  */
 export async function logoutApi() {
-  return baseRequestClient.post('/auth/logout', {
+  return baseRequestClient.post('/admin/auth/logout', {
     withCredentials: true,
   });
 }
@@ -47,23 +50,23 @@ export async function logoutApi() {
  * 获取用户权限码
  */
 export async function getAccessCodesApi() {
-  return requestClient.get<string[]>('/auth/codes');
+  return requestClient.get<string[]>('/admin/auth/codes');
 }
 
 /**
  * 忘记密码 - 发送重置邮件
  */
 export async function forgetPasswordApi(email: string) {
-  return requestClient.post('/auth/forget-password', { email });
+  return requestClient.post('/admin/auth/forget-password', { email });
 }
 
 /**
  * 重置密码 - 提交新密码
  */
 export async function resetPasswordApi(data: {
-  token: string;
   email: string;
   newPassword: string;
+  token: string;
 }) {
-  return requestClient.post('/auth/reset-password', data);
+  return requestClient.post('/admin/auth/reset-password', data);
 }

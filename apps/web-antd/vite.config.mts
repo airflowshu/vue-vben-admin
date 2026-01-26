@@ -6,16 +6,19 @@ export default defineConfig(async () => {
     vite: {
       server: {
         proxy: {
-          '/api': {
+          '/api/admin': {
+            target: 'http://localhost:8080/api/admin',
             changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/api/, ''),
-            // mock代理目标地址
-            // target: 'http://localhost:5320/api',
-            target: 'http://localhost:8080/api',
+            rewrite: (path: string) => path.replace(/^\/api\/admin/, ''),
             ws: true,
+          },
+          '/api/ai': {
+            changeOrigin: true,
+            target: 'http://localhost:8081/api/ai',
+            rewrite: (path: string) => path.replace(/^\/api\/ai/, ''),
           },
         },
       },
     },
   };
-});
+}) as any;

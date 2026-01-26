@@ -7,7 +7,7 @@ import { requestClient } from '#/api/request';
  */
 export async function getAllMenusApi() {
   const data =
-    await requestClient.get<RouteRecordStringComponent[]>('/menu/all');
+    await requestClient.get<RouteRecordStringComponent[]>('/admin/menu/all');
   function normalize(
     list: null | RouteRecordStringComponent[] | undefined,
   ): RouteRecordStringComponent[] {
@@ -29,7 +29,7 @@ export async function getAllMenusApi() {
           name,
           path,
           children: children.length > 0 ? children : undefined,
-        };
+        } as any as RouteRecordStringComponent;
       })
       .filter((v): v is RouteRecordStringComponent => v !== null);
   }

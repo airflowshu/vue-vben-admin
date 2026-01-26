@@ -5,5 +5,8 @@
   },
   "aikey": {
     "title": "aiAPI Key管理"
+  },
+  "ai": {
+    "title": "ai聊天"
   }
 }

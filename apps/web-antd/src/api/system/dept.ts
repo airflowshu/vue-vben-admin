@@ -22,26 +22,26 @@ export interface DeptRecord {
  * 获取菜单列表
  */
 export function getDeptList(params: SearchRequest) {
-  return requestClient.post<DeptRecord[]>('/dept/list', params);
+  return requestClient.post<DeptRecord[]>('/admin/dept/list', params);
 }
 
 /**
  * 删除菜单
  */
 export function deleteDept(id: string) {
-  return requestClient.delete<boolean>(`/dept/${id}`);
+  return requestClient.delete<boolean>(`/admin/dept/${id}`);
 }
 
 /**
  * 新增菜单
  */
 export function createDept(params: Partial<DeptRecord>) {
-  return requestClient.post('/dept', params);
+  return requestClient.post('/admin/dept', params);
 }
 
 /**
  * 修改菜单
  */
 export function updateDept(id: string, params: Partial<DeptRecord>) {
-  return requestClient.put(`/dept/${id}`, params);
+  return requestClient.put(`/admin/dept/${id}`, params);
 }

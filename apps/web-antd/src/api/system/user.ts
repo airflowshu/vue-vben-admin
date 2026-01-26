@@ -60,77 +60,77 @@ export interface PageResult<T> {
  * 获取用户分页列表
  */
 export function getUserPage(params: SearchRequest) {
-  return requestClient.post<PageResult<UserRecord>>('/user/page', params);
+  return requestClient.post<PageResult<UserRecord>>('/admin/user/page', params);
 }
 
 /**
  * 获取用户列表
  */
 export function getUserList(params: SearchRequest) {
-  return requestClient.post<UserRecord[]>('/user/list', params);
+  return requestClient.post<UserRecord[]>('/admin/user/list', params);
 }
 
 /**
  * 获取用户详情
  */
 export function getUserById(id: string) {
-  return requestClient.get<UserRecord>(`/user/${id}`);
+  return requestClient.get<UserRecord>(`/admin/user/${id}`);
 }
 
 /**
  * 获取当前用户信息
  */
 export function getUserInfo() {
-  return requestClient.get<Record<string, any>>('/user/info');
+  return requestClient.get<Record<string, any>>('/admin/user/info');
 }
 
 /**
  * 新增用户
  */
 export function createUser(data: Partial<UserRecord>) {
-  return requestClient.post('/user', data);
+  return requestClient.post('/admin/user', data);
 }
 
 /**
  * 修改用户
  */
 export function updateUser(id: string, data: Partial<UserRecord>) {
-  return requestClient.put(`/user/${id}`, data);
+  return requestClient.put(`/admin/user/${id}`, data);
 }
 
 /**
  * 删除用户
  */
 export function deleteUser(id: string) {
-  return requestClient.delete<boolean>(`/user/${id}`);
+  return requestClient.delete<boolean>(`/admin/user/${id}`);
 }
 
 /**
  * 批量删除用户
  */
 export function deleteUserBatch(ids: string[]) {
-  return requestClient.delete('/user', { data: ids });
+  return requestClient.delete('/admin/user', { data: ids });
 }
 
 /**
  * 获取部门列表（用于用户表单选择）
  */
 export function getDeptList(params: SearchRequest) {
-  return requestClient.post<DeptRecord[]>('/dept/list', params);
+  return requestClient.post<DeptRecord[]>('/admin/dept/list', params);
 }
 
 /**
  * 获取角色列表（用于用户表单选择）
  */
 export function getRoleList(params: SearchRequest) {
-  return requestClient.post<RoleRecord[]>('/role/list', params);
+  return requestClient.post<RoleRecord[]>('/admin/role/list', params);
 }
 
 /**
  * 为用户分配角色（先清除该用户的所有角色关联，再批量新增）
  */
 export function assignUserRole(userId: string, roleIds: string[]) {
-  return requestClient.post(`/user-role/assign/${userId}`, roleIds);
+  return requestClient.post(`/admin/user-role/assign/${userId}`, roleIds);
 }
 
 /**
@@ -140,14 +140,14 @@ export function resetPasswordApi(data: {
   newPassword: string;
   userId?: string;
 }) {
-  return requestClient.post('/auth/admin/reset-password', data);
+  return requestClient.post('/admin/auth/reset-password', data);
 }
 
 /**
  * 导出用户列表
  */
 export function exportUsers(params: SearchRequest): Promise<Blob> {
-  return requestClient.download('/user/export', {
+  return requestClient.download('/admin/user/export', {
     method: 'POST',
     data: params,
   });

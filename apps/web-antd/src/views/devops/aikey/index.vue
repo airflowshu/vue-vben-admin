@@ -251,7 +251,7 @@ async function handleDelete(row: AiApiKey) {
       try {
         await deleteApiKey(row.id);
         message.success('删除成功');
-        gridApi.reload();
+        await gridApi.reload();
       } catch (error) {
         console.error(error);
         message.error('删除失败');
@@ -277,7 +277,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
   <Page auto-content-height>
     <Grid :table-title="$t('devops.aikey.title')">
       <template #apiKey="{ row }">
-        <code class="rounded bg-gray-100 px-1 text-xs">{{ row.apiKey }}</code>
+        <code class="rounded bg-gray-100 px-1 text-xs dark:bg-gray-700">{{
+          row.apiKey
+        }}</code>
       </template>
 
       <template #user="{ row }">

@@ -63,49 +63,49 @@ export interface PageResult<T> {
  * 获取角色分页列表
  */
 export function getRolePage(params: SearchRequest) {
-  return requestClient.post<PageResult<RoleRecord>>('/role/page', params);
+  return requestClient.post<PageResult<RoleRecord>>('/admin/role/page', params);
 }
 
 /**
  * 获取角色列表
  */
 export function getRoleList(params: SearchRequest) {
-  return requestClient.post<RoleRecord[]>('/role/list', params);
+  return requestClient.post<RoleRecord[]>('/admin/role/list', params);
 }
 
 /**
  * 获取角色详情
  */
 export function getRoleById(id: string) {
-  return requestClient.get<RoleRecord>(`/role/${id}`);
+  return requestClient.get<RoleRecord>(`/admin/role/${id}`);
 }
 
 /**
  * 新增角色
  */
 export function createRole(data: Partial<RoleRecord>) {
-  return requestClient.post('/role', data);
+  return requestClient.post('/admin/role', data);
 }
 
 /**
  * 修改角色
  */
 export function updateRole(id: string, data: Partial<RoleRecord>) {
-  return requestClient.put(`/role/${id}`, data);
+  return requestClient.put(`/admin/role/${id}`, data);
 }
 
 /**
  * 删除角色
  */
 export function deleteRole(id: string) {
-  return requestClient.delete<boolean>(`/role/${id}`);
+  return requestClient.delete<boolean>(`/admin/role/${id}`);
 }
 
 /**
  * 获取角色关联的菜单ID列表
  */
 export function getRoleMenuIds(roleId: string) {
-  return requestClient.get<string[]>(`/role-menu/${roleId}`);
+  return requestClient.get<string[]>(`/admin/role-menu/${roleId}`);
 }
 
 /**
@@ -114,12 +114,12 @@ export function getRoleMenuIds(roleId: string) {
  * @param menuIds 菜单ID数组
  */
 export function saveRoleMenus(roleId: string, menuIds: string[]) {
-  return requestClient.post(`/role-menu/assign/${roleId}`, menuIds);
+  return requestClient.post(`/admin/role-menu/assign/${roleId}`, menuIds);
 }
 
 /**
  * 获取菜单树列表（用于权限分配）
  */
 export function getMenuTree(params?: SearchRequest) {
-  return requestClient.post<MenuTreeNode[]>('/menu/list', params ?? {});
+  return requestClient.post<MenuTreeNode[]>('/admin/menu/list', params ?? {});
 }
