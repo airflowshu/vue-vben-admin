@@ -7,6 +7,7 @@
     "title": "aiAPI Key Management"
   },
   "ai": {
-    "title": "aiChat"
+    "title": "aiChat",
+    "chat": "aiChat"
   }
 }

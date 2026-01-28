@@ -7,14 +7,14 @@ export default defineConfig(async () => {
       server: {
         proxy: {
           '/api/admin': {
-            target: 'http://localhost:8080/api/admin',
+            target: 'http://192.168.6.7:8080/api/admin',
             changeOrigin: true,
             rewrite: (path: string) => path.replace(/^\/api\/admin/, ''),
             ws: true,
           },
           '/api/ai': {
             changeOrigin: true,
-            target: 'http://localhost:8081/api/ai',
+            target: 'http://192.168.6.7:8081/api/ai',
             rewrite: (path: string) => path.replace(/^\/api\/ai/, ''),
           },
         },

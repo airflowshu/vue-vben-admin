@@ -12,5 +12,8 @@
     "title": "Dashboard",
     "analytics": "Analytics",
     "workspace": "Workspace"
+  },
+  "profile": {
+    "title": "Profile"
   }
 }

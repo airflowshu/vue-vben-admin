@@ -1,30 +1,24 @@
 <script setup lang="ts">
-import type { BasicOption } from '@vben/types';
-
 import type { VbenFormSchema } from '#/adapter/form';
 
 import { computed, onMounted, ref } from 'vue';
 
 import { ProfileBaseSetting } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
-import { getUserInfoApi } from '#/api';
+const userStore = useUserStore();
 
 const profileBaseSettingRef = ref();
 
-const MOCK_ROLES_OPTIONS: BasicOption[] = [
-  {
-    label: '管理员',
-    value: 'super',
-  },
-  {
-    label: '用户',
-    value: 'user',
-  },
-  {
-    label: '测试',
-    value: 'test',
-  },
-];
+// 从 store 中获取用户角色
+const userRoles = computed(() => {
+  const roles = userStore.userInfo?.roles || [];
+  // 将角色数组转换为 options 格式
+  return roles.map((role: string) => ({
+    label: role,
+    value: role,
+  }));
+});
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -42,8 +36,9 @@ const formSchema = computed((): VbenFormSchema[] => {
       fieldName: 'roles',
       component: 'Select',
       componentProps: {
+        disabled: true,
         mode: 'tags',
-        options: MOCK_ROLES_OPTIONS,
+        options: userRoles.value,
       },
       label: '角色',
     },
@@ -55,9 +50,9 @@ const formSchema = computed((): VbenFormSchema[] => {
   ];
 });
 
-onMounted(async () => {
-  const data = await getUserInfoApi();
-  profileBaseSettingRef.value.getFormApi().setValues(data);
+onMounted(() => {
+  // 从 store 获取用户信息并填充表单
+  profileBaseSettingRef.value?.getFormApi().setValues(userStore.userInfo || {});
 });
 </script>
 <template>
