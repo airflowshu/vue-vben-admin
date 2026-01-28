@@ -11,7 +11,7 @@ import {
   errorMessageResponseInterceptor,
   RequestClient,
 } from '@vben/request';
-import { useAccessStore, useUserStore } from '@vben/stores';
+import { useAccessStore } from '@vben/stores';
 
 import { message } from 'ant-design-vue';
 
@@ -64,19 +64,9 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   client.addRequestInterceptor({
     fulfilled: async (config) => {
       const accessStore = useAccessStore();
-      const userStore = useUserStore();
 
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
-
-      // AI 接口添加 X-AI-API-KEY 请求头
-      if (config.url?.startsWith('/api/ai')) {
-        const aiApiKey = userStore.userInfo?.aiApiKey;
-        if (aiApiKey) {
-          config.headers['X-AI-API-KEY'] = aiApiKey;
-        }
-      }
-
       return config;
     },
   });

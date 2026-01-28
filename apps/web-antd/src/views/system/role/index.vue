@@ -153,9 +153,10 @@ const gridOptions: VxeGridProps<RoleRecord> = {
   rowConfig: {
     keyField: 'id',
     isHover: true,
+    isCurrent: true,
   },
   rowClassName: ({ row }) => {
-    return selectedRole.value?.id === row.id ? 'bg-primary/5' : '';
+    return selectedRole.value?.id === row.id ? 'row-current-row' : '';
   },
   toolbarConfig: {
     export: true,
@@ -551,9 +552,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
           </div>
           <Tree
             v-else
-            v-model:checkedKeys="checkedMenuKeys"
-            v-model:halfCheckedKeys="halfCheckedMenuKeys"
-            v-model:expandedKeys="expandedMenuKeys"
+            v-model:checked-keys="checkedMenuKeys"
+            v-model:half-checked-keys="halfCheckedMenuKeys"
+            v-model:expanded-keys="expandedMenuKeys"
             :tree-data="menuTreeData"
             :field-names="{
               children: 'children',
@@ -594,7 +595,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
                 <IconifyIcon
                   v-else-if="(node.dataRef?.type || node.type) === 'embedded'"
                   icon="carbon:embed"
-                  class="shrink-0 text-base text-info"
+                  class="text-info shrink-0 text-base"
                 />
                 <IconifyIcon
                   v-else
@@ -642,5 +643,11 @@ const [Drawer, drawerApi] = useVbenDrawer({
 :deep(.ant-tree-treenode) {
   padding-top: 2px;
   padding-bottom: 2px;
+}
+
+:deep(
+  .vxe-table--body-wrapper .vxe-table--body .vxe-body--row.row-current-row
+) {
+  background-color: #ecfccb !important;
 }
 </style>
