@@ -5,6 +5,7 @@ import { computed, markRaw, onMounted, ref } from 'vue';
 
 import { ProfileBaseSetting } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
+
 import { message } from 'ant-design-vue';
 
 import { updateUser } from '#/api/system/user';
@@ -75,10 +76,12 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleSubmit(values: Record<string, any>) {
   try {
     // 移除角色字段（只读字段不允许修改）
+    // eslint-disable-next-line unused-imports/no-unused-vars
     const { roles, ...submitData } = values;
 
     // 始终包含头像文件ID（新上传的或原有的）
-    submitData.profileFileId = avatarFileId.value || userStore.userInfo?.profileFileId || '';
+    submitData.profileFileId =
+      avatarFileId.value || userStore.userInfo?.profileFileId || '';
 
     if (userStore.userInfo?.id) {
       await updateUser(userStore.userInfo.id, submitData);

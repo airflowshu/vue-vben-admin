@@ -22,5 +22,6 @@
   "showSearchPanel": "Show search panel",
   "hideSearchPanel": "Hide search panel",
   "list": "List",
-  "export": "Export"
+  "export": "Export",
+  "download": "下载"
 }

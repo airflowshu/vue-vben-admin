@@ -3,7 +3,7 @@ import type { FileObject } from '#/api/core/file';
 
 import { ref, watch } from 'vue';
 
-import { useAccessStore, useUserStore } from '@vben/stores';
+import { useUserStore } from '@vben/stores';
 
 import {
   CameraOutlined,
@@ -15,6 +15,8 @@ import {
 import { Button, message, Modal, Tooltip } from 'ant-design-vue';
 import Upload from 'ant-design-vue/es/upload';
 
+import { uploadSingleFileApi } from '#/api/core/file';
+
 const props = defineProps<{
   value?: string;
 }>();
@@ -24,7 +26,6 @@ const emit = defineEmits<{
   'update:value': [value: string];
 }>();
 
-const accessStore = useAccessStore();
 const userStore = useUserStore();
 const imageUrl = ref(props.value || '');
 const modalVisible = ref(false);
@@ -114,78 +115,42 @@ const handleBeforeUpload = (file: File) => {
 const handleUpload = async () => {
   if (!pendingFile.value) {
     if (modalVisible.value) {
-      // 只有在弹窗点击确定（上传）按钮时才提示，如果只是关闭弹窗则不需要
       message.warning('请先选择图片');
     }
     return;
   }
 
   uploadLoading.value = true;
-
-  // 使用 XMLHttpRequest 直接上传，避开 request 封装
-  return new Promise<void>((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    const formData = new FormData();
-
-    formData.append('file', pendingFile.value!, pendingFile.value!.name);
-    formData.append('bizType', 'sys_user_avatar');
-    if (userStore.userInfo?.id) {
-      formData.append('bizId', userStore.userInfo.id);
-    }
-
-    xhr.open('POST', '/api/admin/file/upload', true);
-
-    // 设置认证头
-    const token = accessStore.accessToken;
-    if (token) {
-      xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-    }
-
-    xhr.addEventListener('load', () => {
-      uploadLoading.value = false;
-      if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          const response = JSON.parse(xhr.responseText);
-          if (response.code === 0 && response.data) {
-            const fileObj: FileObject = response.data;
-            // 从 FileObject.location 获取文件访问地址
-            const fileUrl = fileObj.location?.endpoint
-              ? `${fileObj.location.endpoint}/${fileObj.location.bucket}/${fileObj.location.objectKey}`
-              : '';
-
-            if (fileUrl) {
-              imageUrl.value = fileUrl;
-              emit('update:value', fileUrl);
-              // 将文件 ID 传递给父组件，用于更新用户信息的 profileFileId
-              if (fileObj.id) {
-                emit('update:fileId', fileObj.id);
-              }
-              message.success('头像上传成功');
-              closeModal();
-            } else {
-              message.error('获取文件地址失败');
-            }
-          } else {
-            message.error(response.message || '上传失败');
-          }
-        } catch {
-          message.error('解析响应失败');
-        }
-      } else {
-        message.error('上传失败');
-      }
-      resolve();
+  try {
+    const fileObj: FileObject = await uploadSingleFileApi({
+      bizId: userStore.userInfo?.id,
+      bizType: 'sys_user_avatar',
+      file: pendingFile.value,
     });
 
-    // eslint-disable-next-line unicorn/prefer-add-event-listener
-    xhr.onerror = () => {
-      uploadLoading.value = false;
-      message.error('网络错误，上传失败');
-      reject(new Error('上传失败'));
-    };
+    // 从 FileObject.location 获取文件访问地址
+    const fileUrl = fileObj.location?.endpoint
+      ? `${fileObj.location.endpoint}/${fileObj.location.bucket}/${fileObj.location.objectKey}`
+      : '';
 
-    xhr.send(formData);
-  });
+    if (fileUrl) {
+      imageUrl.value = fileUrl;
+      emit('update:value', fileUrl);
+      // 将文件 ID 传递给父组件，用于更新用户信息的 profileFileId
+      if (fileObj.id) {
+        emit('update:fileId', fileObj.id);
+      }
+      message.success('头像上传成功');
+      closeModal();
+    } else {
+      message.error('获取文件地址失败');
+    }
+  } catch (error) {
+    console.error('上传失败:', error);
+    // 错误信息由 requestClient 的拦截器处理，这里只需处理 loading
+  } finally {
+    uploadLoading.value = false;
+  }
 };
 </script>
 

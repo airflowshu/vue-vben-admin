@@ -23,5 +23,6 @@
   "hideSearchPanel": "隐藏搜索面板",
   "*": "common.${opt}",
   "list": "查询",
-  "export": "导出"
+  "export": "导出",
+  "download": "下载"
 }

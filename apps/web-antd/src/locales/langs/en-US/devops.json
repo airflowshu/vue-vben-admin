@@ -9,5 +9,8 @@
   "ai": {
     "title": "aiChat",
     "chat": "aiChat"
+  },
+  "file": {
+    "title": "fileManagement"
   }
 }

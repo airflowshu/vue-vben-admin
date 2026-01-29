@@ -27,10 +27,12 @@ tags:
     description: SysOperLog - 用户操作日志记录
   - name: 认证管理
     description: Authentication - 用户登录和注销
+  - name: 文件管理
+    description: SysFile - 文件管理
   - name: 用户管理
     description: SysUser - 用户管理
 paths:
-  /api/user/{id}:
+  /api/admin/user/{id}:
     get:
       tags:
         - 用户管理
@@ -50,6 +52,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultSysUser"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -81,6 +89,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -106,13 +120,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user-role/{id}:
+  /api/admin/user-role/{id}:
     get:
       tags:
         - 权限管理
@@ -132,6 +152,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultSysUserRole"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -163,6 +189,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -188,13 +220,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role/{id}:
+  /api/admin/role/{id}:
     get:
       tags:
         - 角色管理
@@ -214,6 +252,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultSysRole"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -245,6 +289,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -270,13 +320,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role-menu/{id}:
+  /api/admin/role-menu/{id}:
     get:
       tags:
         - 权限管理
@@ -296,6 +352,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultSysRoleMenu"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -327,6 +389,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -352,13 +420,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu/{id}:
+  /api/admin/menu/{id}:
     get:
       tags:
         - 菜单管理
@@ -378,6 +452,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultSysMenu"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -409,6 +489,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -434,16 +520,22 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-type/{id}:
+  /api/admin/file/{id}:
     get:
       tags:
-        - 字典管理
+        - 文件管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_5
@@ -459,7 +551,13 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultSysDictType"
+                $ref: "#/components/schemas/ApiResultSysFile"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -468,7 +566,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     put:
       tags:
-        - 字典管理
+        - 文件管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
       operationId: update_5
@@ -482,7 +580,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SysDictType"
+              $ref: "#/components/schemas/SysFile"
         required: true
       responses:
         "200":
@@ -491,6 +589,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -499,7 +603,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - 字典管理
+        - 文件管理
       summary: Delete by ID
       description: Delete entity by ID.
       operationId: remove_5
@@ -516,13 +620,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-item/{id}:
+  /api/admin/dict-type/{id}:
     get:
       tags:
         - 字典管理
@@ -541,7 +651,13 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultSysDictItem"
+                $ref: "#/components/schemas/ApiResultSysDictType"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -564,7 +680,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SysDictItem"
+              $ref: "#/components/schemas/SysDictType"
         required: true
       responses:
         "200":
@@ -573,6 +689,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -598,16 +720,22 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dept/{id}:
+  /api/admin/dict-item/{id}:
     get:
       tags:
-        - 部门管理
+        - 字典管理
       summary: Get by ID
       description: Get entity details by ID.
       operationId: get_7
@@ -623,7 +751,113 @@ paths:
           content:
             "*/*":
               schema:
+                $ref: "#/components/schemas/ApiResultSysDictItem"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 字典管理
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_7
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDictItem"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 字典管理
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_7
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/dept/{id}:
+    get:
+      tags:
+        - 部门管理
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_8
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
                 $ref: "#/components/schemas/ApiResultSysDept"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -635,7 +869,7 @@ paths:
         - 部门管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_7
+      operationId: update_8
       parameters:
         - name: id
           in: path
@@ -655,6 +889,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -666,7 +906,7 @@ paths:
         - 部门管理
       summary: Delete by ID
       description: Delete entity by ID.
-      operationId: remove_7
+      operationId: remove_8
       parameters:
         - name: id
           in: path
@@ -680,19 +920,25 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/api-key/{id}:
+  /api/admin/api-key/{id}:
     get:
       tags:
         - apiKey管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_8
+      operationId: get_9
       parameters:
         - name: id
           in: path
@@ -706,6 +952,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultAiApiKey"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -717,7 +969,7 @@ paths:
         - apiKey管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_8
+      operationId: update_9
       parameters:
         - name: id
           in: path
@@ -737,6 +989,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -748,7 +1006,7 @@ paths:
         - apiKey管理
       summary: Delete by ID
       description: Delete entity by ID.
-      operationId: remove_8
+      operationId: remove_9
       parameters:
         - name: id
           in: path
@@ -762,13 +1020,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user:
+  /api/admin/user:
     post:
       tags:
         - 用户管理
@@ -788,6 +1052,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -815,13 +1085,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user/page:
+  /api/admin/user/page:
     post:
       tags:
         - 用户管理
@@ -863,13 +1139,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultPageSysUser"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user/list:
+  /api/admin/user/list:
     post:
       tags:
         - 用户管理
@@ -911,13 +1193,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListSysUser"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user/export:
+  /api/admin/user/export:
     get:
       tags:
         - 用户管理
@@ -934,6 +1222,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -978,13 +1272,19 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user/batch:
+  /api/admin/user/batch:
     post:
       tags:
         - 用户管理
@@ -1006,13 +1306,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user-role:
+  /api/admin/user-role:
     post:
       tags:
         - 权限管理
@@ -1032,6 +1338,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -1059,13 +1371,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user-role/page:
+  /api/admin/user-role/page:
     post:
       tags:
         - 权限管理
@@ -1107,13 +1425,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultPageSysUserRole"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user-role/list:
+  /api/admin/user-role/list:
     post:
       tags:
         - 权限管理
@@ -1155,13 +1479,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListSysUserRole"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user-role/export:
+  /api/admin/user-role/export:
     get:
       tags:
         - 权限管理
@@ -1178,6 +1508,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -1222,13 +1558,19 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user-role/batch:
+  /api/admin/user-role/batch:
     post:
       tags:
         - 权限管理
@@ -1250,13 +1592,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user-role/assign/{userId}:
+  /api/admin/user-role/assign/{userId}:
     post:
       tags:
         - 权限管理
@@ -1284,13 +1632,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role:
+  /api/admin/role:
     post:
       tags:
         - 角色管理
@@ -1310,6 +1664,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -1337,13 +1697,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role/page:
+  /api/admin/role/page:
     post:
       tags:
         - 角色管理
@@ -1385,13 +1751,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultPageSysRole"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role/list:
+  /api/admin/role/list:
     post:
       tags:
         - 角色管理
@@ -1433,13 +1805,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListSysRole"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role/export:
+  /api/admin/role/export:
     get:
       tags:
         - 角色管理
@@ -1456,6 +1834,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -1500,13 +1884,19 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role/batch:
+  /api/admin/role/batch:
     post:
       tags:
         - 角色管理
@@ -1528,13 +1918,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role-menu:
+  /api/admin/role-menu:
     post:
       tags:
         - 权限管理
@@ -1554,6 +1950,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -1581,13 +1983,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role-menu/page:
+  /api/admin/role-menu/page:
     post:
       tags:
         - 权限管理
@@ -1629,13 +2037,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultPageSysRoleMenu"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role-menu/list:
+  /api/admin/role-menu/list:
     post:
       tags:
         - 权限管理
@@ -1677,13 +2091,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListSysRoleMenu"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role-menu/export:
+  /api/admin/role-menu/export:
     get:
       tags:
         - 权限管理
@@ -1700,6 +2120,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -1744,13 +2170,19 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role-menu/batch:
+  /api/admin/role-menu/batch:
     post:
       tags:
         - 权限管理
@@ -1772,13 +2204,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/role-menu/assign/{roleId}:
+  /api/admin/role-menu/assign/{roleId}:
     post:
       tags:
         - 权限管理
@@ -1806,13 +2244,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/oper-log/page:
+  /api/admin/oper-log/page:
     post:
       tags:
         - 操作日志
@@ -1852,13 +2296,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultPageSysOperLog"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu:
+  /api/admin/menu:
     post:
       tags:
         - 菜单管理
@@ -1878,6 +2328,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -1905,13 +2361,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu/page:
+  /api/admin/menu/page:
     post:
       tags:
         - 菜单管理
@@ -1953,13 +2415,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultPageSysMenu"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu/list:
+  /api/admin/menu/list:
     post:
       tags:
         - 菜单管理
@@ -2001,13 +2469,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListSysMenu"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu/export:
+  /api/admin/menu/export:
     get:
       tags:
         - 菜单管理
@@ -2024,6 +2498,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -2068,13 +2548,19 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu/batch:
+  /api/admin/menu/batch:
     post:
       tags:
         - 菜单管理
@@ -2096,16 +2582,22 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-type:
+  /api/admin/file:
     post:
       tags:
-        - 字典管理
+        - 文件管理
       summary: Create
       description: Create entity.
       operationId: create_5
@@ -2113,7 +2605,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SysDictType"
+              $ref: "#/components/schemas/SysFile"
         required: true
       responses:
         "200":
@@ -2122,6 +2614,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -2130,7 +2628,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - 字典管理
+        - 文件管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_5
@@ -2149,16 +2647,86 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-type/page:
+  /api/admin/file/upload:
     post:
       tags:
-        - 字典管理
+        - 文件管理
+      summary: 上传文件
+      description: 上传单个文件并保存到对象存储
+      operationId: upload
+      parameters:
+        - name: tenantId
+          in: query
+          description: 租户ID
+          required: false
+          schema:
+            type: string
+            default: "1"
+        - name: projectId
+          in: query
+          description: 项目ID
+          required: false
+          schema:
+            type: string
+        - name: bizType
+          in: query
+          description: 业务类型，传入 `sys_user_avatar` 时文件会上传到公有库，其他值存入私有库
+          required: false
+          schema:
+            type: string
+        - name: bizId
+          in: query
+          description: 业务ID
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 要上传的文件
+              required:
+                - file
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResultFileObject"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/file/page:
+    post:
+      tags:
+        - 文件管理
       summary: Page Query
       description: Paged query with optional search parameters.
       operationId: page_6
@@ -2196,17 +2764,23 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultPageSysDictType"
+                $ref: "#/components/schemas/ApiResultPageSysFile"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-type/list:
+  /api/admin/file/list:
     post:
       tags:
-        - 字典管理
+        - 文件管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_5
@@ -2244,17 +2818,23 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultListSysDictType"
+                $ref: "#/components/schemas/ApiResultListSysFile"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-type/export:
+  /api/admin/file/export:
     get:
       tags:
-        - 字典管理
+        - 文件管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2268,6 +2848,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -2276,7 +2862,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - 字典管理
+        - 文件管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2312,16 +2898,22 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-type/batch:
+  /api/admin/file/batch:
     post:
       tags:
-        - 字典管理
+        - 文件管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_5
@@ -2331,7 +2923,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/SysDictType"
+                $ref: "#/components/schemas/SysFile"
         required: true
       responses:
         "200":
@@ -2340,13 +2932,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-item:
+  /api/admin/dict-type:
     post:
       tags:
         - 字典管理
@@ -2357,7 +2955,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SysDictItem"
+              $ref: "#/components/schemas/SysDictType"
         required: true
       responses:
         "200":
@@ -2366,6 +2964,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -2393,13 +2997,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-item/page:
+  /api/admin/dict-type/page:
     post:
       tags:
         - 字典管理
@@ -2440,14 +3050,20 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultPageSysDictItem"
+                $ref: "#/components/schemas/ApiResultPageSysDictType"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-item/list:
+  /api/admin/dict-type/list:
     post:
       tags:
         - 字典管理
@@ -2488,14 +3104,20 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultListSysDictItem"
+                $ref: "#/components/schemas/ApiResultListSysDictType"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-item/export:
+  /api/admin/dict-type/export:
     get:
       tags:
         - 字典管理
@@ -2512,6 +3134,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -2556,13 +3184,19 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dict-item/batch:
+  /api/admin/dict-type/batch:
     post:
       tags:
         - 字典管理
@@ -2575,7 +3209,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/SysDictItem"
+                $ref: "#/components/schemas/SysDictType"
         required: true
       responses:
         "200":
@@ -2584,16 +3218,22 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dept:
+  /api/admin/dict-item:
     post:
       tags:
-        - 部门管理
+        - 字典管理
       summary: Create
       description: Create entity.
       operationId: create_7
@@ -2601,7 +3241,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SysDept"
+              $ref: "#/components/schemas/SysDictItem"
         required: true
       responses:
         "200":
@@ -2610,6 +3250,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -2618,7 +3264,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - 部门管理
+        - 字典管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_7
@@ -2637,16 +3283,22 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dept/page:
+  /api/admin/dict-item/page:
     post:
       tags:
-        - 部门管理
+        - 字典管理
       summary: Page Query
       description: Paged query with optional search parameters.
       operationId: page_8
@@ -2684,17 +3336,23 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultPageSysDept"
+                $ref: "#/components/schemas/ApiResultPageSysDictItem"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dept/list:
+  /api/admin/dict-item/list:
     post:
       tags:
-        - 部门管理
+        - 字典管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_7
@@ -2732,17 +3390,23 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultListSysDept"
+                $ref: "#/components/schemas/ApiResultListSysDictItem"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dept/export:
+  /api/admin/dict-item/export:
     get:
       tags:
-        - 部门管理
+        - 字典管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2756,6 +3420,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -2764,7 +3434,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - 部门管理
+        - 字典管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -2800,16 +3470,22 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/dept/batch:
+  /api/admin/dict-item/batch:
     post:
       tags:
-        - 部门管理
+        - 字典管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_7
@@ -2819,7 +3495,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/SysDept"
+                $ref: "#/components/schemas/SysDictItem"
         required: true
       responses:
         "200":
@@ -2828,29 +3504,8 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/auth/reset-password:
-    post:
-      tags:
-        - 系统管理
-        - 认证管理
-      summary: Reset Password
-      description: Reset password using token received via email.
-      operationId: resetPassword
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ResetPasswordReq"
-        required: true
-      responses:
-        "200":
-          description: OK
+        "401":
+          description: Unauthorized
           content:
             "*/*":
               schema:
@@ -2861,133 +3516,10 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/auth/refresh:
+  /api/admin/dept:
     post:
       tags:
-        - 系统管理
-        - 认证管理
-      summary: Refresh Token
-      description: Refresh the current JWT token.
-      operationId: refresh
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/auth/logout:
-    post:
-      tags:
-        - 系统管理
-        - 认证管理
-      summary: User Logout
-      description: Invalidate JWT token and clear cookie.
-      operationId: logout
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/auth/login:
-    post:
-      tags:
-        - 系统管理
-        - 认证管理
-      summary: User Login
-      description: Authenticate user and return JWT token. Sets HTTP-only cookie.
-      operationId: login
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginReq"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultLoginResp"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/auth/forget-password:
-    post:
-      tags:
-        - 系统管理
-        - 认证管理
-      summary: Forget Password
-      description: Send password reset email to the registered email address.
-      operationId: forgetPassword
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ForgetPasswordReq"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/auth/admin/reset-password:
-    post:
-      tags:
-        - 系统管理
-        - 认证管理
-      summary: Super/Admin Reset User Password
-      description: Super/Admin can reset any user's password by user ID.
-      operationId: adminResetPassword
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AdminResetPasswordReq"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/api-key:
-    post:
-      tags:
-        - apiKey管理
+        - 部门管理
       summary: Create
       description: Create entity.
       operationId: create_8
@@ -2995,7 +3527,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AiApiKey"
+              $ref: "#/components/schemas/SysDept"
         required: true
       responses:
         "200":
@@ -3004,6 +3536,12 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -3012,7 +3550,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     delete:
       tags:
-        - apiKey管理
+        - 部门管理
       summary: Batch Delete
       description: Delete entities by IDs.
       operationId: removeBatch_8
@@ -3031,16 +3569,22 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/api-key/page:
+  /api/admin/dept/page:
     post:
       tags:
-        - apiKey管理
+        - 部门管理
       summary: Page Query
       description: Paged query with optional search parameters.
       operationId: page_9
@@ -3078,17 +3622,23 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultPageAiApiKey"
+                $ref: "#/components/schemas/ApiResultPageSysDept"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/api-key/list:
+  /api/admin/dept/list:
     post:
       tags:
-        - apiKey管理
+        - 部门管理
       summary: List Query
       description: List all entities matching criteria.
       operationId: list_8
@@ -3126,17 +3676,23 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultListAiApiKey"
+                $ref: "#/components/schemas/ApiResultListSysDept"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/api-key/export:
+  /api/admin/dept/export:
     get:
       tags:
-        - apiKey管理
+        - 部门管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -3150,6 +3706,12 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -3158,7 +3720,7 @@ paths:
                 $ref: "#/components/schemas/ApiResultString"
     post:
       tags:
-        - apiKey管理
+        - 部门管理
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
@@ -3194,19 +3756,503 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/api-key/batch:
+  /api/admin/dept/batch:
+    post:
+      tags:
+        - 部门管理
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysDept"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/auth/reset-password:
+    post:
+      tags:
+        - 系统管理
+        - 认证管理
+        - 5. 重置密码
+      summary: Reset Password
+      description: Reset password using token received via email.
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordReq"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/auth/refresh:
+    post:
+      tags:
+        - 系统管理
+        - 认证管理
+        - 3. 刷新token
+      summary: Refresh Token
+      description: Refresh the current JWT token.
+      operationId: refresh
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/auth/logout:
+    post:
+      tags:
+        - 系统管理
+        - 认证管理
+        - 2. 用户登出
+      summary: User Logout
+      description: Invalidate JWT token and clear cookie.
+      operationId: logout
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/auth/login:
+    post:
+      tags:
+        - 系统管理
+        - 认证管理
+        - 1. 用户登录
+      summary: User Login
+      description: Authenticate user and return JWT token. Sets HTTP-only cookie.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginReq"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultLoginResp"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/auth/forget-password:
+    post:
+      tags:
+        - 系统管理
+        - 认证管理
+        - 4. 忘记密码
+      summary: Forget Password
+      description: Send password reset email to the registered email address.
+      operationId: forgetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgetPasswordReq"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/auth/admin/reset-password:
+    post:
+      tags:
+        - 6. 管理员重置密码
+        - 系统管理
+        - 认证管理
+      summary: Super/Admin Reset User Password
+      description: Super/Admin can reset any user's password by user ID.
+      operationId: adminResetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminResetPasswordReq"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/api-key:
+    post:
+      tags:
+        - apiKey管理
+      summary: Create
+      description: Create entity.
+      operationId: create_9
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiApiKey"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - apiKey管理
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_9
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/api-key/page:
+    post:
+      tags:
+        - apiKey管理
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_10
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageAiApiKey"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/api-key/list:
+    post:
+      tags:
+        - apiKey管理
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_9
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListAiApiKey"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/api-key/export:
+    get:
+      tags:
+        - apiKey管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_9
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - apiKey管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_9
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/api-key/batch:
     post:
       tags:
         - apiKey管理
       summary: Batch Create
       description: Batch insert entities.
-      operationId: saveBatch_8
+      operationId: saveBatch_9
       requestBody:
         content:
           application/json:
@@ -3222,13 +4268,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/user/info:
+  /api/admin/user/info:
     get:
       tags:
         - 用户管理
@@ -3242,13 +4294,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultMapStringObject"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu/path-exists:
+  /api/admin/menu/path-exists:
     get:
       tags:
         - 菜单管理
@@ -3273,13 +4331,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu/name-exists:
+  /api/admin/menu/name-exists:
     get:
       tags:
         - 菜单管理
@@ -3304,13 +4368,19 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/menu/all:
+  /api/admin/menu/all:
     get:
       tags:
         - 菜单管理
@@ -3324,17 +4394,69 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListVueRoute"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/auth/codes:
+  /api/admin/file/{id}/access-url:
+    get:
+      tags:
+        - 文件管理
+      summary: 获取文件访问地址
+      description: 生成文件的预签名访问 URL
+      operationId: accessUrl
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ttlSeconds
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 600
+        - name: attachment
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultFileAccessDescriptor"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/auth/codes:
     get:
       tags:
         - 系统管理
         - 认证管理
+        - 7. 获取权限码
       summary: Get User Permission Codes
       description: Fetch permission codes for the current user.
       operationId: getCodes
@@ -3345,6 +4467,38 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/api-key/orphaned-users:
+    get:
+      tags:
+        - apiKey管理
+      summary: 查询孤儿Key
+      description: 获取 user_id 不在 sys_user 表中的 API Key 列表
+      operationId: getOrphanedUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysUser"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
         "403":
           description: Forbidden
           content:
@@ -3415,6 +4569,73 @@ components:
           type: string
           example: 0
           title: 父级ID
+    SysFile:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        tenantId:
+          type: string
+        projectId:
+          type: string
+        bizType:
+          type: string
+        bizId:
+          type: string
+        fileName:
+          type: string
+        fileExt:
+          type: string
+        mimeType:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+        fileHash:
+          type: string
+        storageType:
+          type: string
+        bucketName:
+          type: string
+        objectKey:
+          type: string
+        aiStatus:
+          type: string
+        aiParseStatus:
+          type: string
+        aiEmbedStatus:
+          type: string
+        chunkCount:
+          type: integer
+          format: int32
+        tokenEstimate:
+          type: integer
+          format: int32
+        embeddingModel:
+          type: string
     SysMenu:
       type: object
       properties:
@@ -3589,8 +4810,9 @@ components:
           writeOnly: true
         realName:
           type: string
-        avatar:
+        profileFileId:
           type: string
+          description: 头像文件ID，对应 sys_file.id
         email:
           type: string
         phone:
@@ -3615,6 +4837,8 @@ components:
           items:
             $ref: "#/components/schemas/SysRole"
           readOnly: true
+        profileFile:
+          $ref: "#/components/schemas/SysFile"
     ApiResultBoolean:
       type: object
       properties:
@@ -3812,6 +5036,8 @@ components:
           type: string
         apiKey:
           type: string
+          readOnly: true
+          title: ai访问密钥
         userId:
           type: string
         status:
@@ -4240,6 +5466,120 @@ components:
             $ref: "#/components/schemas/SysMenu"
         error:
           type: string
+    ApiResultFileObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/FileObject"
+        error:
+          type: string
+    FileLocation:
+      type: object
+      properties:
+        storageType:
+          type: string
+          enum:
+            - MINIO
+            - LOCAL
+            - S3
+            - ALI_OSS
+        bucket:
+          type: string
+        objectKey:
+          type: string
+        region:
+          type: string
+        endpoint:
+          type: string
+    FileObject:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        projectId:
+          type: string
+        bizType:
+          type: string
+        bizId:
+          type: string
+        fileName:
+          type: string
+        fileExt:
+          type: string
+        mimeType:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+        fileHash:
+          type: string
+        location:
+          $ref: "#/components/schemas/FileLocation"
+        aiStatus:
+          type: string
+        chunkCount:
+          type: integer
+          format: int32
+        tokenEstimate:
+          type: integer
+          format: int32
+        embeddingModel:
+          type: string
+    ApiResultPageSysFile:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSysFile"
+        error:
+          type: string
+    PageSysFile:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysFile"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSysFile:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysFile"
+        error:
+          type: string
     ApiResultPageSysDictType:
       type: object
       properties:
@@ -4663,6 +6003,42 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/VueRoute"
+    ApiResultSysFile:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysFile"
+        error:
+          type: string
+    ApiResultFileAccessDescriptor:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/FileAccessDescriptor"
+        error:
+          type: string
+    FileAccessDescriptor:
+      type: object
+      properties:
+        url:
+          type: string
+        expireAt:
+          type: string
+          format: date-time
+        disposition:
+          type: string
+        token:
+          type: string
     ApiResultSysDictType:
       type: object
       properties:
@@ -4726,8 +6102,7 @@ components:
         error:
           type: string
 x-tagGroups:
-  - name: 系统管理
-    tags:
+  - tags:
       - 认证管理
       - 用户管理
       - 部门管理
@@ -4735,7 +6110,9 @@ x-tagGroups:
       - 菜单管理
       - 字典管理
       - 权限管理
-  - name: 运维管理
-    tags:
+    name: 系统管理
+  - tags:
       - 操作日志
       - apiKey管理
+      - 文件管理
+    name: 运维管理
