@@ -105,7 +105,7 @@ const gridOptions: VxeGridProps = {
       },
     },
     {
-      field: 'createTime',
+      field: 'lastModifyTime',
       title: '上传时间',
       width: 180,
       formatter: ({ cellValue }) =>
@@ -356,17 +356,17 @@ async function handleFileSelect(e: Event) {
               class="w-64"
               @press-enter="handleSearch"
             />
-            <Button type="primary" @click="handleSearch">
-              <template #icon>
-                <IconifyIcon icon="ant-design:search-outlined" />
-              </template>
-              搜索
-            </Button>
             <Button @click="handleReset">
               <template #icon>
                 <IconifyIcon icon="ant-design:reload-outlined" />
               </template>
               重置
+            </Button>
+            <Button type="primary" @click="handleSearch">
+              <template #icon>
+                <IconifyIcon icon="ant-design:search-outlined" />
+              </template>
+              搜索
             </Button>
           </div>
           <div class="flex items-center gap-2">

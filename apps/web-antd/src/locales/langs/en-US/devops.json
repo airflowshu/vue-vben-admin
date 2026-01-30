@@ -12,5 +12,8 @@
   },
   "file": {
     "title": "fileManagement"
+  },
+  "config": {
+    "title": "System Config"
   }
 }
