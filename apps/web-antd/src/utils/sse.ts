@@ -6,7 +6,7 @@
 /**
  * 解析 SSE 事件数据
  */
-function parseSSEEvent(data: string): { event: string; data: string } | null {
+function parseSSEEvent(data: string): null | { data: string; event: string } {
   const lines = data.split('\n');
   let event = '';
   let eventData = '';
@@ -28,6 +28,7 @@ function parseSSEEvent(data: string): { event: string; data: string } | null {
  */
 interface SSEConfig {
   url: string;
+  body?: Record<string, any>;
   headers?: Record<string, string>;
   onOpen?: () => void;
   onMessage: (data: string, event: string) => void;
@@ -41,26 +42,37 @@ interface SSEConfig {
  * @returns AbortController 用于取消连接
  */
 export function createSSEConnection(config: SSEConfig): AbortController {
-  const { url, headers = {}, onOpen, onMessage, onError, onComplete } = config;
+  const {
+    url,
+    body,
+    headers = {},
+    onOpen,
+    onMessage,
+    onError,
+    onComplete,
+  } = config;
 
   const abortController = new AbortController();
 
   const runSSE = async () => {
     try {
       const response = await fetch(url, {
-        method: 'GET',
+        method: 'POST',
         headers: {
           Accept: 'text/event-stream',
+          'Content-Type': 'application/json',
           ...headers,
         },
+        body: body ? JSON.stringify(body) : undefined,
         signal: abortController.signal,
       });
 
       // 如果状态码不是 2xx，尝试读取错误响应体
       if (!response.ok) {
         let errorMessage = `HTTP error! status: ${response.status}`;
+        let errorText = '';
         try {
-          const errorText = await response.text();
+          errorText = await response.text();
           // 尝试解析 JSON 错误响应
           const errorData = JSON.parse(errorText);
           errorMessage = errorData.message || errorData.error || errorMessage;
@@ -128,6 +140,7 @@ export function createSimpleSSE(
 ): EventSource {
   const eventSource = new EventSource(url);
 
+  // eslint-disable-next-line unicorn/prefer-add-event-listener
   eventSource.onmessage = (event) => {
     if (event.data) {
       onMessage(event.data);

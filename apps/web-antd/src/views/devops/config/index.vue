@@ -6,10 +6,12 @@ import type { SysConfig } from '#/api/devops/sysconfig';
 
 import { ref } from 'vue';
 
+import {AccessControl} from "@vben/access";
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
 import { Button, message, Modal, Popconfirm, Tag } from 'ant-design-vue';
+import dayjs from "dayjs";
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -22,7 +24,6 @@ import { $t } from '#/locales';
 import CreateConfigModal from './create-config-modal.vue';
 import DetailDrawer from './detail-drawer.vue';
 import EditConfigModal from './edit-config-modal.vue';
-import dayjs from "dayjs";
 
 const [DetailModal, detailApi] = useVbenDrawer({
   connectedComponent: DetailDrawer,
@@ -272,42 +273,46 @@ const [Grid, gridApi] = useVbenVxeGrid({
       </template>
 
       <template #action="{ row }">
-        <Button type="link" size="small" @click.stop="() => handleEdit(row)">
-          编辑
-        </Button>
-        <Popconfirm
-          title="确定要切换状态吗？"
-          @confirm="handleStatusChange(row)"
-        >
-          <Tag
-            :color="row.statusStr === '启用' ? 'warning' : 'processing'"
-            class="cursor-pointer hover:opacity-80"
-            @click.stop
+        <AccessControl :codes="['super']" type="role">
+          <Button type="link" size="small" @click.stop="() => handleEdit(row)">
+            编辑
+          </Button>
+          <Popconfirm
+            title="确定要切换状态吗？"
+            @confirm="handleStatusChange(row)"
           >
-            <template #icon>
-              <IconifyIcon
-                :icon="
-                  row.statusStr === '启用'
-                    ? 'ant-design:close-circle'
-                    : 'ant-design:check-circle'
-                "
-              />
-            </template>
-            {{ row.statusStr === '启用' ? '禁用' : '启用' }}
-          </Tag>
-        </Popconfirm>
-        <Button
-          type="link"
-          size="small"
-          danger
-          @click.stop="() => handleDelete(row)"
-        >
-          删除
-        </Button>
+            <Tag
+              :color="row.statusStr === '启用' ? 'warning' : 'processing'"
+              class="cursor-pointer hover:opacity-80"
+              @click.stop
+            >
+              <template #icon>
+                <IconifyIcon
+                  :icon="
+                    row.statusStr === '启用'
+                      ? 'ant-design:close-circle'
+                      : 'ant-design:check-circle'
+                  "
+                />
+              </template>
+              {{ row.statusStr === '启用' ? '禁用' : '启用' }}
+            </Tag>
+          </Popconfirm>
+          <Button
+            type="link"
+            size="small"
+            danger
+            @click.stop="() => handleDelete(row)"
+          >
+            删除
+          </Button>
+        </AccessControl>
       </template>
 
       <template #toolbar-tools>
-        <Button type="primary" @click="createApi.open()"> 新增配置 </Button>
+        <AccessControl :codes="['super']" type="role">
+          <Button type="primary" @click="createApi.open()"> 新增配置 </Button>
+        </AccessControl>
       </template>
     </Grid>
     <DetailModal />

@@ -3,7 +3,7 @@ import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 
 import { useUserStore } from '@vben/stores';
 
-import { Button, Input, Spin, Tooltip, message } from 'ant-design-vue';
+import { Button, Input, message, Spin, Tooltip } from 'ant-design-vue';
 
 import { createSSEConnection } from '#/utils/sse';
 
@@ -108,28 +108,49 @@ const sendMessage = async () => {
   closeEventSource();
 
   // 创建SSE连接（使用 fetch 实现，支持自定义请求头）
-  const url = `/api/ai/sse/time`;
+  const url = `/api/ai/rag/chat/stream`;
   const aiMessageId = loadingMessage.id;
 
   abortController = createSSEConnection({
     url,
+    body: {
+      query: trimmedValue,
+      stream: true,
+    },
     onOpen: () => {
       console.warn('SSE连接已建立');
     },
-    onMessage: (data, event) => {
+    onMessage: (data) => {
       try {
-        // 处理错误事件
-        if (event === 'error' || data.startsWith('{')) {
+        // 处理 OpenAI 格式的 SSE 数据
+        if (data.startsWith('{')) {
           try {
-            const errorData = JSON.parse(data);
-            const errorMsg = errorData.message || errorData.error || '请求失败';
-            message.error(errorMsg);
-            stopStreaming();
+            const chunkData = JSON.parse(data);
+
+            // 检查是否是错误响应
+            if (chunkData.error) {
+              message.error(chunkData.error.message || '请求失败');
+              stopStreaming();
+              return;
+            }
+
+            // 提取流式内容 (OpenAI 格式)
+            const content = chunkData?.choices?.[0]?.delta?.content;
+            if (content) {
+              handleSSEResponse(content, aiMessageId);
+            }
+
+            // 检查是否结束
+            const finishReason = chunkData?.choices?.[0]?.finish_reason;
+            if (finishReason) {
+              stopStreaming();
+            }
             return;
           } catch {
-            // 解析失败，继续作为普通消息处理
+            // 解析失败，忽略
           }
         }
+        // 处理普通文本数据
         if (data) {
           handleSSEResponse(data, aiMessageId);
         }
@@ -195,13 +216,11 @@ const clearChat = () => {
 // 上传文件
 const handleUpload = () => {
   // TODO: 实现文件上传功能
-  console.log('上传文件');
 };
 
 // 生成图片
 const handleGenerateImage = () => {
   // TODO: 实现生成图片功能
-  console.log('生成图片');
 };
 
 // 组件卸载时关闭连接

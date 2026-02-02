@@ -80,6 +80,26 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     }),
   );
 
+  // 401错误处理：优先显示后端返回的错误信息
+  client.addResponseInterceptor({
+    fulfilled: (response) => response,
+    rejected: async (error) => {
+      const { response } = error;
+      if (response?.status === 401) {
+        // 401未认证错误，优先显示后端返回的错误信息
+        const responseData = response?.data ?? {};
+        const errorMessage =
+          responseData?.message ??
+          responseData?.error ??
+          '未认证或令牌无效/过期';
+        message.error(errorMessage);
+        // 阻止错误继续传递到后续的错误处理器
+        return { data: responseData };
+      }
+      throw error;
+    },
+  });
+
   // token过期的处理
   client.addResponseInterceptor(
     authenticateResponseInterceptor({
