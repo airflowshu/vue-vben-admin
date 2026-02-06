@@ -65,6 +65,8 @@
   "devDependencies": {
     "@changesets/changelog-github": "catalog:",
     "@changesets/cli": "catalog:",
+    "@iconify-json/lucide": "^1.2.88",
+    "@iconify-json/mdi": "^1.2.3",
     "@playwright/test": "catalog:",
     "@types/node": "catalog:",
     "@vben/commitlint-config": "workspace:*",
@@ -120,5 +122,8 @@
       "canvas",
       "node-gyp"
     ]
+  },
+  "dependencies": {
+    "ant-design-vue": "catalog:"
   }
 }

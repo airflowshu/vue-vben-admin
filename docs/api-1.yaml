@@ -13,6 +13,8 @@ tags:
     description: SysRole - 角色管理
   - name: apiKey管理
     description: AiApiKey - key管理
+  - name: 知识库管理
+    description: 知识库 - 成员/文件/目录
   - name: 操作日志
     description: SysOperLog - 用户操作日志记录
   - name: 文件管理
@@ -534,13 +536,189 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/tree/nodes/{nodeId}/rename:
+    put:
+      tags:
+        - 知识库管理
+      summary: 重命名文件/目录
+      operationId: renameNode
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RenameRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/tree/nodes/move:
+    put:
+      tags:
+        - 知识库管理
+      summary: 移动文件/目录
+      operationId: moveNodes
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MoveRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{id}:
+    get:
+      tags:
+        - 知识库管理
+      summary: 知识库详情
+      operationId: get_5
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysKnowledgeBase"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 知识库管理
+      summary: 更新知识库
+      operationId: update_5
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysKnowledgeBase"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 知识库管理
+      summary: 删除知识库
+      operationId: delete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/admin/file/{id}:
     get:
       tags:
         - 文件管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_5
+      operationId: get_6
       parameters:
         - name: id
           in: path
@@ -571,7 +749,7 @@ paths:
         - 文件管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_5
+      operationId: update_6
       parameters:
         - name: id
           in: path
@@ -640,7 +818,7 @@ paths:
         - 字典管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_6
+      operationId: get_7
       parameters:
         - name: id
           in: path
@@ -671,7 +849,7 @@ paths:
         - 字典管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_6
+      operationId: update_7
       parameters:
         - name: id
           in: path
@@ -740,7 +918,7 @@ paths:
         - 字典管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_7
+      operationId: get_8
       parameters:
         - name: id
           in: path
@@ -771,7 +949,7 @@ paths:
         - 字典管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_7
+      operationId: update_8
       parameters:
         - name: id
           in: path
@@ -840,7 +1018,7 @@ paths:
         - 部门管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_8
+      operationId: get_9
       parameters:
         - name: id
           in: path
@@ -871,7 +1049,7 @@ paths:
         - 部门管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_8
+      operationId: update_9
       parameters:
         - name: id
           in: path
@@ -940,7 +1118,7 @@ paths:
         - 系统配置
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_9
+      operationId: get_10
       parameters:
         - name: id
           in: path
@@ -971,7 +1149,7 @@ paths:
         - 系统配置
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_9
+      operationId: update_10
       parameters:
         - name: id
           in: path
@@ -1040,7 +1218,7 @@ paths:
         - apiKey管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_10
+      operationId: get_11
       parameters:
         - name: id
           in: path
@@ -1071,7 +1249,7 @@ paths:
         - apiKey管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_10
+      operationId: update_11
       parameters:
         - name: id
           in: path
@@ -2696,13 +2874,327 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb:
+    post:
+      tags:
+        - 知识库管理
+      summary: 创建知识库
+      operationId: create_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysKnowledgeBase"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/tree/folders:
+    post:
+      tags:
+        - 知识库管理
+      summary: 创建目录
+      operationId: createFolder
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFolderRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/members:
+    get:
+      tags:
+        - 知识库管理
+      summary: 列出知识库成员
+      operationId: listMembers
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysKbMember"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - 知识库管理
+      summary: 添加知识库成员
+      operationId: addMembers
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 知识库管理
+      summary: 移除知识库成员
+      operationId: removeMembers
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/index:
+    post:
+      tags:
+        - 知识库管理
+      summary: 手动触发知识库索引
+      operationId: index
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultInteger"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/files/upload:
+    post:
+      tags:
+        - 知识库管理
+      summary: 批量上传文件到知识库
+      operationId: uploadFiles
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: files
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/page:
+    post:
+      tags:
+        - 知识库管理
+      summary: 知识库分页
+      operationId: page_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultObject"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/list:
+    post:
+      tags:
+        - 知识库管理
+      summary: 知识库列表
+      operationId: list_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysKnowledgeBase"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/admin/file:
     post:
       tags:
         - 文件管理
       summary: Create
       description: Create entity.
-      operationId: create_5
+      operationId: create_6
       requestBody:
         content:
           application/json:
@@ -2776,12 +3268,6 @@ paths:
           schema:
             type: string
             default: "1"
-        - name: projectId
-          in: query
-          description: 项目ID
-          required: false
-          schema:
-            type: string
         - name: bizType
           in: query
           description: 业务类型，传入 `sys_user_avatar` 时文件会上传到公有库，其他值存入私有库
@@ -2826,7 +3312,7 @@ paths:
         - 文件管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_6
+      operationId: page_7
       requestBody:
         description: Search parameters
         content:
@@ -2880,7 +3366,7 @@ paths:
         - 文件管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_5
+      operationId: list_6
       requestBody:
         description: Search parameters
         content:
@@ -3047,7 +3533,7 @@ paths:
         - 字典管理
       summary: Create
       description: Create entity.
-      operationId: create_6
+      operationId: create_7
       requestBody:
         content:
           application/json:
@@ -3112,7 +3598,7 @@ paths:
         - 字典管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_7
+      operationId: page_8
       requestBody:
         description: Search parameters
         content:
@@ -3166,7 +3652,7 @@ paths:
         - 字典管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_6
+      operationId: list_7
       requestBody:
         description: Search parameters
         content:
@@ -3333,7 +3819,7 @@ paths:
         - 字典管理
       summary: Create
       description: Create entity.
-      operationId: create_7
+      operationId: create_8
       requestBody:
         content:
           application/json:
@@ -3398,7 +3884,7 @@ paths:
         - 字典管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_8
+      operationId: page_9
       requestBody:
         description: Search parameters
         content:
@@ -3452,7 +3938,7 @@ paths:
         - 字典管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_7
+      operationId: list_8
       requestBody:
         description: Search parameters
         content:
@@ -3619,7 +4105,7 @@ paths:
         - 部门管理
       summary: Create
       description: Create entity.
-      operationId: create_8
+      operationId: create_9
       requestBody:
         content:
           application/json:
@@ -3684,7 +4170,7 @@ paths:
         - 部门管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_9
+      operationId: page_10
       requestBody:
         description: Search parameters
         content:
@@ -3738,7 +4224,7 @@ paths:
         - 部门管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_8
+      operationId: list_9
       requestBody:
         description: Search parameters
         content:
@@ -3905,7 +4391,7 @@ paths:
         - 系统配置
       summary: Create
       description: Create entity.
-      operationId: create_9
+      operationId: create_10
       requestBody:
         content:
           application/json:
@@ -4004,7 +4490,7 @@ paths:
         - 系统配置
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_10
+      operationId: page_11
       requestBody:
         description: Search parameters
         content:
@@ -4058,7 +4544,7 @@ paths:
         - 系统配置
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_9
+      operationId: list_10
       requestBody:
         description: Search parameters
         content:
@@ -4417,7 +4903,7 @@ paths:
         - apiKey管理
       summary: Create
       description: Create entity.
-      operationId: create_10
+      operationId: create_11
       requestBody:
         content:
           application/json:
@@ -4482,7 +4968,7 @@ paths:
         - apiKey管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_11
+      operationId: page_12
       requestBody:
         description: Search parameters
         content:
@@ -4536,7 +5022,7 @@ paths:
         - apiKey管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_10
+      operationId: list_11
       requestBody:
         description: Search parameters
         content:
@@ -4823,6 +5309,109 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/tree:
+    get:
+      tags:
+        - 知识库管理
+      summary: 获取知识库目录树
+      operationId: getTree
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListKbFileTree"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/tree/children:
+    get:
+      tags:
+        - 知识库管理
+      summary: 获取目录下子节点
+      operationId: getChildren
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: parentId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListKbFileTree"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/file-list:
+    get:
+      tags:
+        - 知识库管理
+      summary: 获取知识库文件列表
+      operationId: listFiles
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: parentId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListKbFileTree"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/admin/file/{id}/access-url:
     get:
       tags:
@@ -4888,6 +5477,43 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/config/value/{configKey}/{configType}:
+    get:
+      tags:
+        - 系统配置
+      summary: 根据键和类型获取配置值
+      description: 根据配置键和类型获取配置值，支持STRING/NUMBER/BOOLEAN/JSON类型转换
+      operationId: getConfigValueAs
+      parameters:
+        - name: configKey
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: configType
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultObject"
         "401":
           description: Unauthorized
           content:
@@ -4974,6 +5600,42 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListSysUser"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/tree/nodes/{nodeId}:
+    delete:
+      tags:
+        - 知识库管理
+      summary: 删除目录或文件节点
+      operationId: deleteNode
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
         "401":
           description: Unauthorized
           content:
@@ -5079,8 +5741,6 @@ components:
           type: string
           title: 备注
         tenantId:
-          type: string
-        projectId:
           type: string
         bizType:
           type: string
@@ -5398,6 +6058,64 @@ components:
           type: string
         menuId:
           type: string
+    RenameRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    MoveRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        targetParentId:
+          type: string
+    SysKnowledgeBase:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        name:
+          type: string
+          title: 名称
+        description:
+          type: string
+          title: 描述
+        type:
+          type: string
+          title: "类型: public/team/private"
+        ownerId:
+          type: string
+          title: 创建者用户ID
+        status:
+          type: integer
+          format: int32
+          title: 状态
     SysDictItem:
       type: object
       properties:
@@ -5523,7 +6241,7 @@ components:
           example: FlexBoot4
         configType:
           type: string
-          description: "配置类型: STRING/NUMBER/BOOLEAN/JSON"
+          description: "配置类型: STRING/NUMBER/BOOLEAN/JSON/ARRAY"
           example: STRING
         description:
           type: string
@@ -5997,6 +6715,65 @@ components:
             $ref: "#/components/schemas/SysMenu"
         error:
           type: string
+    CreateFolderRequest:
+      type: object
+      properties:
+        parentId:
+          type: string
+        name:
+          type: string
+    ApiResultInteger:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: integer
+          format: int32
+        error:
+          type: string
+    ApiResultListString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+        error:
+          type: string
+    ApiResultObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data: {}
+        error:
+          type: string
+    ApiResultListSysKnowledgeBase:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysKnowledgeBase"
+        error:
+          type: string
     ApiResultFileObject:
       type: object
       properties:
@@ -6033,8 +6810,6 @@ components:
         id:
           type: string
         tenantId:
-          type: string
-        projectId:
           type: string
         bizType:
           type: string
@@ -6596,6 +7371,127 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/VueRoute"
+    ApiResultListKbFileTree:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/KbFileTree"
+        error:
+          type: string
+    KbFileTree:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        kbId:
+          type: string
+          title: 知识库ID
+        parentId:
+          type: string
+          title: 父目录ID（null=根目录）
+        name:
+          type: string
+          title: 节点名称
+        type:
+          type: string
+          title: "类型: FOLDER=目录, FILE=文件"
+        fileId:
+          type: string
+          title: 关联的文件ID（type=FILE时）
+        sortOrder:
+          type: integer
+          format: int32
+          title: 排序顺序
+    ApiResultListSysKbMember:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysKbMember"
+        error:
+          type: string
+    SysKbMember:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        kbId:
+          type: string
+          title: 知识库ID
+        userId:
+          type: string
+          title: 用户ID
+    ApiResultSysKnowledgeBase:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysKnowledgeBase"
+        error:
+          type: string
     ApiResultSysFile:
       type: object
       properties:
@@ -6680,20 +7576,6 @@ components:
           $ref: "#/components/schemas/SysConfig"
         error:
           type: string
-    ApiResultListString:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            type: string
-        error:
-          type: string
     ApiResultAiApiKey:
       type: object
       properties:
@@ -6721,3 +7603,6 @@ x-tagGroups:
       - 操作日志
       - apiKey管理
       - 文件管理
+  - name: 知识库
+    tags:
+      - 知识库管理

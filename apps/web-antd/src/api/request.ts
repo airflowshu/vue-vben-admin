@@ -32,6 +32,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
    */
   async function doReAuthenticate() {
     console.warn('Access token or refresh token is invalid or expired. ');
+    message.warning('登录已过期，请重新登录');
     const accessStore = useAccessStore();
     const authStore = useAuthStore();
     accessStore.setAccessToken(null);
@@ -80,26 +81,6 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     }),
   );
 
-  // 401错误处理：优先显示后端返回的错误信息
-  client.addResponseInterceptor({
-    fulfilled: (response) => response,
-    rejected: async (error) => {
-      const { response } = error;
-      if (response?.status === 401) {
-        // 401未认证错误，优先显示后端返回的错误信息
-        const responseData = response?.data ?? {};
-        const errorMessage =
-          responseData?.message ??
-          responseData?.error ??
-          '未认证或令牌无效/过期';
-        message.error(errorMessage);
-        // 阻止错误继续传递到后续的错误处理器
-        return { data: responseData };
-      }
-      throw error;
-    },
-  });
-
   // token过期的处理
   client.addResponseInterceptor(
     authenticateResponseInterceptor({
@@ -114,6 +95,10 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
+      // 401错误由 authenticateResponseInterceptor 处理，这里不再重复提示
+      if (error?.response?.status === 401) {
+        return;
+      }
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
       // 当前mock接口返回的错误字段是 error 或者 message
       const responseData = error?.response?.data ?? {};

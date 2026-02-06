@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 
-import { useUserStore } from '@vben/stores';
+import { Button, Dropdown, Input, Menu, MenuItem, message, Spin, Tooltip } from 'ant-design-vue';
 
-import { Button, Input, message, Spin, Tooltip } from 'ant-design-vue';
+import { requestClient } from '#/api/request';
 
 import { createSSEConnection } from '#/utils/sse';
 
@@ -15,7 +15,10 @@ interface ChatMessage {
   isStreaming?: boolean;
 }
 
-const userStore = useUserStore();
+interface KnowledgeBase {
+  id: string;
+  name: string;
+}
 
 const messages = ref<ChatMessage[]>([]);
 const inputValue = ref('');
@@ -24,6 +27,41 @@ const isStreaming = ref(false);
 const chatContainerRef = ref<HTMLElement | null>(null);
 const inputRef = ref<any>(null);
 let abortController: AbortController | null = null;
+
+// 知识库相关
+const knowledgeBaseList = ref<KnowledgeBase[]>([]);
+const selectedKbId = ref<string | null>(null);
+const selectedKbName = ref<string>('选择知识库');
+const kbDropdownOpen = ref(false);
+
+// 获取知识库列表
+const fetchKnowledgeBases = async () => {
+  try {
+    const res = await requestClient.post('/admin/kb/list', {
+      pageNumber: 1,
+      pageSize: 100,
+    });
+    // 处理返回数据：可能是 {code: 0, data: [...]} 或直接 [...]
+    const list = res.data || res;
+    if (Array.isArray(list)) {
+      knowledgeBaseList.value = list;
+    }
+  } catch (error) {
+    console.error('获取知识库列表失败:', error);
+  }
+};
+
+// 选择知识库
+const selectKnowledgeBase = (kb: KnowledgeBase) => {
+  selectedKbId.value = kb.id;
+  selectedKbName.value = kb.name;
+  kbDropdownOpen.value = false;
+};
+
+// 鼠标进入下拉菜单
+const handleDropdownOpenChange = (open: boolean) => {
+  kbDropdownOpen.value = open;
+};
 
 // 生成唯一ID
 const generateId = () =>
@@ -57,6 +95,8 @@ const stopStreaming = () => {
       msg.isStreaming = false;
     }
   });
+  // 清空输入框
+  inputValue.value = '';
 };
 
 // 处理SSE响应
@@ -83,6 +123,12 @@ const sendMessage = async () => {
 
   const trimmedValue = inputValue.value.trim();
   if (!trimmedValue || isLoading.value) return;
+
+  // 检查是否选择了知识库
+  if (!selectedKbId.value) {
+    message.warning('请先选择知识库');
+    return;
+  }
 
   const userMessage: ChatMessage = {
     id: generateId(),
@@ -116,6 +162,7 @@ const sendMessage = async () => {
     body: {
       query: trimmedValue,
       stream: true,
+      kbId: selectedKbId.value,
     },
     onOpen: () => {
       console.warn('SSE连接已建立');
@@ -229,10 +276,11 @@ onUnmounted(() => {
 });
 
 // 初始聚焦输入框
-onMounted(() => {
-  nextTick(() => {
-    inputRef.value?.focus();
-  });
+onMounted(async () => {
+  await nextTick();
+  inputRef.value?.focus();
+  // 初始化加载知识库列表
+  fetchKnowledgeBases();
 });
 </script>
 
@@ -243,6 +291,9 @@ onMounted(() => {
       <div class="header-title">
         <span class="ai-icon">&#x2728;</span>
         <span>AI 助手</span>
+        <span v-if="selectedKbName && selectedKbName !== '选择知识库'" class="current-kb-tag">
+          {{ selectedKbName }}
+        </span>
       </div>
       <Button danger size="small" @click="clearChat"> 清空对话 </Button>
     </div>
@@ -300,20 +351,44 @@ onMounted(() => {
     <!-- 输入区域 -->
     <div class="chat-input-wrapper">
       <div class="chat-input-container">
-        <!-- 左侧工具栏 -->
+        <!-- 左侧工具栏 - 知识库选择 -->
         <div class="input-tools">
-          <Tooltip title="上传文件">
-            <div class="tool-button add-button" @click="handleUpload">
-              <svg
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                fill="currentColor"
-              >
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-              </svg>
-            </div>
-          </Tooltip>
+          <Dropdown
+            :open="kbDropdownOpen"
+            trigger="hover"
+            @open-change="handleDropdownOpenChange"
+          >
+            <Tooltip :title="selectedKbName">
+              <div class="tool-button add-button">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                >
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                </svg>
+              </div>
+            </Tooltip>
+            <template #overlay>
+              <Menu class="kb-dropdown-menu">
+                <MenuItem
+                  v-for="kb in knowledgeBaseList"
+                  :key="kb.id"
+                  @click="selectKnowledgeBase(kb)"
+                  :class="{ 'kb-item-selected': selectedKbId === kb.id }"
+                >
+                  <div class="kb-item-content">
+                    <span>{{ kb.name }}</span>
+                    <span v-if="selectedKbId === kb.id" class="check-icon">✓</span>
+                  </div>
+                </MenuItem>
+                <div v-if="knowledgeBaseList.length === 0" class="kb-empty">
+                  暂无可用知识库
+                </div>
+              </Menu>
+            </template>
+          </Dropdown>
         </div>
 
         <!-- 输入框 -->
@@ -412,6 +487,16 @@ onMounted(() => {
 
     .ai-icon {
       font-size: 20px;
+    }
+
+    .current-kb-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: #4f46e5;
+      background: #eef2ff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid #c7d2fe;
     }
   }
 }
@@ -710,5 +795,47 @@ onMounted(() => {
   color: #999;
   margin-top: 12px;
   letter-spacing: 0.3px;
+}
+
+// 知识库下拉菜单
+.kb-dropdown-menu {
+  min-width: 180px;
+  max-height: 280px;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 4px;
+
+  .kb-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .check-icon {
+    color: #4f46e5;
+    font-weight: bold;
+  }
+
+  .kb-empty {
+    padding: 12px;
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+  }
+
+  :deep(.ant-dropdown-menu-item) {
+    padding: 10px 12px;
+    border-radius: 6px;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+
+  .kb-item-selected {
+    background: #eef2ff !important;
+    color: #4f46e5;
+  }
 }
 </style>

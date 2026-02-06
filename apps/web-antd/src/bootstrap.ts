@@ -2,6 +2,7 @@ import { createApp, watchEffect } from 'vue';
 
 import { registerAccessDirective } from '@vben/access';
 import { registerLoadingDirective } from '@vben/common-ui/es/loading';
+import { addCollection } from '@vben/icons';
 import { preferences } from '@vben/preferences';
 import { initStores } from '@vben/stores';
 import '@vben/styles';
@@ -16,7 +17,28 @@ import { initSetupVbenForm } from './adapter/form';
 import App from './app.vue';
 import { router } from './router';
 
+// 预加载图标集合，解决图标不显示问题
+async function loadMdiIcons() {
+  const mdiIcons = await import(
+    // eslint-disable-next-line n/no-extraneous-import
+    /* @vite-ignore */ '@iconify-json/mdi'
+  );
+  addCollection(mdiIcons.icons);
+}
+
+async function loadLucideIcons() {
+  const lucideIcons = await import(
+    // eslint-disable-next-line n/no-extraneous-import
+    /* @vite-ignore */ '@iconify-json/lucide'
+  );
+  addCollection(lucideIcons.icons);
+}
+
 async function bootstrap(namespace: string) {
+  // 预加载图标集合，解决图标不显示问题
+  await loadMdiIcons();
+  await loadLucideIcons();
+
   // 初始化组件适配器
   await initComponentAdapter();
 
