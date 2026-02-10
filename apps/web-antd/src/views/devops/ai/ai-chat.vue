@@ -31,7 +31,7 @@ let abortController: AbortController | null = null;
 // 知识库相关
 const knowledgeBaseList = ref<KnowledgeBase[]>([]);
 const selectedKbId = ref<string | null>(null);
-const selectedKbName = ref<string>('选择知识库');
+const selectedKbName = ref<string>('通用对话');
 const kbDropdownOpen = ref(false);
 
 // 获取知识库列表
@@ -124,11 +124,7 @@ const sendMessage = async () => {
   const trimmedValue = inputValue.value.trim();
   if (!trimmedValue || isLoading.value) return;
 
-  // 检查是否选择了知识库
-  if (!selectedKbId.value) {
-    message.warning('请先选择知识库');
-    return;
-  }
+  // 不再强制要求选择知识库
 
   const userMessage: ChatMessage = {
     id: generateId(),
@@ -162,7 +158,8 @@ const sendMessage = async () => {
     body: {
       query: trimmedValue,
       stream: true,
-      kbId: selectedKbId.value,
+      // kbId 为可选参数，不选择知识库时则不传
+      ...(selectedKbId.value ? { kbId: selectedKbId.value } : {}),
     },
     onOpen: () => {
       console.warn('SSE连接已建立');
@@ -291,7 +288,7 @@ onMounted(async () => {
       <div class="header-title">
         <span class="ai-icon">&#x2728;</span>
         <span>AI 助手</span>
-        <span v-if="selectedKbName && selectedKbName !== '选择知识库'" class="current-kb-tag">
+        <span v-if="selectedKbId" class="current-kb-tag">
           {{ selectedKbName }}
         </span>
       </div>

@@ -15,5 +15,8 @@
   },
   "config": {
     "title": "System Config"
+  },
+  "monitor": {
+    "title": "System Monitor"
   }
 }
