@@ -3,7 +3,7 @@ import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 
 import { Button, Dropdown, Input, Menu, MenuItem, message, Spin, Tooltip } from 'ant-design-vue';
 
-import { requestClient } from '#/api/request';
+import { requestClient, baseRequestClient } from '#/api/request';
 
 import { createSSEConnection } from '#/utils/sse';
 
@@ -33,11 +33,13 @@ const knowledgeBaseList = ref<KnowledgeBase[]>([]);
 const selectedKbId = ref<string | null>(null);
 const selectedKbName = ref<string>('通用对话');
 const kbDropdownOpen = ref(false);
+const fileInputRef = ref<HTMLInputElement | null>(null);
 
 // 获取知识库列表
 const fetchKnowledgeBases = async () => {
   try {
-    const res = await requestClient.post('/admin/kb/list', {
+    // 使用 baseRequestClient，避免触发全局错误提示
+    const res = await baseRequestClient.post('/admin/kb/list', {
       pageNumber: 1,
       pageSize: 100,
     });
@@ -47,7 +49,8 @@ const fetchKnowledgeBases = async () => {
       knowledgeBaseList.value = list;
     }
   } catch (error) {
-    console.error('获取知识库列表失败:', error);
+    // 静默处理，接口不存在时不显示错误提示
+    knowledgeBaseList.value = [];
   }
 };
 
@@ -58,9 +61,30 @@ const selectKnowledgeBase = (kb: KnowledgeBase) => {
   kbDropdownOpen.value = false;
 };
 
-// 鼠标进入下拉菜单
-const handleDropdownOpenChange = (open: boolean) => {
-  kbDropdownOpen.value = open;
+// 切换知识库下拉菜单
+const toggleKbDropdown = () => {
+  if (knowledgeBaseList.value.length > 0) {
+    kbDropdownOpen.value = !kbDropdownOpen.value;
+  }
+};
+
+// 点击上传文件
+const handleUploadClick = () => {
+  fileInputRef.value?.click();
+};
+
+// 处理文件选择
+const handleFileChange = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const files = input.files;
+  if (files && files.length > 0) {
+    const file = files[0];
+    message.success(`已选择文件: ${file.name}`);
+    // TODO: 实现实际上传逻辑
+    console.log('上传文件:', file.name);
+  }
+  // 清空 input，允许重复选择同一文件
+  input.value = '';
 };
 
 // 生成唯一ID
@@ -257,12 +281,7 @@ const clearChat = () => {
   messages.value = [];
 };
 
-// 上传文件
-const handleUpload = () => {
-  // TODO: 实现文件上传功能
-};
-
-// 生成图片
+// 生成图片（保留，未实现）
 const handleGenerateImage = () => {
   // TODO: 实现生成图片功能
 };
@@ -288,9 +307,42 @@ onMounted(async () => {
       <div class="header-title">
         <span class="ai-icon">&#x2728;</span>
         <span>AI 助手</span>
-        <span v-if="selectedKbId" class="current-kb-tag">
-          {{ selectedKbName }}
-        </span>
+        <!-- 知识库选择（如果有知识库则显示） -->
+        <Dropdown
+          v-if="knowledgeBaseList.length > 0"
+          :open="kbDropdownOpen"
+          trigger="click"
+          @open-change="toggleKbDropdown"
+        >
+          <div class="kb-selector" :class="{ active: selectedKbId }">
+            <span>{{ selectedKbName }}</span>
+            <span class="arrow">&#x25BC;</span>
+          </div>
+          <template #overlay>
+            <Menu class="kb-dropdown-menu">
+              <MenuItem
+                @click="selectKnowledgeBase({ id: '', name: '通用对话' })"
+                :class="{ 'kb-item-selected': !selectedKbId }"
+              >
+                <div class="kb-item-content">
+                  <span>通用对话</span>
+                  <span v-if="!selectedKbId" class="check-icon">✓</span>
+                </div>
+              </MenuItem>
+              <MenuItem
+                v-for="kb in knowledgeBaseList"
+                :key="kb.id"
+                @click="selectKnowledgeBase(kb)"
+                :class="{ 'kb-item-selected': selectedKbId === kb.id }"
+              >
+                <div class="kb-item-content">
+                  <span>{{ kb.name }}</span>
+                  <span v-if="selectedKbId === kb.id" class="check-icon">✓</span>
+                </div>
+              </MenuItem>
+            </Menu>
+          </template>
+        </Dropdown>
       </div>
       <Button danger size="small" @click="clearChat"> 清空对话 </Button>
     </div>
@@ -347,45 +399,29 @@ onMounted(async () => {
 
     <!-- 输入区域 -->
     <div class="chat-input-wrapper">
+      <input
+        ref="fileInputRef"
+        type="file"
+        style="display: none"
+        @change="handleFileChange"
+      />
       <div class="chat-input-container">
-        <!-- 左侧工具栏 - 知识库选择 -->
+        <!-- 左侧工具栏 - 上传文件 -->
         <div class="input-tools">
-          <Dropdown
-            :open="kbDropdownOpen"
-            trigger="hover"
-            @open-change="handleDropdownOpenChange"
-          >
-            <Tooltip :title="selectedKbName">
-              <div class="tool-button add-button">
-                <svg
-                  viewBox="0 0 24 24"
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                >
-                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                </svg>
-              </div>
-            </Tooltip>
-            <template #overlay>
-              <Menu class="kb-dropdown-menu">
-                <MenuItem
-                  v-for="kb in knowledgeBaseList"
-                  :key="kb.id"
-                  @click="selectKnowledgeBase(kb)"
-                  :class="{ 'kb-item-selected': selectedKbId === kb.id }"
-                >
-                  <div class="kb-item-content">
-                    <span>{{ kb.name }}</span>
-                    <span v-if="selectedKbId === kb.id" class="check-icon">✓</span>
-                  </div>
-                </MenuItem>
-                <div v-if="knowledgeBaseList.length === 0" class="kb-empty">
-                  暂无可用知识库
-                </div>
-              </Menu>
-            </template>
-          </Dropdown>
+          <Tooltip title="上传本地文件">
+            <div class="tool-button upload-button" @click="handleUploadClick">
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="currentColor"
+              >
+                <path
+                  d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"
+                />
+              </svg>
+            </div>
+          </Tooltip>
         </div>
 
         <!-- 输入框 -->
@@ -494,6 +530,34 @@ onMounted(async () => {
       padding: 4px 10px;
       border-radius: 12px;
       border: 1px solid #c7d2fe;
+    }
+
+    .kb-selector {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: #f5f5f5;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #e8e8e8;
+      }
+
+      &.active {
+        color: #4f46e5;
+        background: #eef2ff;
+      }
+
+      .arrow {
+        font-size: 8px;
+        margin-left: 2px;
+      }
     }
   }
 }
@@ -742,6 +806,12 @@ onMounted(async () => {
 
   &.action-button {
     margin-right: 4px;
+  }
+
+  &.upload-button {
+    &:hover {
+      color: #4f46e5;
+    }
   }
 }
 
