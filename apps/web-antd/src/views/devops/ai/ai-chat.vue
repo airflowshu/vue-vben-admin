@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 
-import { Button, Dropdown, Input, Menu, MenuItem, message, Spin, Tooltip } from 'ant-design-vue';
+import {
+  Button,
+  Dropdown,
+  Input,
+  Menu,
+  MenuItem,
+  message,
+  Spin,
+  Tooltip,
+} from 'ant-design-vue';
 
-import { requestClient, baseRequestClient } from '#/api/request';
-
+import { baseRequestClient } from '#/api/request';
 import { createSSEConnection } from '#/utils/sse';
 
 interface ChatMessage {
@@ -30,7 +38,7 @@ let abortController: AbortController | null = null;
 
 // 知识库相关
 const knowledgeBaseList = ref<KnowledgeBase[]>([]);
-const selectedKbId = ref<string | null>(null);
+const selectedKbId = ref<null | string>(null);
 const selectedKbName = ref<string>('通用对话');
 const kbDropdownOpen = ref(false);
 const fileInputRef = ref<HTMLInputElement | null>(null);
@@ -44,11 +52,16 @@ const fetchKnowledgeBases = async () => {
       pageSize: 100,
     });
     // 处理返回数据：可能是 {code: 0, data: [...]} 或直接 [...]
-    const list = res.data || res;
+    const responseData = res.data;
+    const list = Array.isArray(responseData?.data)
+      ? responseData.data
+      : (Array.isArray(responseData)
+        ? responseData
+        : []);
     if (Array.isArray(list)) {
       knowledgeBaseList.value = list;
     }
-  } catch (error) {
+  } catch {
     // 静默处理，接口不存在时不显示错误提示
     knowledgeBaseList.value = [];
   }
@@ -312,9 +325,12 @@ onMounted(async () => {
           v-if="knowledgeBaseList.length > 0"
           :open="kbDropdownOpen"
           trigger="click"
-          @open-change="toggleKbDropdown"
         >
-          <div class="kb-selector" :class="{ active: selectedKbId }">
+          <div
+            class="kb-selector"
+            :class="{ active: selectedKbId }"
+            @click="toggleKbDropdown"
+          >
             <span>{{ selectedKbName }}</span>
             <span class="arrow">&#x25BC;</span>
           </div>
@@ -416,9 +432,7 @@ onMounted(async () => {
                 height="20"
                 fill="currentColor"
               >
-                <path
-                  d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"
-                />
+                <path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z" />
               </svg>
             </div>
           </Tooltip>
@@ -497,7 +511,6 @@ onMounted(async () => {
   height: 100%;
   background: #fff;
   border-radius: 16px;
-  overflow: hidden;
   position: relative;
 }
 
@@ -871,6 +884,7 @@ onMounted(async () => {
   overflow-y: auto;
   border-radius: 8px;
   padding: 4px;
+  z-index: 1050;
 
   .kb-item-content {
     display: flex;
