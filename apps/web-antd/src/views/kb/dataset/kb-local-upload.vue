@@ -353,37 +353,34 @@ function handleClose() {
 <style lang="scss" scoped>
 .upload-page-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #f8fafc;
+  inset: 0;
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  background: #f8fafc;
 }
 
 .upload-page-header {
-  height: 56px;
-  background: #fff;
-  border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 56px;
   padding: 0 24px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
 
   .header-left {
     display: flex;
-    align-items: center;
     gap: 12px;
+    align-items: center;
 
     .exit-btn {
-      width: 32px;
-      height: 32px;
-      padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
       color: #64748b;
       background: #fff;
       border: 1px solid #e2e8f0;
@@ -404,26 +401,26 @@ function handleClose() {
 }
 
 .upload-page-body {
-  flex: 1;
-  padding: 24px;
-  overflow-y: auto;
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
+  padding: 24px;
+  overflow-y: auto;
 }
 
 .custom-dragger {
+  position: relative;
   width: 100%;
   max-width: 800px;
   background: #fff;
   border: 1px dashed #3b82f6;
   border-radius: 12px;
-  position: relative;
   transition: all 0.3s;
 
   &:hover {
-    border-color: #2563eb;
     background: #f8fafc !important;
+    border-color: #2563eb;
   }
 
   &.dragger-active {
@@ -444,21 +441,21 @@ function handleClose() {
   }
 
   .dragger-inner {
-    padding: 48px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 48px;
 
     .icon-wrapper {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: #eff6ff;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 80px;
+      height: 80px;
       margin-bottom: 16px;
+      background: #eff6ff;
+      border-radius: 50%;
     }
 
     .upload-icon {
@@ -467,32 +464,29 @@ function handleClose() {
     }
 
     .upload-text {
+      margin: 12px 0 8px;
       font-size: 16px;
       font-weight: 500;
       color: #1e293b;
-      margin: 12px 0 8px;
     }
 
     .upload-hint {
+      margin: 2px 0;
       font-size: 12px;
       color: #64748b;
-      margin: 2px 0;
     }
   }
 
   .drop-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
+    inset: 0;
     display: flex;
     flex-direction: column;
+    gap: 12px;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    background: rgb(255 255 255 / 95%);
+    border-radius: 12px;
 
     .drop-loading-icon {
       font-size: 32px;
@@ -500,8 +494,8 @@ function handleClose() {
     }
 
     p {
-      color: #64748b;
       font-size: 14px;
+      color: #64748b;
     }
   }
 }
@@ -514,6 +508,7 @@ function handleClose() {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -522,21 +517,21 @@ function handleClose() {
 .file-table-wrapper {
   width: 100%;
   max-width: 800px;
-  background: #fff;
-  border-radius: 12px;
   margin-top: 24px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
 
   :deep(.ant-table) {
     background: transparent;
   }
 
   :deep(.ant-table-thead > tr > th) {
-    background: #f8fafc;
-    color: #64748b;
     font-size: 13px;
     font-weight: 500;
+    color: #64748b;
+    background: #f8fafc;
   }
 
   :deep(.ant-table-tbody > tr > td) {
@@ -546,16 +541,16 @@ function handleClose() {
 }
 
 .upload-actions {
-  padding: 20px;
   display: flex;
   justify-content: center;
+  padding: 20px;
   border-top: 1px solid #f1f5f9;
 
   .ant-btn {
     height: 40px;
     padding: 0 32px;
-    border-radius: 8px;
     font-size: 15px;
+    border-radius: 8px;
   }
 }
 </style>

@@ -84,5 +84,8 @@
     "password": "密码",
     "avatar": "头像",
     "role": "角色"
+  },
+  "versionlog": {
+    "title": "版本日志"
   }
 }

@@ -640,6 +640,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   align-items: center;
   min-height: 32px;
 }
+
 :deep(.ant-tree-treenode) {
   padding-top: 2px;
   padding-bottom: 2px;

@@ -127,17 +127,17 @@ const beforeUpload = (file: any) => {
 
 <style scoped>
 .directory-drop-zone {
-  border: 2px dashed #d9d9d9;
-  border-radius: 8px;
   padding: 40px;
   text-align: center;
-  transition: all 0.3s;
   background: #fafafa;
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
+  transition: all 0.3s;
 }
 
 .directory-drop-zone:hover {
-  border-color: #1890ff;
   background: #f0f8ff;
+  border-color: #1890ff;
 }
 
 .drop-content {

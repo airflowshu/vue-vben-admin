@@ -75,24 +75,24 @@ function handleConfirm() {
 <style lang="scss" scoped>
 .custom-rename-input {
   height: 44px;
-  border-radius: 8px;
-  border: 1px solid #3b82f6; // 蓝色边框
   padding: 0 12px;
   font-size: 14px;
+  border: 1px solid #3b82f6; // 蓝色边框
+  border-radius: 8px;
   
   &:focus, &:hover {
     border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 2px rgb(59 130 246 / 10%);
   }
 }
 
 .custom-btn-cancel {
   height: 36px;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  color: #374151;
-  font-weight: 500;
   padding: 0 20px;
+  font-weight: 500;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
   
   &:hover {
     color: #3b82f6;
@@ -102,10 +102,10 @@ function handleConfirm() {
 
 .custom-btn-confirm {
   height: 36px;
-  border-radius: 6px;
-  background: #3b82f6;
-  font-weight: 500;
   padding: 0 20px;
+  font-weight: 500;
+  background: #3b82f6;
+  border-radius: 6px;
   
   &:hover {
     background: #2563eb;

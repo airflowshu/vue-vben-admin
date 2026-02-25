@@ -773,19 +773,22 @@ function highlightText(text: string): string {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
   height: 56px;
+  padding: 0 24px;
   border-bottom: 1px solid #f0f0f0;
 
   .header-left {
     flex: 1;
+
     .breadcrumb-link {
-      cursor: pointer;
       color: #64748b;
+      cursor: pointer;
+
       &:hover {
         color: #3b82f6;
       }
     }
+
     .breadcrumb-current {
       font-weight: 600;
       color: #1e293b;
@@ -793,12 +796,14 @@ function highlightText(text: string): string {
   }
 
   .header-center {
-    flex: 1;
     display: flex;
+    flex: 1;
     justify-content: center;
+
     .center-tabs {
       :deep(.ant-tabs-nav) {
         margin-bottom: 0;
+
         &::before {
           border-bottom: none;
         }
@@ -819,17 +824,18 @@ function highlightText(text: string): string {
 
 .toolbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 16px;
 
   .toolbar-left {
     .file-count-wrapper {
       display: flex;
-      align-items: center;
       gap: 8px;
-      color: #1e293b;
+      align-items: center;
       font-weight: 500;
+      color: #1e293b;
+
       .toolbar-icon {
         font-size: 18px;
       }
@@ -838,30 +844,30 @@ function highlightText(text: string): string {
 
   .toolbar-right {
     display: flex;
-    align-items: center;
     gap: 12px;
+    align-items: center;
   }
 }
 
 .new-import-btn {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: 36px;
   background-color: #3b82f6;
   border-radius: 8px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .new-import-menu {
+  min-width: 160px;
   padding: 8px;
   border-radius: 12px;
-  min-width: 160px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 8%);
 
   .menu-item-content {
     display: flex;
-    align-items: center;
     gap: 12px;
+    align-items: center;
     padding: 4px 0;
 
     .menu-icon {
@@ -871,18 +877,23 @@ function highlightText(text: string): string {
     .folder-icon {
       color: #f59e0b;
     }
+
     .text-icon {
       color: #64748b;
     }
+
     .image-icon {
       color: #64748b;
     }
+
     .blank-icon {
       color: #64748b;
     }
+
     .template-icon {
       color: #64748b;
     }
+
     .backup-icon {
       color: #64748b;
     }
@@ -890,29 +901,32 @@ function highlightText(text: string): string {
 
   .menu-divider {
     height: 1px;
-    background: #f1f5f9;
     margin: 8px 0;
+    background: #f1f5f9;
   }
 }
 
 .table-container {
+  padding: 1px;
   background: #f8fafc;
   border-radius: 12px;
-  padding: 1px;
 
   :deep(.custom-table) {
     .ant-table {
       background: transparent;
     }
+
     .ant-table-thead > tr > th {
-      background: transparent;
-      color: #64748b;
       font-weight: 500;
+      color: #64748b;
+      background: transparent;
       border-bottom: 1px solid #f1f5f9;
     }
+
     .ant-table-tbody > tr > td {
       border-bottom: 1px solid #f1f5f9;
     }
+
     .ant-table-tbody > tr:last-child > td {
       border-bottom: none;
     }
@@ -921,43 +935,45 @@ function highlightText(text: string): string {
 
 .file-name-cell {
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: center;
 
   .file-icon {
     font-size: 20px;
   }
+
   .folder-color {
     color: #f59e0b;
   }
+
   .file-color {
     color: #3b82f6;
   }
 
   .name-text {
-    color: #1e293b;
     font-weight: 500;
+    color: #1e293b;
 
     :deep(.search-highlight) {
-      background-color: #fef08a;
-      color: #ca8a04;
       padding: 0 2px;
+      color: #ca8a04;
+      background-color: #fef08a;
       border-radius: 2px;
     }
   }
 }
 
 .status-tag {
+  padding: 2px 12px;
+  color: #16a34a !important;
   background: #f0fdf4 !important;
   border: 1px solid #dcfce7 !important;
-  color: #16a34a !important;
   border-radius: 20px;
-  padding: 2px 12px;
 
   .status-inner {
     display: flex;
-    align-items: center;
     gap: 6px;
+    align-items: center;
     font-weight: 500;
   }
 
@@ -980,8 +996,8 @@ function highlightText(text: string): string {
   border-radius: 8px;
 
   :deep(.ant-dropdown-menu-item) {
-    border-radius: 4px;
     padding: 6px 8px;
+    border-radius: 4px;
   }
 }
 </style>

@@ -234,20 +234,20 @@ const [Drawer, drawerApi] = useVbenDrawer({
 .terminal-card {
   .terminal-header {
     display: flex;
-    align-items: center;
     gap: 12px;
+    align-items: center;
     padding-bottom: 12px;
-    border-bottom: 1px solid #f0f0f0;
     margin-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
 
     .terminal-icon {
-      width: 48px;
-      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
+      width: 48px;
+      height: 48px;
       color: white;
+      border-radius: 12px;
 
       &.icon-mobile {
         background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
@@ -283,29 +283,29 @@ const [Drawer, drawerApi] = useVbenDrawer({
   .terminal-info {
     .info-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       padding: 8px 0;
 
       .label {
-        color: #6b7280;
         font-size: 14px;
+        color: #6b7280;
       }
 
       .value {
-        color: #1f2937;
         font-size: 14px;
         font-weight: 500;
+        color: #1f2937;
       }
     }
   }
 }
 
 .error-message {
+  max-height: 300px;
+  overflow-y: auto;
   word-break: break-all;
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  max-height: 300px;
-  overflow-y: auto;
 }
 </style>

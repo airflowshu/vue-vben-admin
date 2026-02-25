@@ -106,8 +106,8 @@ const downloadFile = (file: any) => {
 <style scoped>
 .file-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 8px;
   border-bottom: 1px solid #f0f0f0;
 }

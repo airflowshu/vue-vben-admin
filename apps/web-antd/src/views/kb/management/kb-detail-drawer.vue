@@ -308,27 +308,27 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 .loading-container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-height: 300px;
 }
 
 .drawer-header {
   display: flex;
-  align-items: center;
   gap: 16px;
+  align-items: center;
   margin-bottom: 16px;
 }
 
 .header-icon {
-  width: 72px;
-  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 72px;
+  height: 72px;
+  color: #fff;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 16px;
-  color: #fff;
 }
 
 .header-info {
@@ -361,8 +361,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 .member-item {
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: center;
   padding: 12px;
   background: #f8fafc;
   border-radius: 8px;
@@ -373,8 +373,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 }
 
 .member-info {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 2px;
 }
@@ -402,8 +402,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 .file-item {
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: center;
   padding: 12px;
   background: #f8fafc;
   border-radius: 8px;
@@ -414,8 +414,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 }
 
 .file-info {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 2px;
 }

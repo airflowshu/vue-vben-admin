@@ -379,20 +379,20 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .kb-container {
-  padding: 24px;
   min-height: 100%;
+  padding: 24px;
   background: #f8fafc;
 }
 
 .kb-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  justify-content: space-between;
   padding: 32px 40px;
+  margin-bottom: 32px;
   background: #fff;
   border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 5%);
 }
 
 .kb-header-left {
@@ -403,8 +403,8 @@ onMounted(() => {
 
 .kb-title-wrapper {
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: center;
 }
 
 .kb-title-icon {
@@ -426,9 +426,9 @@ onMounted(() => {
 }
 
 .kb-search-wrapper {
-  margin-bottom: 40px;
   display: flex;
   justify-content: center;
+  margin-bottom: 40px;
 }
 
 .kb-search {
@@ -436,15 +436,15 @@ onMounted(() => {
   max-width: 500px;
 
   :deep(.ant-input-affix-wrapper) {
-    border-radius: 12px;
     padding: 10px 16px;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 2%);
 
     &:hover,
     &.ant-input-affix-wrapper-focused {
       border-color: #4d55d1;
-      box-shadow: 0 0 0 2px rgba(77, 85, 209, 0.1);
+      box-shadow: 0 0 0 2px rgb(77 85 209 / 10%);
     }
 
     .ant-input-prefix {
@@ -461,45 +461,45 @@ onMounted(() => {
 }
 
 .kb-card {
-  border-radius: 20px;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: none;
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
+    box-shadow: 0 20px 40px rgb(0 0 0 / 12%);
     transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   }
 }
 
 .kb-card-content {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 260px;
-  color: #fff;
   padding: 24px;
-  position: relative;
+  color: #fff;
 }
 
 .kb-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 
 .kb-card-icon {
-  width: 90px;
-  height: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 90px;
+  height: 90px;
+  background: rgb(255 255 255 / 24%);
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.24);
   box-shadow:
-    inset 0 0 10px rgba(255, 255, 255, 0.35),
-    0 8px 18px rgba(0, 0, 0, 0.14);
+    inset 0 0 10px rgb(255 255 255 / 35%),
+    0 8px 18px rgb(0 0 0 / 14%);
   backdrop-filter: blur(14px);
 }
 
@@ -508,18 +508,18 @@ onMounted(() => {
   gap: 8px;
 
   :deep(.ant-tag) {
+    padding: 4px 12px;
     margin: 0;
-    border: none;
-    border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
-    padding: 4px 12px;
     color: #fff;
+    border: none;
+    border-radius: 6px;
     backdrop-filter: blur(4px);
   }
 
   .type-tag {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgb(255 255 255 / 25%);
   }
 
   .status-success {
@@ -544,33 +544,33 @@ onMounted(() => {
 }
 
 .kb-card-desc {
+  display: -webkit-box;
   margin: 0;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
   -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  font-size: 13px;
   line-height: 1.6;
+  color: rgb(255 255 255 / 80%);
+  -webkit-box-orient: vertical;
 }
 
 .kb-card-footer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding-top: 16px;
   margin-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgb(255 255 255 / 15%);
 }
 
 .kb-card-info {
   .info-item {
     display: flex;
-    align-items: center;
     gap: 6px;
+    align-items: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgb(255 255 255 / 90%);
   }
 }
 
@@ -579,18 +579,18 @@ onMounted(() => {
   gap: 2px;
 
   .action-btn {
-    color: rgba(255, 255, 255, 0.9);
-    width: 32px;
-    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: rgb(255 255 255 / 90%);
     border-radius: 8px;
     transition: all 0.2s;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.2);
       color: #fff;
+      background: rgb(255 255 255 / 20%);
       transform: scale(1.1);
     }
   }
@@ -598,8 +598,8 @@ onMounted(() => {
 
 .kb-loading {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-height: 300px;
 }
 

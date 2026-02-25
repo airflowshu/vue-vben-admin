@@ -132,8 +132,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 .user-info-card {
   display: flex;
-  align-items: center;
   gap: 16px;
+  align-items: center;
   padding: 16px;
   margin-bottom: 16px;
   background: linear-gradient(135deg, #f6f8fc 0%, #f0f4fa 100%);
@@ -146,19 +146,19 @@ const [Drawer, drawerApi] = useVbenDrawer({
     justify-content: center;
     width: 48px;
     height: 48px;
+    color: #fff;
     background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
     border-radius: 50%;
-    color: #fff;
   }
 
   .user-details {
     flex: 1;
 
     .user-name {
+      margin-bottom: 4px;
       font-size: 16px;
       font-weight: 600;
       color: #1a1a1a;
-      margin-bottom: 4px;
     }
 
     .user-username {

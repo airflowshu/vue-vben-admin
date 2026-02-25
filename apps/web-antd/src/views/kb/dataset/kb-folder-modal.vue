@@ -54,13 +54,13 @@ defineExpose(modalApi);
 <style lang="scss" scoped>
 .custom-folder-input {
   height: 40px;
-  border-radius: 8px;
   border: 1px solid #d1d5db;
+  border-radius: 8px;
 
   &:focus,
   &:hover {
     border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 2px rgb(59 130 246 / 10%);
   }
 }
 </style>

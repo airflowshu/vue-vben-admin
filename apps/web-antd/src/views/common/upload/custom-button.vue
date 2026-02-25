@@ -121,39 +121,23 @@ const UploadButton = (props: { loading: boolean }) => {
 </template>
 
 <style scoped>
-.custom-upload-btn {
-  width: 100px;
-  height: 100px;
-  text-align: center;
-  line-height: 100px;
-  border: 1px dashed #d9d9d9;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.custom-upload-btn:hover {
-  border-color: #1890ff;
-  background: #e6f7ff;
-}
-
 .custom-upload-area {
-  width: 100%;
-  max-width: 400px;
-  height: 200px;
-  text-align: center;
-  border: 2px dashed #d9d9d9;
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  height: 200px;
+  text-align: center;
   cursor: pointer;
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
   transition: all 0.3s;
 }
 
 .custom-upload-area:hover {
-  border-color: #1890ff;
   background: #f0f8ff;
+  border-color: #1890ff;
 }
 </style>

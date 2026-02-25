@@ -9,7 +9,9 @@
       "WebFetch(domain:github.com)",
       "Bash(pnpm add:*)",
       "Bash(dir:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(python3:*)",
+      "Bash(uipro init:*)"
     ]
   }
 }

@@ -76,27 +76,28 @@ defineExpose(modalApi);
 <style lang="scss" scoped>
 .source-card {
   display: flex;
-  align-items: center;
   gap: 16px;
+  align-items: center;
   padding: 16px 20px;
+  cursor: pointer;
+  background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  cursor: pointer;
   transition: all 0.2s ease;
-  background: #fff;
 
   &:hover {
-    border-color: #3b82f6;
     background: #f9fafb;
+    border-color: #3b82f6;
   }
 
   &.active {
-    border-color: #3b82f6;
     background: #eff6ff;
+    border-color: #3b82f6;
     box-shadow: 0 0 0 1px #3b82f6;
 
     .source-radio {
       border-color: #3b82f6;
+
       .radio-inner {
         transform: scale(1);
       }
@@ -105,14 +106,14 @@ defineExpose(modalApi);
 }
 
 .source-radio {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
   width: 18px;
   height: 18px;
   border: 2px solid #d1d5db;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
   transition: all 0.2s ease;
 
   .radio-inner {

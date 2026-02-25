@@ -254,7 +254,7 @@ const handleUpload = async () => {
     >
       <img
         v-if="previewImage"
-        style="width: 100%; display: block"
+        style=" display: block;width: 100%"
         :src="previewImage"
         alt="头像预览"
       />
@@ -273,10 +273,10 @@ const handleUpload = async () => {
   position: relative;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  overflow: hidden;
   cursor: pointer;
   border: 1px solid #d9d9d9;
-  overflow: hidden;
+  border-radius: 50%;
   transition: border-color 0.3s;
 }
 
@@ -296,14 +296,14 @@ const handleUpload = async () => {
 }
 
 .avatar-placeholder {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #fafafa;
+  width: 100%;
+  height: 100%;
   color: #999;
+  background: #fafafa;
   transition: background-color 0.3s;
 }
 
@@ -312,8 +312,8 @@ const handleUpload = async () => {
 }
 
 .placeholder-icon {
-  font-size: 24px;
   margin-bottom: 4px;
+  font-size: 24px;
 }
 
 .placeholder-text {
@@ -324,16 +324,16 @@ const handleUpload = async () => {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
+  gap: 16px;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 50%);
+  border-radius: 50%;
   opacity: 0;
   transition: opacity 0.3s;
-  border-radius: 50%;
 }
 
 .avatar-wrapper:hover .avatar-actions {
@@ -354,22 +354,22 @@ const handleUpload = async () => {
 .upload-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 16px;
+  align-items: center;
   padding: 20px 0;
 }
 
 .preview-area {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px dashed #d9d9d9;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
   background: #fafafa;
+  border: 2px dashed #d9d9d9;
+  border-radius: 50%;
 }
 
 .current-avatar {
@@ -379,20 +379,20 @@ const handleUpload = async () => {
 }
 
 .no-image {
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .pending-preview-content {
-  width: 100%;
-  height: 100%;
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }
 
 .upload-area,

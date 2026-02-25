@@ -505,28 +505,40 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
 .ai-chat-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   background: #fff;
   border-radius: 16px;
-  position: relative;
 }
 
 // 头部样式
 .chat-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 20px;
   background: #fff;
   border-bottom: 1px solid #f0f0f0;
 
   .header-title {
     display: flex;
-    align-items: center;
     gap: 8px;
+    align-items: center;
     font-size: 16px;
     font-weight: 600;
     color: #1a1a1a;
@@ -536,26 +548,26 @@ onMounted(async () => {
     }
 
     .current-kb-tag {
+      padding: 4px 10px;
       font-size: 12px;
       font-weight: 500;
       color: #4f46e5;
       background: #eef2ff;
-      padding: 4px 10px;
-      border-radius: 12px;
       border: 1px solid #c7d2fe;
+      border-radius: 12px;
     }
 
     .kb-selector {
       display: flex;
-      align-items: center;
       gap: 4px;
+      align-items: center;
       padding: 4px 10px;
-      background: #f5f5f5;
-      border-radius: 12px;
-      cursor: pointer;
       font-size: 12px;
       font-weight: 500;
       color: #666;
+      cursor: pointer;
+      background: #f5f5f5;
+      border-radius: 12px;
       transition: all 0.2s ease;
 
       &:hover {
@@ -568,8 +580,8 @@ onMounted(async () => {
       }
 
       .arrow {
-        font-size: 8px;
         margin-left: 2px;
+        font-size: 8px;
       }
     }
   }
@@ -577,12 +589,12 @@ onMounted(async () => {
 
 // 聊天消息区域
 .chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 20px;
+  padding: 24px;
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -601,19 +613,19 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  text-align: center;
   padding: 40px 20px;
+  text-align: center;
 
   .welcome-icon {
-    font-size: 56px;
     margin-bottom: 20px;
+    font-size: 56px;
   }
 
   .welcome-title {
+    margin-bottom: 12px;
     font-size: 24px;
     font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 12px;
   }
 
   .welcome-subtitle {
@@ -624,36 +636,37 @@ onMounted(async () => {
 
 // 消息项
 .message-item {
-  display: flex;
-  gap: 16px;
-  max-width: 75%;
-  animation: fadeIn 0.3s ease;
-
   @keyframes fadeIn {
     from {
       opacity: 0;
       transform: translateY(10px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
 
+  display: flex;
+  gap: 16px;
+  max-width: 75%;
+  animation: fadeIn 0.3s ease;
+
   &.user {
-    align-self: flex-end;
     flex-direction: row-reverse;
+    align-self: flex-end;
 
     .message-avatar {
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
       color: #fff;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     }
 
     .message-bubble {
-      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
       color: #fff;
-      border-radius: 20px 20px 4px 20px;
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      border-radius: 20px 20px 4px;
+      box-shadow: 0 4px 15px rgb(99 102 241 / 30%);
     }
   }
 
@@ -661,102 +674,90 @@ onMounted(async () => {
     align-self: flex-start;
 
     .message-avatar {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #fff;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     }
 
     .message-bubble {
-      background: #f5f5f5;
       color: #1a1a1a;
+      background: #f5f5f5;
       border-radius: 20px 20px 20px 4px;
     }
   }
 }
 
 .message-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 18px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
 
   .ai-avatar {
-    width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
     font-size: 20px;
   }
 }
 
 .message-content {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
 }
 
 .message-bubble {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  min-height: 24px;
   padding: 14px 20px;
   font-size: 15px;
   line-height: 1.6;
   word-break: break-word;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  min-height: 24px;
 
   .message-text {
-    white-space: pre-wrap;
     flex: 1;
+    white-space: pre-wrap;
   }
 
   .typing-cursor {
-    animation: blink 1s infinite;
-    color: #999;
     font-weight: 300;
-  }
-}
-
-@keyframes blink {
-  0%,
-  50% {
-    opacity: 1;
-  }
-
-  51%,
-  100% {
-    opacity: 0;
+    color: #999;
+    animation: blink 1s infinite;
   }
 }
 
 // 输入区域包装器
 .chat-input-wrapper {
+  position: relative;
   padding: 16px 24px 20px;
   background: #fff;
   border-top: 1px solid #f0f0f0;
-  position: relative;
 }
 
 // 输入容器
 .chat-input-container {
   display: flex;
-  align-items: flex-end;
   gap: 12px;
+  align-items: flex-end;
+  padding: 8px 8px 8px 12px;
   background: #f8fafc;
   border: 1px solid #e8e8e8;
   border-radius: 24px;
-  padding: 8px 8px 8px 12px;
   transition: all 0.3s ease;
 
   &:focus-within {
     border-color: #6366f1;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 2px rgb(99 102 241 / 10%);
   }
 }
 
@@ -768,37 +769,37 @@ onMounted(async () => {
 
 // 工具按钮
 .tool-button {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #666;
+  width: 36px;
+  height: 36px;
   padding: 0;
-  border: none;
+  color: #666;
+  cursor: pointer;
   background: transparent;
+  border: none;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: #f0f0f0;
     color: #333;
+    background: #f0f0f0;
     transform: scale(1.05);
   }
 
   &.send-button {
-    background: #1a1a1a;
     color: #fff;
+    background: #1a1a1a;
 
     &:hover {
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 15px rgb(0 0 0 / 20%);
     }
 
     &.disabled,
     &[disabled]:not(.ant-btn-loading) {
-      opacity: 0.4;
       cursor: not-allowed;
+      opacity: 0.4;
 
       &:hover {
         background: #1a1a1a;
@@ -812,7 +813,7 @@ onMounted(async () => {
       cursor: pointer !important;
 
       &:hover {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 15px rgb(0 0 0 / 20%);
       }
     }
   }
@@ -836,24 +837,24 @@ onMounted(async () => {
 
 .chat-input-field {
   width: 100%;
-  border: none !important;
-  background: transparent !important;
-  resize: none;
   padding: 8px 0;
   font-size: 15px;
   line-height: 1.5;
   color: #1a1a1a;
+  resize: none;
+  background: transparent !important;
+  border: none !important;
 
   &::placeholder {
     color: #999;
   }
 
   :deep(.ant-input) {
+    color: #1a1a1a;
+    outline: none !important;
     background: transparent !important;
     border: none !important;
-    outline: none !important;
     box-shadow: none !important;
-    color: #1a1a1a;
 
     &::placeholder {
       color: #999;
@@ -864,45 +865,45 @@ onMounted(async () => {
 // 右侧操作区
 .input-actions {
   display: flex;
-  align-items: center;
   gap: 4px;
+  align-items: center;
 }
 
 // 输入免责声明
 .input-disclaimer {
-  text-align: center;
+  margin-top: 12px;
   font-size: 12px;
   color: #999;
-  margin-top: 12px;
+  text-align: center;
   letter-spacing: 0.3px;
 }
 
 // 知识库下拉菜单
 .kb-dropdown-menu {
+  z-index: 1050;
   min-width: 180px;
   max-height: 280px;
+  padding: 4px;
   overflow-y: auto;
   border-radius: 8px;
-  padding: 4px;
-  z-index: 1050;
 
   .kb-item-content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
   }
 
   .check-icon {
-    color: #4f46e5;
     font-weight: bold;
+    color: #4f46e5;
   }
 
   .kb-empty {
     padding: 12px;
-    text-align: center;
-    color: #999;
     font-size: 13px;
+    color: #999;
+    text-align: center;
   }
 
   :deep(.ant-dropdown-menu-item) {
@@ -915,8 +916,8 @@ onMounted(async () => {
   }
 
   .kb-item-selected {
-    background: #eef2ff !important;
     color: #4f46e5;
+    background: #eef2ff !important;
   }
 }
 </style>
