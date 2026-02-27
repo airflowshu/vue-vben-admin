@@ -47,13 +47,13 @@ defineExpose(modalApi);
       <div class="flex items-center gap-2">
         <IconifyIcon
           icon="mdi:check-circle-outline"
-          class="text-xl text-blue-500"
+          class="source-title-icon"
         />
         <span>选择来源</span>
       </div>
     </template>
 
-    <div class="flex flex-col gap-4 p-6">
+    <div class="kb-source-panel flex flex-col gap-4 p-6">
       <div
         v-for="source in sources"
         :key="source.id"
@@ -74,29 +74,44 @@ defineExpose(modalApi);
 </template>
 
 <style lang="scss" scoped>
+.kb-source-panel {
+  --kb-source-card: hsl(var(--card));
+  --kb-source-border: hsl(var(--border));
+  --kb-source-foreground: hsl(var(--foreground));
+  --kb-source-muted: hsl(var(--muted-foreground));
+  --kb-source-hover: hsl(var(--accent));
+  --kb-source-active: hsl(var(--primary) / 0.08);
+  --kb-source-primary: hsl(var(--primary));
+}
+
+.source-title-icon {
+  font-size: 20px;
+  color: var(--kb-source-primary);
+}
+
 .source-card {
   display: flex;
   gap: 16px;
   align-items: center;
   padding: 16px 20px;
   cursor: pointer;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--kb-source-card);
+  border: 1px solid var(--kb-source-border);
   border-radius: 12px;
   transition: all 0.2s ease;
 
   &:hover {
-    background: #f9fafb;
-    border-color: #3b82f6;
+    background: var(--kb-source-hover);
+    border-color: var(--kb-source-primary);
   }
 
   &.active {
-    background: #eff6ff;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 1px #3b82f6;
+    background: var(--kb-source-active);
+    border-color: var(--kb-source-primary);
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.4);
 
     .source-radio {
-      border-color: #3b82f6;
+      border-color: var(--kb-source-primary);
 
       .radio-inner {
         transform: scale(1);
@@ -112,14 +127,14 @@ defineExpose(modalApi);
   justify-content: center;
   width: 18px;
   height: 18px;
-  border: 2px solid #d1d5db;
+  border: 2px solid var(--kb-source-border);
   border-radius: 50%;
   transition: all 0.2s ease;
 
   .radio-inner {
     width: 8px;
     height: 8px;
-    background: #3b82f6;
+    background: var(--kb-source-primary);
     border-radius: 50%;
     transform: scale(0);
     transition: transform 0.2s ease;
@@ -134,12 +149,12 @@ defineExpose(modalApi);
   .source-title {
     font-size: 15px;
     font-weight: 600;
-    color: #111827;
+    color: var(--kb-source-foreground);
   }
 
   .source-desc {
     font-size: 13px;
-    color: #6b7280;
+    color: var(--kb-source-muted);
   }
 }
 </style>

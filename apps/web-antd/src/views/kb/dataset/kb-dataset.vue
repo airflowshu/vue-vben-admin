@@ -560,7 +560,10 @@ function highlightText(text: string): string {
               @search="handleSearch"
             />
 
-            <Dropdown :trigger="['hover']">
+            <Dropdown
+              :trigger="['hover']"
+              overlay-class-name="kb-new-import-overlay"
+            >
               <Button type="primary" class="new-import-btn">
                 <template #icon>
                   <IconifyIcon icon="mdi:folder-plus-outline" />
@@ -718,7 +721,7 @@ function highlightText(text: string): string {
                   <IconifyIcon icon="mdi:dots-horizontal" />
                 </Button>
                 <template #overlay>
-                  <Menu>
+                  <Menu class="action-menu">
                     <MenuItem key="rename" @click="handleRename(record)">
                       <div class="flex items-center gap-2">
                         <IconifyIcon icon="mdi:rename-box-outline" />
@@ -726,7 +729,7 @@ function highlightText(text: string): string {
                       </div>
                     </MenuItem>
                     <MenuItem key="delete" @click="handleDelete(record)">
-                      <div class="flex items-center gap-2 text-red-500">
+                      <div class="danger-text flex items-center gap-2">
                         <IconifyIcon icon="mdi:delete-outline" />
                         <span>删除</span>
                       </div>
@@ -763,10 +766,26 @@ function highlightText(text: string): string {
 
 <style lang="scss" scoped>
 .kb-dataset-page {
+  --kb-dataset-bg: hsl(var(--card));
+  --kb-dataset-border: hsl(var(--border));
+  --kb-dataset-foreground: hsl(var(--foreground));
+  --kb-dataset-muted: hsl(var(--muted));
+  --kb-dataset-muted-foreground: hsl(var(--muted-foreground));
+  --kb-dataset-primary: hsl(var(--primary));
+  --kb-dataset-warning: hsl(var(--warning));
+  --kb-dataset-danger: hsl(var(--destructive));
+  --kb-dataset-success: hsl(var(--success));
+  --kb-dataset-menu-shadow: 0 4px 20px rgb(0 0 0 / 8%);
+  --kb-dataset-highlight-bg: color-mix(
+    in srgb,
+    hsl(var(--warning)),
+    transparent 75%
+  );
+
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #fff;
+  background: var(--kb-dataset-bg);
 }
 
 .page-header {
@@ -775,23 +794,23 @@ function highlightText(text: string): string {
   justify-content: space-between;
   height: 56px;
   padding: 0 24px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--kb-dataset-border);
 
   .header-left {
     flex: 1;
 
     .breadcrumb-link {
-      color: #64748b;
+      color: var(--kb-dataset-muted-foreground);
       cursor: pointer;
 
       &:hover {
-        color: #3b82f6;
+        color: var(--kb-dataset-primary);
       }
     }
 
     .breadcrumb-current {
       font-weight: 600;
-      color: #1e293b;
+      color: var(--kb-dataset-foreground);
     }
   }
 
@@ -834,7 +853,7 @@ function highlightText(text: string): string {
       gap: 8px;
       align-items: center;
       font-weight: 500;
-      color: #1e293b;
+      color: var(--kb-dataset-foreground);
 
       .toolbar-icon {
         font-size: 18px;
@@ -854,15 +873,32 @@ function highlightText(text: string): string {
   gap: 6px;
   align-items: center;
   height: 36px;
-  background-color: #3b82f6;
+  background-color: var(--kb-dataset-primary);
   border-radius: 8px;
+}
+
+:global(.kb-new-import-overlay) {
+  .ant-dropdown-menu {
+    min-width: 160px;
+    padding: 8px;
+    background: var(--kb-dataset-bg);
+    border: 1px solid var(--kb-dataset-border);
+    border-radius: 12px;
+    box-shadow: var(--kb-dataset-menu-shadow);
+  }
+
+  .ant-dropdown-menu-item {
+    border-radius: 8px;
+  }
 }
 
 .new-import-menu {
   min-width: 160px;
   padding: 8px;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgb(0 0 0 / 8%);
+  background: var(--kb-dataset-bg);
+  border: 1px solid var(--kb-dataset-border);
+  box-shadow: var(--kb-dataset-menu-shadow);
 
   .menu-item-content {
     display: flex;
@@ -875,40 +911,28 @@ function highlightText(text: string): string {
     }
 
     .folder-icon {
-      color: #f59e0b;
+      color: var(--kb-dataset-warning);
     }
 
-    .text-icon {
-      color: #64748b;
-    }
-
-    .image-icon {
-      color: #64748b;
-    }
-
-    .blank-icon {
-      color: #64748b;
-    }
-
-    .template-icon {
-      color: #64748b;
-    }
-
+    .text-icon,
+    .image-icon,
+    .blank-icon,
+    .template-icon,
     .backup-icon {
-      color: #64748b;
+      color: var(--kb-dataset-muted-foreground);
     }
   }
 
   .menu-divider {
     height: 1px;
     margin: 8px 0;
-    background: #f1f5f9;
+    background: var(--kb-dataset-border);
   }
 }
 
 .table-container {
   padding: 1px;
-  background: #f8fafc;
+  background: var(--kb-dataset-muted);
   border-radius: 12px;
 
   :deep(.custom-table) {
@@ -918,17 +942,13 @@ function highlightText(text: string): string {
 
     .ant-table-thead > tr > th {
       font-weight: 500;
-      color: #64748b;
+      color: var(--kb-dataset-muted-foreground);
       background: transparent;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--kb-dataset-border);
     }
 
     .ant-table-tbody > tr > td {
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .ant-table-tbody > tr:last-child > td {
-      border-bottom: none;
+      border-bottom: 1px solid var(--kb-dataset-border);
     }
   }
 }
@@ -943,21 +963,21 @@ function highlightText(text: string): string {
   }
 
   .folder-color {
-    color: #f59e0b;
+    color: var(--kb-dataset-warning);
   }
 
   .file-color {
-    color: #3b82f6;
+    color: var(--kb-dataset-primary);
   }
 
   .name-text {
     font-weight: 500;
-    color: #1e293b;
+    color: var(--kb-dataset-foreground);
 
     :deep(.search-highlight) {
       padding: 0 2px;
-      color: #ca8a04;
-      background-color: #fef08a;
+      color: var(--kb-dataset-foreground);
+      background-color: var(--kb-dataset-highlight-bg);
       border-radius: 2px;
     }
   }
@@ -965,9 +985,9 @@ function highlightText(text: string): string {
 
 .status-tag {
   padding: 2px 12px;
-  color: #16a34a !important;
-  background: #f0fdf4 !important;
-  border: 1px solid #dcfce7 !important;
+  color: var(--kb-dataset-success) !important;
+  background: color-mix(in srgb, hsl(var(--success)), transparent 85%) !important;
+  border: 1px solid color-mix(in srgb, hsl(var(--success)), transparent 65%) !important;
   border-radius: 20px;
 
   .status-inner {
@@ -980,7 +1000,7 @@ function highlightText(text: string): string {
   .status-dot {
     width: 6px;
     height: 6px;
-    background: #22c55e;
+    background: var(--kb-dataset-success);
     border-radius: 50%;
   }
 
@@ -990,9 +1010,15 @@ function highlightText(text: string): string {
   }
 }
 
+.danger-text {
+  color: var(--kb-dataset-danger);
+}
+
 .action-menu {
   min-width: 120px;
   padding: 4px;
+  background: var(--kb-dataset-bg);
+  border: 1px solid var(--kb-dataset-border);
   border-radius: 8px;
 
   :deep(.ant-dropdown-menu-item) {

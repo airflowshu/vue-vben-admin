@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { UserOption } from '#/api/devops/aikey';
 
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
@@ -15,7 +15,6 @@ import {
   ListItemMeta,
   Menu,
   Spin,
-  Tag,
 } from 'ant-design-vue';
 
 import { getUserOptions } from '#/api/devops/aikey';
@@ -73,17 +72,17 @@ const filteredUsers = computed(() => {
 // 切换选择
 function toggleSelect(user: UserOption) {
   const index = selectedUsers.value.findIndex((u) => u.id === user.id);
-  if (index > -1) {
-    selectedUsers.value.splice(index, 1);
-  } else {
+  if (index === -1) {
     selectedUsers.value.push(user);
+  } else {
+    selectedUsers.value.splice(index, 1);
   }
 }
 
 // 移除选择
 function removeSelect(userId: string) {
   const index = selectedUsers.value.findIndex((u) => u.id === userId);
-  if (index > -1) {
+  if (index !== -1) {
     selectedUsers.value.splice(index, 1);
   }
 }
@@ -109,11 +108,11 @@ const [Modal, modalApi] = useVbenModal({
         // 需要等待 loadUsers 完成后再设置，或者在 loadUsers 中处理
       }
       loadUsers().then(() => {
-         if (data?.selectedIds) {
-            selectedUsers.value = allUsers.value.filter((u) =>
-              data.selectedIds.includes(u.id),
-            );
-         }
+        if (data?.selectedIds) {
+          selectedUsers.value = allUsers.value.filter((u) =>
+            data.selectedIds.includes(u.id),
+          );
+        }
       });
     } else {
       searchText.value = '';
@@ -125,11 +124,11 @@ const [Modal, modalApi] = useVbenModal({
 
 <template>
   <Modal>
-    <div class="flex h-[500px] border-t border-gray-200">
+    <div class="kb-collab-panel flex h-[500px] border-t">
       <!-- 左侧选择区域 -->
-      <div class="flex flex-1 border-r border-gray-200">
+      <div class="collab-border-right flex flex-1">
         <!-- 侧边菜单 -->
-        <div class="w-[120px] bg-gray-50 pt-2">
+        <div class="collab-menu w-[120px] pt-2">
           <Menu
             v-model:selected-keys="activeMenu"
             mode="inline"
@@ -145,7 +144,7 @@ const [Modal, modalApi] = useVbenModal({
         </div>
 
         <!-- 列表区域 -->
-        <div class="flex-1 flex flex-col p-4">
+        <div class="flex flex-1 flex-col p-4">
           <div class="mb-4">
             <Input.Search
               v-model:value="searchText"
@@ -153,37 +152,48 @@ const [Modal, modalApi] = useVbenModal({
               allow-clear
             />
           </div>
-          
+
           <div class="flex-1 overflow-y-auto">
             <template v-if="activeMenu[0] === 'members'">
               <Spin :spinning="loading">
                 <List item-layout="horizontal" :data-source="filteredUsers">
                   <template #renderItem="{ item }">
                     <ListItem
-                      class="cursor-pointer hover:bg-gray-50 px-2 rounded transition-colors"
+                      class="collab-list-item cursor-pointer rounded px-2 transition-colors"
                       @click="toggleSelect(item)"
                     >
                       <ListItemMeta>
                         <template #title>
                           <span class="font-medium">{{ item.realName }}</span>
-                          <span class="ml-2 text-xs text-gray-400">{{ item.username }}</span>
+                          <span class="collab-muted ml-2 text-xs">{{
+                            item.username
+                          }}</span>
                         </template>
                         <template #avatar>
                           <Avatar class="bg-primary/10 text-primary">
-                             {{ item.realName?.charAt(0) || item.username?.charAt(0) }}
+                            {{
+                              item.realName?.charAt(0) ||
+                              item.username?.charAt(0)
+                            }}
                           </Avatar>
                         </template>
                       </ListItemMeta>
                       <div v-if="isSelected(item.id)">
-                        <IconifyIcon icon="mdi:check-circle" class="text-primary text-xl" />
+                        <IconifyIcon
+                          icon="mdi:check-circle"
+                          class="collab-check-icon"
+                        />
                       </div>
                       <div v-else>
-                         <div class="w-5 h-5 rounded-full border border-gray-300"></div>
+                        <div class="collab-check-empty"></div>
                       </div>
                     </ListItem>
                   </template>
                 </List>
-                <Empty v-if="!loading && filteredUsers.length === 0" description="未找到匹配用户" />
+                <Empty
+                  v-if="!loading && filteredUsers.length === 0"
+                  description="未找到匹配用户"
+                />
               </Spin>
             </template>
             <template v-else>
@@ -194,43 +204,119 @@ const [Modal, modalApi] = useVbenModal({
       </div>
 
       <!-- 右侧已选区域 -->
-      <div class="w-[280px] flex flex-col p-4 bg-white">
-        <div class="mb-4 font-medium flex justify-between items-center">
+      <div class="collab-selected-panel flex w-[280px] flex-col p-4">
+        <div class="mb-4 flex items-center justify-between font-medium">
           <span>已选: {{ selectedUsers.length }}</span>
-          <span 
-            v-if="selectedUsers.length > 0" 
-            class="text-primary text-xs cursor-pointer"
+          <span
+            v-if="selectedUsers.length > 0"
+            class="collab-clear cursor-pointer text-xs"
             @click="selectedUsers = []"
           >
             清空
           </span>
         </div>
-        
+
         <div class="flex-1 overflow-y-auto">
-           <div class="flex flex-col gap-2">
-              <div 
-                v-for="user in selectedUsers" 
-                :key="user.id"
-                class="flex items-center justify-between p-2 bg-gray-50 rounded group hover:bg-gray-100"
-              >
-                <div class="flex items-center gap-2 overflow-hidden">
-                   <Avatar size="small" class="bg-primary/10 text-primary shrink-0">
-                      {{ user.realName?.charAt(0) || user.username?.charAt(0) }}
-                   </Avatar>
-                   <div class="flex flex-col overflow-hidden">
-                      <span class="truncate text-sm font-medium">{{ user.realName }}</span>
-                      <span class="truncate text-xs text-gray-400">{{ user.username }}</span>
-                   </div>
+          <div class="flex flex-col gap-2">
+            <div
+              v-for="user in selectedUsers"
+              :key="user.id"
+              class="collab-selected-item group flex items-center justify-between rounded p-2"
+            >
+              <div class="flex items-center gap-2 overflow-hidden">
+                <Avatar
+                  size="small"
+                  class="shrink-0 bg-primary/10 text-primary"
+                >
+                  {{ user.realName?.charAt(0) || user.username?.charAt(0) }}
+                </Avatar>
+                <div class="flex flex-col overflow-hidden">
+                  <span class="truncate text-sm font-medium">{{
+                    user.realName
+                  }}</span>
+                  <span class="collab-muted truncate text-xs">{{
+                    user.username
+                  }}</span>
                 </div>
-                <IconifyIcon 
-                  icon="mdi:close" 
-                  class="text-gray-400 cursor-pointer hover:text-red-500"
-                  @click="removeSelect(user.id)" 
-                />
               </div>
-           </div>
+              <IconifyIcon
+                icon="mdi:close"
+                class="collab-remove-icon"
+                @click="removeSelect(user.id)"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.kb-collab-panel {
+  --kb-collab-bg: hsl(var(--card));
+  --kb-collab-muted: hsl(var(--muted));
+  --kb-collab-border: hsl(var(--border));
+  --kb-collab-foreground: hsl(var(--foreground));
+  --kb-collab-muted-foreground: hsl(var(--muted-foreground));
+  --kb-collab-primary: hsl(var(--primary));
+  --kb-collab-danger: hsl(var(--destructive));
+}
+
+.kb-collab-panel {
+  border-top: 1px solid var(--kb-collab-border);
+}
+
+.collab-border-right {
+  border-right: 1px solid var(--kb-collab-border);
+}
+
+.collab-menu {
+  background: var(--kb-collab-muted);
+}
+
+.collab-list-item:hover {
+  background: var(--kb-collab-muted);
+}
+
+.collab-check-icon {
+  font-size: 20px;
+  color: var(--kb-collab-primary);
+}
+
+.collab-check-empty {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--kb-collab-border);
+  border-radius: 50%;
+}
+
+.collab-muted {
+  color: var(--kb-collab-muted-foreground);
+}
+
+.collab-selected-panel {
+  background: var(--kb-collab-bg);
+}
+
+.collab-clear {
+  color: var(--kb-collab-primary);
+}
+
+.collab-selected-item {
+  background: var(--kb-collab-muted);
+}
+
+.collab-selected-item:hover {
+  background: color-mix(in srgb, hsl(var(--muted)), transparent 30%);
+}
+
+.collab-remove-icon {
+  color: var(--kb-collab-muted-foreground);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--kb-collab-danger);
+  }
+}
+</style>

@@ -150,7 +150,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 </script>
 
 <template>
-  <Drawer title="知识库详情" class="w-[720px]">
+  <Drawer title="知识库详情" class="kb-detail-drawer w-[720px]">
     <Spin :spinning="loading">
       <template v-if="kbDetail">
         <div class="drawer-header">
@@ -213,17 +213,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
               </Descriptions>
 
               <!-- 模型选择区域 -->
-              <div class="mt-2 rounded-lg border bg-gray-50 p-4">
-                <div class="mb-2 text-sm font-medium text-gray-700">
-                  向量化模型配置
-                </div>
+              <div class="model-config-card">
+                <div class="model-config-title">向量化模型配置</div>
                 <Select
                   v-model:value="selectedModel"
                   class="w-full"
                   placeholder="选择向量化模型"
                   :options="modelOptions"
                 />
-                <div class="mt-2 text-xs text-gray-500">
+                <div class="model-config-hint">
                   选择用于知识库文档向量化的 Embedding 模型。
                 </div>
               </div>
@@ -303,7 +301,19 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 <style lang="scss" scoped>
 .kb-detail-drawer {
+  --kb-detail-foreground: hsl(var(--foreground));
+  --kb-detail-muted: hsl(var(--muted-foreground));
+  --kb-detail-muted-bg: hsl(var(--muted));
+  --kb-detail-border: hsl(var(--border));
+  --kb-detail-primary: hsl(var(--primary));
+  --kb-detail-icon-from: hsl(var(--primary));
+  --kb-detail-icon-to: color-mix(in srgb, hsl(var(--primary)), transparent 30%);
+
   padding: 16px;
+}
+
+:global(.dark) .kb-detail-drawer {
+  --kb-detail-muted-bg: hsl(var(--accent));
 }
 
 .loading-container {
@@ -326,8 +336,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
   justify-content: center;
   width: 72px;
   height: 72px;
-  color: #fff;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: hsl(var(--primary-foreground));
+  background: linear-gradient(
+    135deg,
+    var(--kb-detail-icon-from) 0%,
+    var(--kb-detail-icon-to) 100%
+  );
   border-radius: 16px;
 }
 
@@ -339,7 +353,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   margin: 0 0 8px;
   font-size: 20px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--kb-detail-foreground);
 }
 
 .header-tags {
@@ -364,12 +378,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
   gap: 12px;
   align-items: center;
   padding: 12px;
-  background: #f8fafc;
+  background: var(--kb-detail-muted-bg);
   border-radius: 8px;
 }
 
 .member-avatar {
-  color: #64748b;
+  color: var(--kb-detail-muted);
 }
 
 .member-info {
@@ -381,17 +395,17 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 .member-name {
   font-weight: 500;
-  color: #1a1a2e;
+  color: var(--kb-detail-foreground);
 }
 
 .member-role {
   font-size: 12px;
-  color: #64748b;
+  color: var(--kb-detail-muted);
 }
 
 .member-time {
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--kb-detail-muted);
 }
 
 .file-list {
@@ -405,12 +419,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
   gap: 12px;
   align-items: center;
   padding: 12px;
-  background: #f8fafc;
+  background: var(--kb-detail-muted-bg);
   border-radius: 8px;
 }
 
 .file-icon {
-  color: #667eea;
+  color: var(--kb-detail-primary);
 }
 
 .file-info {
@@ -422,11 +436,32 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 .file-name {
   font-weight: 500;
-  color: #1a1a2e;
+  color: var(--kb-detail-foreground);
 }
 
 .file-meta {
   font-size: 12px;
-  color: #64748b;
+  color: var(--kb-detail-muted);
+}
+
+.model-config-card {
+  margin-top: 8px;
+  padding: 16px;
+  background: var(--kb-detail-muted-bg);
+  border: 1px solid var(--kb-detail-border);
+  border-radius: 8px;
+}
+
+.model-config-title {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--kb-detail-foreground);
+}
+
+.model-config-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--kb-detail-muted);
 }
 </style>

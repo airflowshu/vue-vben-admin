@@ -379,9 +379,31 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .kb-container {
+  --kb-page-bg: hsl(var(--background-deep));
+  --kb-panel-bg: hsl(var(--card));
+  --kb-panel-shadow: 0 4px 20px rgb(0 0 0 / 5%);
+  --kb-title: hsl(var(--foreground));
+  --kb-subtitle: hsl(var(--muted-foreground));
+  --kb-icon: hsl(var(--primary));
+  --kb-input-border: hsl(var(--input));
+  --kb-input-focus: hsl(var(--primary));
+  --kb-input-shadow: 0 2px 8px rgb(0 0 0 / 2%);
+  --kb-card-foreground: hsl(var(--primary-foreground));
+  --kb-card-muted: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 20%);
+  --kb-card-strong: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 10%);
+  --kb-card-tag-bg: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 75%);
+  --kb-card-divider: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 85%);
+  --kb-card-action-hover: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 80%);
+  --kb-card-shadow-hover: 0 20px 40px rgb(0 0 0 / 12%);
+
   min-height: 100%;
   padding: 24px;
-  background: #f8fafc;
+  background: var(--kb-page-bg);
+}
+
+:global(.dark) .kb-container {
+  --kb-panel-shadow: 0 6px 18px rgb(0 0 0 / 35%);
+  --kb-card-shadow-hover: 0 20px 40px rgb(0 0 0 / 35%);
 }
 
 .kb-header {
@@ -390,9 +412,9 @@ onMounted(() => {
   justify-content: space-between;
   padding: 32px 40px;
   margin-bottom: 32px;
-  background: #fff;
+  background: var(--kb-panel-bg);
   border-radius: 24px;
-  box-shadow: 0 4px 20px rgb(0 0 0 / 5%);
+  box-shadow: var(--kb-panel-shadow);
 }
 
 .kb-header-left {
@@ -409,20 +431,20 @@ onMounted(() => {
 
 .kb-title-icon {
   font-size: 32px;
-  color: #4d55d1;
+  color: var(--kb-icon);
 }
 
 .kb-title {
   margin: 0;
   font-size: 26px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--kb-title);
 }
 
 .kb-subtitle {
   margin: 0;
   font-size: 14px;
-  color: #64748b;
+  color: var(--kb-subtitle);
 }
 
 .kb-search-wrapper {
@@ -437,19 +459,19 @@ onMounted(() => {
 
   :deep(.ant-input-affix-wrapper) {
     padding: 10px 16px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--kb-input-border);
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 2%);
+    box-shadow: var(--kb-input-shadow);
 
     &:hover,
     &.ant-input-affix-wrapper-focused {
-      border-color: #4d55d1;
-      box-shadow: 0 0 0 2px rgb(77 85 209 / 10%);
+      border-color: var(--kb-input-focus);
+      box-shadow: 0 0 0 2px hsl(var(--primary) / 0.1);
     }
 
     .ant-input-prefix {
       margin-right: 8px;
-      color: #94a3b8;
+      color: var(--kb-subtitle);
     }
   }
 }
@@ -468,7 +490,7 @@ onMounted(() => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    box-shadow: 0 20px 40px rgb(0 0 0 / 12%);
+    box-shadow: var(--kb-card-shadow-hover);
     transform: translateY(-6px);
   }
 }
@@ -479,7 +501,7 @@ onMounted(() => {
   flex-direction: column;
   min-height: 260px;
   padding: 24px;
-  color: #fff;
+  color: var(--kb-card-foreground);
 }
 
 .kb-card-header {
@@ -495,12 +517,11 @@ onMounted(() => {
   justify-content: center;
   width: 90px;
   height: 90px;
-  background: rgb(255 255 255 / 24%);
+  background: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 76%);
   border-radius: 24px;
   box-shadow:
-    inset 0 0 10px rgb(255 255 255 / 35%),
+    inset 0 0 10px color-mix(in srgb, hsl(var(--primary-foreground)), transparent 65%),
     0 8px 18px rgb(0 0 0 / 14%);
-  backdrop-filter: blur(14px);
 }
 
 .kb-card-badges {
@@ -512,22 +533,22 @@ onMounted(() => {
     margin: 0;
     font-size: 12px;
     font-weight: 600;
-    color: #fff;
+    color: var(--kb-card-foreground);
     border: none;
     border-radius: 6px;
     backdrop-filter: blur(4px);
   }
 
   .type-tag {
-    background: rgb(255 255 255 / 25%);
+    background: var(--kb-card-tag-bg);
   }
 
   .status-success {
-    background: #22c55e;
+    background: hsl(var(--success));
   }
 
   .status-error {
-    background: #ef4444;
+    background: hsl(var(--destructive));
   }
 }
 
@@ -539,7 +560,7 @@ onMounted(() => {
   margin: 0 0 8px;
   font-size: 20px;
   font-weight: 600;
-  color: #fff;
+  color: var(--kb-card-foreground);
   letter-spacing: 0.5px;
 }
 
@@ -551,7 +572,7 @@ onMounted(() => {
   -webkit-line-clamp: 2;
   font-size: 13px;
   line-height: 1.6;
-  color: rgb(255 255 255 / 80%);
+  color: var(--kb-card-muted);
   -webkit-box-orient: vertical;
 }
 
@@ -561,7 +582,7 @@ onMounted(() => {
   justify-content: space-between;
   padding-top: 16px;
   margin-top: 12px;
-  border-top: 1px solid rgb(255 255 255 / 15%);
+  border-top: 1px solid var(--kb-card-divider);
 }
 
 .kb-card-info {
@@ -570,7 +591,7 @@ onMounted(() => {
     gap: 6px;
     align-items: center;
     font-size: 12px;
-    color: rgb(255 255 255 / 90%);
+    color: var(--kb-card-strong);
   }
 }
 
@@ -584,13 +605,13 @@ onMounted(() => {
     justify-content: center;
     width: 32px;
     height: 32px;
-    color: rgb(255 255 255 / 90%);
+    color: var(--kb-card-strong);
     border-radius: 8px;
     transition: all 0.2s;
 
     &:hover {
-      color: #fff;
-      background: rgb(255 255 255 / 20%);
+      color: var(--kb-card-foreground);
+      background: var(--kb-card-action-hover);
       transform: scale(1.1);
     }
   }

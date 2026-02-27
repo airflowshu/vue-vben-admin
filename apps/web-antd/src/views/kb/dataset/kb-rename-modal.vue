@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
-import { Input, Button, message } from 'ant-design-vue';
+
+import { Button, Input, message } from 'ant-design-vue';
 
 const emit = defineEmits(['confirm']);
 
@@ -24,7 +26,7 @@ const [Modal, modalApi] = useVbenModal({
         newName.value = data.name;
       }
     }
-  }
+  },
 });
 
 function handleCancel() {
@@ -44,45 +46,77 @@ function handleConfirm() {
 <template>
   <Modal>
     <template #title>
-      <div class="flex items-center justify-between w-full">
+      <div class="flex w-full items-center justify-between">
         <div class="flex items-center gap-2">
-          <IconifyIcon icon="mdi:rename-box-outline" class="text-blue-500 text-xl" />
+          <IconifyIcon
+            icon="mdi:rename-box-outline"
+            class="rename-title-icon"
+          />
           <span class="text-base font-semibold">重命名</span>
         </div>
-        <IconifyIcon 
-          icon="mdi:close" 
-          class="text-gray-400 cursor-pointer hover:text-gray-600 text-xl" 
+        <IconifyIcon
+          icon="mdi:close"
+          class="rename-close-icon"
           @click="handleCancel"
         />
       </div>
     </template>
 
-    <div class="p-6">
+    <div class="kb-rename-panel p-6">
       <Input
         v-model:value="newName"
         class="custom-rename-input"
         @press-enter="handleConfirm"
       />
-      
-      <div class="flex justify-end gap-3 mt-8">
+
+      <div class="mt-8 flex justify-end gap-3">
         <Button class="custom-btn-cancel" @click="handleCancel">关闭</Button>
-        <Button type="primary" class="custom-btn-confirm" @click="handleConfirm">确认</Button>
+        <Button
+          type="primary"
+          class="custom-btn-confirm"
+          @click="handleConfirm"
+        >
+          确认
+        </Button>
       </div>
     </div>
   </Modal>
 </template>
 
 <style lang="scss" scoped>
+.kb-rename-panel {
+  --kb-rename-border: hsl(var(--input));
+  --kb-rename-primary: hsl(var(--primary));
+  --kb-rename-foreground: hsl(var(--foreground));
+  --kb-rename-muted: hsl(var(--muted-foreground));
+}
+
+.rename-title-icon {
+  font-size: 20px;
+  color: var(--kb-rename-primary);
+}
+
+.rename-close-icon {
+  font-size: 20px;
+  color: var(--kb-rename-muted);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--kb-rename-foreground);
+  }
+}
+
 .custom-rename-input {
   height: 44px;
   padding: 0 12px;
   font-size: 14px;
-  border: 1px solid #3b82f6; // 蓝色边框
+  border: 1px solid var(--kb-rename-border);
   border-radius: 8px;
-  
-  &:focus, &:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgb(59 130 246 / 10%);
+
+  &:focus,
+  &:hover {
+    border-color: var(--kb-rename-primary);
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.1);
   }
 }
 
@@ -90,13 +124,13 @@ function handleConfirm() {
   height: 36px;
   padding: 0 20px;
   font-weight: 500;
-  color: #374151;
-  border: 1px solid #e5e7eb;
+  color: var(--kb-rename-foreground);
+  border: 1px solid var(--kb-rename-border);
   border-radius: 6px;
-  
+
   &:hover {
-    color: #3b82f6;
-    border-color: #3b82f6;
+    color: var(--kb-rename-primary);
+    border-color: var(--kb-rename-primary);
   }
 }
 
@@ -104,11 +138,11 @@ function handleConfirm() {
   height: 36px;
   padding: 0 20px;
   font-weight: 500;
-  background: #3b82f6;
+  background: var(--kb-rename-primary);
   border-radius: 6px;
-  
+
   &:hover {
-    background: #2563eb;
+    background: hsl(var(--primary) / 0.9);
   }
 }
 </style>

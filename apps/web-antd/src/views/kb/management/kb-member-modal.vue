@@ -16,7 +16,6 @@ import {
   message,
   Popconfirm,
   Select,
-  Space,
   Spin,
 } from 'ant-design-vue';
 
@@ -64,7 +63,7 @@ async function loadUserOptions() {
 // 添加成员
 async function handleAddMember() {
   if (selectedUsers.value.length === 0) return;
-  
+
   adding.value = true;
   try {
     await addKnowledgeBaseMember(kbId.value, selectedUsers.value);
@@ -113,7 +112,7 @@ const [Modal, modalApi] = useVbenModal({
 </script>
 
 <template>
-  <Modal class="w-[600px]">
+  <Modal class="kb-member-modal w-[600px]">
     <div class="p-4">
       <!-- 添加成员区域 -->
       <div class="mb-6 flex gap-2">
@@ -134,10 +133,7 @@ const [Modal, modalApi] = useVbenModal({
 
       <!-- 成员列表 -->
       <Spin :spinning="loading">
-        <List
-          item-layout="horizontal"
-          :data-source="members"
-        >
+        <List item-layout="horizontal" :data-source="members">
           <template #renderItem="{ item }">
             <ListItem>
               <template #actions>
@@ -150,7 +146,9 @@ const [Modal, modalApi] = useVbenModal({
               </template>
               <ListItemMeta :description="item.role">
                 <template #title>
-                  <span class="font-medium">{{ item.realName || item.username }}</span>
+                  <span class="font-medium">{{
+                    item.realName || item.username
+                  }}</span>
                 </template>
                 <template #avatar>
                   <Avatar>
@@ -160,9 +158,7 @@ const [Modal, modalApi] = useVbenModal({
                   </Avatar>
                 </template>
               </ListItemMeta>
-              <div class="text-xs text-gray-500">
-                加入时间: {{ item.joinTime }}
-              </div>
+              <div class="member-time">加入时间: {{ item.joinTime }}</div>
             </ListItem>
           </template>
         </List>
@@ -170,3 +166,14 @@ const [Modal, modalApi] = useVbenModal({
     </div>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.kb-member-modal {
+  --kb-member-muted: hsl(var(--muted-foreground));
+}
+
+.member-time {
+  font-size: 12px;
+  color: var(--kb-member-muted);
+}
+</style>

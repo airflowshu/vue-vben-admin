@@ -146,10 +146,10 @@ function getStatusText(status: string): string {
 // 获取文件状态类名
 function getStatusClass(status: string): string {
   const classMap: Record<string, string> = {
-    pending: 'text-gray-500',
-    uploading: 'text-blue-500',
-    success: 'text-green-500',
-    error: 'text-red-500',
+    pending: 'status-pending',
+    uploading: 'status-uploading',
+    success: 'status-success',
+    error: 'status-error',
   };
   return classMap[status] || '';
 }
@@ -291,7 +291,7 @@ function handleClose() {
               <div class="flex items-center gap-2">
                 <IconifyIcon
                   icon="mdi:file-document-outline"
-                  class="text-lg text-blue-500"
+                  class="upload-status-icon"
                 />
                 <span>{{ record.name }}</span>
               </div>
@@ -302,7 +302,7 @@ function handleClose() {
                   <Progress
                     :percent="record.progress"
                     size="small"
-                    stroke-color="#22c55e"
+                    stroke-color="hsl(var(--success))"
                     style="width: 80px"
                   />
                 </template>
@@ -352,12 +352,22 @@ function handleClose() {
 
 <style lang="scss" scoped>
 .upload-page-overlay {
+  --kb-upload-bg: hsl(var(--background-deep));
+  --kb-upload-card: hsl(var(--card));
+  --kb-upload-border: hsl(var(--border));
+  --kb-upload-foreground: hsl(var(--foreground));
+  --kb-upload-muted: hsl(var(--muted));
+  --kb-upload-muted-foreground: hsl(var(--muted-foreground));
+  --kb-upload-primary: hsl(var(--primary));
+  --kb-upload-success: hsl(var(--success));
+  --kb-upload-danger: hsl(var(--destructive));
+
   position: fixed;
   inset: 0;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  background: #f8fafc;
+  background: var(--kb-upload-bg);
 }
 
 .upload-page-header {
@@ -366,8 +376,8 @@ function handleClose() {
   justify-content: space-between;
   height: 56px;
   padding: 0 24px;
-  background: #fff;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--kb-upload-card);
+  border-bottom: 1px solid var(--kb-upload-border);
 
   .header-left {
     display: flex;
@@ -381,21 +391,21 @@ function handleClose() {
       width: 32px;
       height: 32px;
       padding: 0;
-      color: #64748b;
-      background: #fff;
-      border: 1px solid #e2e8f0;
+      color: var(--kb-upload-muted-foreground);
+      background: var(--kb-upload-card);
+      border: 1px solid var(--kb-upload-border);
       border-radius: 6px;
 
       &:hover {
-        color: #1e293b;
-        background: #f8fafc;
+        color: var(--kb-upload-foreground);
+        background: var(--kb-upload-muted);
       }
     }
 
     .header-title {
       font-size: 16px;
       font-weight: 600;
-      color: #1e293b;
+      color: var(--kb-upload-foreground);
     }
   }
 }
@@ -413,18 +423,18 @@ function handleClose() {
   position: relative;
   width: 100%;
   max-width: 800px;
-  background: #fff;
-  border: 1px dashed #3b82f6;
+  background: var(--kb-upload-card);
+  border: 1px dashed var(--kb-upload-primary);
   border-radius: 12px;
   transition: all 0.3s;
 
   &:hover {
-    background: #f8fafc !important;
-    border-color: #2563eb;
+    background: var(--kb-upload-muted) !important;
+    border-color: var(--kb-upload-primary);
   }
 
   &.dragger-active {
-    border-color: #22c55e;
+    border-color: var(--kb-upload-success);
     border-style: solid;
   }
 
@@ -454,26 +464,26 @@ function handleClose() {
       width: 80px;
       height: 80px;
       margin-bottom: 16px;
-      background: #eff6ff;
+      background: color-mix(in srgb, hsl(var(--primary)), transparent 88%);
       border-radius: 50%;
     }
 
     .upload-icon {
       font-size: 40px;
-      color: #3b82f6;
+      color: var(--kb-upload-primary);
     }
 
     .upload-text {
       margin: 12px 0 8px;
       font-size: 16px;
       font-weight: 500;
-      color: #1e293b;
+      color: var(--kb-upload-foreground);
     }
 
     .upload-hint {
       margin: 2px 0;
       font-size: 12px;
-      color: #64748b;
+      color: var(--kb-upload-muted-foreground);
     }
   }
 
@@ -485,33 +495,40 @@ function handleClose() {
     gap: 12px;
     align-items: center;
     justify-content: center;
-    background: rgb(255 255 255 / 95%);
+    background: color-mix(in srgb, hsl(var(--card)), transparent 5%);
     border-radius: 12px;
 
     .drop-loading-icon {
       font-size: 32px;
-      color: #22c55e;
+      color: var(--kb-upload-success);
     }
 
     p {
       font-size: 14px;
-      color: #64748b;
+      color: var(--kb-upload-muted-foreground);
     }
   }
 }
 
-.spin {
-  animation: spin 1s linear infinite;
+.upload-status-icon {
+  font-size: 18px;
+  color: var(--kb-upload-primary);
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
+.status-pending {
+  color: var(--kb-upload-muted-foreground);
+}
 
-  to {
-    transform: rotate(360deg);
-  }
+.status-uploading {
+  color: var(--kb-upload-primary);
+}
+
+.status-success {
+  color: var(--kb-upload-success);
+}
+
+.status-error {
+  color: var(--kb-upload-danger);
 }
 
 .file-table-wrapper {
@@ -519,8 +536,7 @@ function handleClose() {
   max-width: 800px;
   margin-top: 24px;
   overflow: hidden;
-  background: #fff;
-  border-radius: 12px;
+  background: var(--kb-upload-card);
   box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
 
   :deep(.ant-table) {
@@ -530,13 +546,13 @@ function handleClose() {
   :deep(.ant-table-thead > tr > th) {
     font-size: 13px;
     font-weight: 500;
-    color: #64748b;
-    background: #f8fafc;
+    color: var(--kb-upload-muted-foreground);
+    background: var(--kb-upload-muted);
   }
 
   :deep(.ant-table-tbody > tr > td) {
-    background: #fff;
-    border-bottom: 1px solid #f1f5f9;
+    background: var(--kb-upload-card);
+    border-bottom: 1px solid var(--kb-upload-border);
   }
 }
 
@@ -544,7 +560,7 @@ function handleClose() {
   display: flex;
   justify-content: center;
   padding: 20px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--kb-upload-border);
 
   .ant-btn {
     height: 40px;

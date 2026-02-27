@@ -35,12 +35,12 @@ defineExpose(modalApi);
   <Modal>
     <template #title>
       <div class="flex items-center gap-2">
-        <IconifyIcon icon="mdi:folder" class="text-xl text-orange-400" />
+        <IconifyIcon icon="mdi:folder" class="folder-title-icon" />
         <span class="text-base font-semibold">创建文件夹</span>
       </div>
     </template>
 
-    <div class="p-6">
+    <div class="kb-folder-panel p-6">
       <Input
         v-model:value="folderName"
         placeholder="输入文件夹名称"
@@ -52,15 +52,27 @@ defineExpose(modalApi);
 </template>
 
 <style lang="scss" scoped>
+.kb-folder-panel {
+  --kb-folder-border: hsl(var(--input));
+  --kb-folder-focus: hsl(var(--primary));
+  --kb-folder-focus-shadow: hsl(var(--primary) / 0.1);
+  --kb-folder-icon: hsl(var(--warning));
+}
+
+.folder-title-icon {
+  font-size: 20px;
+  color: var(--kb-folder-icon);
+}
+
 .custom-folder-input {
   height: 40px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--kb-folder-border);
   border-radius: 8px;
 
   &:focus,
   &:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgb(59 130 246 / 10%);
+    border-color: var(--kb-folder-focus);
+    box-shadow: 0 0 0 2px var(--kb-folder-focus-shadow);
   }
 }
 </style>
