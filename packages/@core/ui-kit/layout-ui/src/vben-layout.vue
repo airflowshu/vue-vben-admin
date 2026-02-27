@@ -56,6 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
   sidebarHidden: false,
   sidebarMixedWidth: 80,
   sidebarTheme: 'dark',
+  sidebarThemeSub: 'dark',
   sidebarWidth: 180,
   sideCollapseWidth: 60,
   tabbarEnable: true,
@@ -403,13 +404,10 @@ watch(
 );
 
 {
-  const mouseMove = () => {
-    mouseY.value > headerWrapperHeight.value
-      ? (headerIsHidden.value = true)
-      : (headerIsHidden.value = false);
-  };
+  const HEADER_TRIGGER_DISTANCE = 12;
+
   watch(
-    [() => props.headerMode, () => mouseY.value],
+    [() => props.headerMode, () => mouseY.value, () => headerIsHidden.value],
     () => {
       if (!isHeaderAutoMode.value || isMixedNav.value || isFullContent.value) {
         if (props.headerMode !== 'auto-scroll') {
@@ -417,8 +415,12 @@ watch(
         }
         return;
       }
-      headerIsHidden.value = true;
-      mouseMove();
+
+      const isInTriggerZone = mouseY.value <= HEADER_TRIGGER_DISTANCE;
+      const isInHeaderZone =
+        !headerIsHidden.value && mouseY.value <= headerWrapperHeight.value;
+
+      headerIsHidden.value = !(isInTriggerZone || isInHeaderZone);
     },
     {
       immediate: true,
@@ -501,6 +503,7 @@ const idMainContent = ELEMENT_ID_MAIN_CONTENT;
       :mixed-width="sidebarMixedWidth"
       :show="showSidebar"
       :theme="sidebarTheme"
+      :theme-sub="sidebarThemeSub"
       :width="getSidebarWidth"
       :z-index="sidebarZIndex"
       @leave="() => emit('sideMouseLeave')"
