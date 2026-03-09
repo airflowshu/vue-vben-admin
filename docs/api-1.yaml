@@ -9,18 +9,36 @@ servers:
 tags:
   - name: 部门管理
     description: SysDept - 部门管理
+  - name: 栏目管理
+    description: CmsCategory - CMS栏目管理
   - name: 角色管理
     description: SysRole - 角色管理
+  - name: 系统监控
+    description: 系统监控 - 系统性能监控
+  - name: CMS文件上传
+    description: CMS专用文件上传（公共桶）
+  - name: 文章附件管理
+    description: CmsArticleFile - CMS文章附件管理
   - name: 版本日志
     description: SysVersionLog - 系统版本更新日志
   - name: apiKey管理
     description: AiApiKey - key管理
+  - name: 知识库管理
+    description: 知识库 - 成员/文件/目录
   - name: 操作日志
     description: SysOperLog - 用户操作日志记录
+  - name: 文章管理
+    description: CmsArticle - CMS文章管理
+  - name: 标签管理
+    description: CmsTag - CMS标签管理
   - name: 文件管理
     description: SysFile - 文件管理
   - name: 字典管理
     description: SysDictType - 字典类型管理
+  - name: 短信厂商配置
+    description: Sms4jConfig - 短信厂商配置管理
+  - name: 文章标签关联
+    description: CmsArticleTag - CMS文章标签关联管理
   - name: 菜单管理
     description: SysMenu - 菜单管理
   - name: 权限管理
@@ -336,13 +354,113 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/admin/sms/config/{id}:
+    get:
+      tags:
+        - 短信厂商配置
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSms4jConfig"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 短信厂商配置
+      summary: 更新厂商配置
+      description: 更新短信厂商配置，configId 不可变更。
+      operationId: update_3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sms4jConfig"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 短信厂商配置
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/admin/role/{id}:
     get:
       tags:
         - 角色管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_3
+      operationId: get_4
       parameters:
         - name: id
           in: path
@@ -373,7 +491,7 @@ paths:
         - 角色管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_3
+      operationId: update_4
       parameters:
         - name: id
           in: path
@@ -410,7 +528,7 @@ paths:
         - 角色管理
       summary: Delete by ID
       description: Delete entity by ID.
-      operationId: remove_3
+      operationId: remove_4
       parameters:
         - name: id
           in: path
@@ -442,7 +560,7 @@ paths:
         - 权限管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_4
+      operationId: get_5
       parameters:
         - name: id
           in: path
@@ -473,7 +591,7 @@ paths:
         - 权限管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_4
+      operationId: update_5
       parameters:
         - name: id
           in: path
@@ -510,7 +628,7 @@ paths:
         - 权限管理
       summary: Delete by ID
       description: Delete entity by ID.
-      operationId: remove_4
+      operationId: remove_5
       parameters:
         - name: id
           in: path
@@ -542,7 +660,7 @@ paths:
         - 菜单管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_5
+      operationId: get_6
       parameters:
         - name: id
           in: path
@@ -573,7 +691,7 @@ paths:
         - 菜单管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_5
+      operationId: update_6
       parameters:
         - name: id
           in: path
@@ -610,7 +728,183 @@ paths:
         - 菜单管理
       summary: Delete by ID
       description: Delete entity by ID.
-      operationId: remove_5
+      operationId: remove_6
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/tree/nodes/{nodeId}/rename:
+    put:
+      tags:
+        - 知识库管理
+      summary: 重命名文件/目录
+      operationId: renameNode
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RenameRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/tree/nodes/move:
+    put:
+      tags:
+        - 知识库管理
+      summary: 移动文件/目录
+      operationId: moveNodes
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MoveRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{id}:
+    get:
+      tags:
+        - 知识库管理
+      summary: 知识库详情
+      operationId: get_7
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysKnowledgeBase"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 知识库管理
+      summary: 更新知识库
+      operationId: update_7
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysKnowledgeBase"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 知识库管理
+      summary: 删除知识库
+      operationId: delete
       parameters:
         - name: id
           in: path
@@ -642,7 +936,7 @@ paths:
         - 文件管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_6
+      operationId: get_8
       parameters:
         - name: id
           in: path
@@ -673,7 +967,7 @@ paths:
         - 文件管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_6
+      operationId: update_8
       parameters:
         - name: id
           in: path
@@ -710,7 +1004,7 @@ paths:
         - 文件管理
       summary: 删除文件
       description: 删除文件并清除相关缓存
-      operationId: remove_6
+      operationId: remove_7
       parameters:
         - name: id
           in: path
@@ -742,7 +1036,7 @@ paths:
         - 字典管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_7
+      operationId: get_9
       parameters:
         - name: id
           in: path
@@ -773,7 +1067,7 @@ paths:
         - 字典管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_7
+      operationId: update_9
       parameters:
         - name: id
           in: path
@@ -785,106 +1079,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/SysDictType"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultBoolean"
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-    delete:
-      tags:
-        - 字典管理
-      summary: Delete by ID
-      description: Delete entity by ID.
-      operationId: remove_7
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultBoolean"
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-item/{id}:
-    get:
-      tags:
-        - 字典管理
-      summary: Get by ID
-      description: Get entity details by ID.
-      operationId: get_8
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultSysDictItem"
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-    put:
-      tags:
-        - 字典管理
-      summary: Update by ID
-      description: Update entity by ID. Ignores null values.
-      operationId: update_8
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SysDictItem"
         required: true
       responses:
         "200":
@@ -936,13 +1130,113 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/admin/dict-item/{id}:
+    get:
+      tags:
+        - 字典管理
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_10
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultSysDictItem"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 字典管理
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_10
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDictItem"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 字典管理
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_9
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/admin/dept/{id}:
     get:
       tags:
         - 部门管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_9
+      operationId: get_11
       parameters:
         - name: id
           in: path
@@ -973,7 +1267,7 @@ paths:
         - 部门管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_9
+      operationId: update_11
       parameters:
         - name: id
           in: path
@@ -1010,7 +1304,7 @@ paths:
         - 部门管理
       summary: Delete by ID
       description: Delete entity by ID.
-      operationId: remove_9
+      operationId: remove_10
       parameters:
         - name: id
           in: path
@@ -1042,7 +1336,7 @@ paths:
         - 系统配置
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_10
+      operationId: get_12
       parameters:
         - name: id
           in: path
@@ -1073,7 +1367,7 @@ paths:
         - 系统配置
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_10
+      operationId: update_12
       parameters:
         - name: id
           in: path
@@ -1110,7 +1404,507 @@ paths:
         - 系统配置
       summary: Delete by ID
       description: Delete entity by ID.
-      operationId: remove_10
+      operationId: remove_11
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/tag/{id}:
+    get:
+      tags:
+        - 标签管理
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_13
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultCmsTag"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 标签管理
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_13
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsTag"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 标签管理
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_12
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/category/{id}:
+    get:
+      tags:
+        - 栏目管理
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_14
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultCmsCategory"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 栏目管理
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_14
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsCategory"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 栏目管理
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_13
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/{id}:
+    get:
+      tags:
+        - 文章管理
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_15
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultCmsArticle"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 文章管理
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_15
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsArticle"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 文章管理
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_14
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-tag/{id}:
+    get:
+      tags:
+        - 文章标签关联
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_16
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultCmsArticleTag"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 文章标签关联
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_16
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsArticleTag"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 文章标签关联
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_15
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-file/{id}:
+    get:
+      tags:
+        - 文章附件管理
+      summary: Get by ID
+      description: Get entity details by ID.
+      operationId: get_17
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultCmsArticleFile"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    put:
+      tags:
+        - 文章附件管理
+      summary: Update by ID
+      description: Update entity by ID. Ignores null values.
+      operationId: update_17
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsArticleFile"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 文章附件管理
+      summary: Delete by ID
+      description: Delete entity by ID.
+      operationId: remove_16
       parameters:
         - name: id
           in: path
@@ -1142,7 +1936,7 @@ paths:
         - apiKey管理
       summary: Get by ID
       description: Get entity details by ID.
-      operationId: get_11
+      operationId: get_18
       parameters:
         - name: id
           in: path
@@ -1173,7 +1967,7 @@ paths:
         - apiKey管理
       summary: Update by ID
       description: Update entity by ID. Ignores null values.
-      operationId: update_11
+      operationId: update_18
       parameters:
         - name: id
           in: path
@@ -1210,7 +2004,7 @@ paths:
         - apiKey管理
       summary: Delete by ID
       description: Delete entity by ID.
-      operationId: remove_11
+      operationId: remove_17
       parameters:
         - name: id
           in: path
@@ -2134,13 +2928,299 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/admin/sms/config:
+    post:
+      tags:
+        - 短信厂商配置
+      summary: 新增厂商配置
+      description: 新增短信厂商配置，configId 未填时自动生成。
+      operationId: create_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sms4jConfig"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 短信厂商配置
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/sms/config/page:
+    post:
+      tags:
+        - 短信厂商配置
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_3
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSms4jConfig"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/sms/config/list:
+    post:
+      tags:
+        - 短信厂商配置
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_3
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSms4jConfig"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/sms/config/export:
+    get:
+      tags:
+        - 短信厂商配置
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_3
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - 短信厂商配置
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_3
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/sms/config/batch:
+    post:
+      tags:
+        - 短信厂商配置
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Sms4jConfig"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/admin/role:
     post:
       tags:
         - 角色管理
       summary: Create
       description: Create entity.
-      operationId: create_3
+      operationId: create_4
       requestBody:
         content:
           application/json:
@@ -2171,7 +3251,7 @@ paths:
         - 角色管理
       summary: Batch Delete
       description: Delete entities by IDs.
-      operationId: removeBatch_3
+      operationId: removeBatch_4
       requestBody:
         content:
           application/json:
@@ -2205,7 +3285,7 @@ paths:
         - 角色管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_3
+      operationId: page_4
       requestBody:
         description: Search parameters
         content:
@@ -2259,7 +3339,7 @@ paths:
         - 角色管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_3
+      operationId: list_4
       requestBody:
         description: Search parameters
         content:
@@ -2314,7 +3394,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportGet_3
+      operationId: exportGet_4
       parameters:
         - name: searchDto
           in: query
@@ -2342,7 +3422,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportPost_3
+      operationId: exportPost_4
       requestBody:
         description: Search parameters
         content:
@@ -2392,7 +3472,7 @@ paths:
         - 角色管理
       summary: Batch Create
       description: Batch insert entities.
-      operationId: saveBatch_3
+      operationId: saveBatch_4
       requestBody:
         content:
           application/json:
@@ -2426,7 +3506,7 @@ paths:
         - 权限管理
       summary: Create
       description: Create entity.
-      operationId: create_4
+      operationId: create_5
       requestBody:
         content:
           application/json:
@@ -2457,7 +3537,7 @@ paths:
         - 权限管理
       summary: Batch Delete
       description: Delete entities by IDs.
-      operationId: removeBatch_4
+      operationId: removeBatch_5
       requestBody:
         content:
           application/json:
@@ -2491,7 +3571,7 @@ paths:
         - 权限管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_4
+      operationId: page_5
       requestBody:
         description: Search parameters
         content:
@@ -2545,7 +3625,7 @@ paths:
         - 权限管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_4
+      operationId: list_5
       requestBody:
         description: Search parameters
         content:
@@ -2600,7 +3680,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportGet_4
+      operationId: exportGet_5
       parameters:
         - name: searchDto
           in: query
@@ -2628,7 +3708,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportPost_4
+      operationId: exportPost_5
       requestBody:
         description: Search parameters
         content:
@@ -2678,7 +3758,7 @@ paths:
         - 权限管理
       summary: Batch Create
       description: Batch insert entities.
-      operationId: saveBatch_4
+      operationId: saveBatch_5
       requestBody:
         content:
           application/json:
@@ -2752,7 +3832,7 @@ paths:
         - 操作日志
       summary: 分页查询日志记录
       description: 通用分页查询日志记录，支持跨季度自动分表查询
-      operationId: page_5
+      operationId: page_6
       requestBody:
         description: Search parameters
         content:
@@ -2804,7 +3884,7 @@ paths:
         - 菜单管理
       summary: Create
       description: Create entity.
-      operationId: create_5
+      operationId: create_6
       requestBody:
         content:
           application/json:
@@ -2835,7 +3915,7 @@ paths:
         - 菜单管理
       summary: Batch Delete
       description: Delete entities by IDs.
-      operationId: removeBatch_5
+      operationId: removeBatch_6
       requestBody:
         content:
           application/json:
@@ -2869,7 +3949,7 @@ paths:
         - 菜单管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_6
+      operationId: page_7
       requestBody:
         description: Search parameters
         content:
@@ -2923,7 +4003,7 @@ paths:
         - 菜单管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_5
+      operationId: list_6
       requestBody:
         description: Search parameters
         content:
@@ -2978,7 +4058,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportGet_5
+      operationId: exportGet_6
       parameters:
         - name: searchDto
           in: query
@@ -3006,7 +4086,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportPost_5
+      operationId: exportPost_6
       requestBody:
         description: Search parameters
         content:
@@ -3056,7 +4136,7 @@ paths:
         - 菜单管理
       summary: Batch Create
       description: Batch insert entities.
-      operationId: saveBatch_5
+      operationId: saveBatch_6
       requestBody:
         content:
           application/json:
@@ -3084,13 +4164,225 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb:
+    post:
+      tags:
+        - 知识库管理
+      summary: 创建知识库
+      operationId: create_7
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysKnowledgeBase"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/index:
+    post:
+      tags:
+        - 知识库管理
+      summary: 手动触发知识库索引
+      operationId: index
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultInteger"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/fs/folder:
+    post:
+      tags:
+        - 知识库管理
+      summary: 创建目录
+      operationId: createFolder
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFolderRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/files/upload:
+    post:
+      tags:
+        - 知识库管理
+      summary: 批量上传文件到知识库
+      operationId: uploadFiles
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: files
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              format: binary
+        - name: parentId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListString"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/page:
+    post:
+      tags:
+        - 知识库管理
+      summary: 知识库分页
+      operationId: page_8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultObject"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/list:
+    post:
+      tags:
+        - 知识库管理
+      summary: 知识库列表
+      operationId: list_7
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysKnowledgeBase"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/admin/file:
     post:
       tags:
         - 文件管理
       summary: Create
       description: Create entity.
-      operationId: create_6
+      operationId: create_8
       requestBody:
         content:
           application/json:
@@ -3121,7 +4413,7 @@ paths:
         - 文件管理
       summary: 批量删除文件
       description: 批量删除文件并清除相关缓存
-      operationId: removeBatch_6
+      operationId: removeBatch_7
       requestBody:
         content:
           application/json:
@@ -3208,7 +4500,7 @@ paths:
         - 文件管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_7
+      operationId: page_9
       requestBody:
         description: Search parameters
         content:
@@ -3262,7 +4554,7 @@ paths:
         - 文件管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_6
+      operationId: list_8
       requestBody:
         description: Search parameters
         content:
@@ -3317,7 +4609,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportGet_6
+      operationId: exportGet_7
       parameters:
         - name: searchDto
           in: query
@@ -3345,7 +4637,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportPost_6
+      operationId: exportPost_7
       requestBody:
         description: Search parameters
         content:
@@ -3395,7 +4687,7 @@ paths:
         - 文件管理
       summary: Batch Create
       description: Batch insert entities.
-      operationId: saveBatch_6
+      operationId: saveBatch_7
       requestBody:
         content:
           application/json:
@@ -3429,298 +4721,12 @@ paths:
         - 字典管理
       summary: Create
       description: Create entity.
-      operationId: create_7
+      operationId: create_9
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/SysDictType"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultBoolean"
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-    delete:
-      tags:
-        - 字典管理
-      summary: Batch Delete
-      description: Delete entities by IDs.
-      operationId: removeBatch_7
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultBoolean"
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-type/page:
-    post:
-      tags:
-        - 字典管理
-      summary: Page Query
-      description: Paged query with optional search parameters.
-      operationId: page_8
-      requestBody:
-        description: Search parameters
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SearchDto"
-            example:
-              pageNumber: 1
-              pageSize: 10
-              logic: AND
-              items:
-                - field: status
-                  op: eq
-                  val: 1
-                - logic: OR
-                  children:
-                    - field: type
-                      op: eq
-                      val: A
-                    - field: createTime
-                      op: gt
-                      val: 2026-01-01 00:00:00
-              orders:
-                - column: createTime
-                  asc: false
-                - column: id
-                  asc: true
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultPageSysDictType"
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-type/list:
-    post:
-      tags:
-        - 字典管理
-      summary: List Query
-      description: List all entities matching criteria.
-      operationId: list_7
-      requestBody:
-        description: Search parameters
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SearchDto"
-            example:
-              pageNumber: 1
-              pageSize: 10
-              logic: AND
-              items:
-                - field: status
-                  op: eq
-                  val: 1
-                - logic: OR
-                  children:
-                    - field: type
-                      op: eq
-                      val: A
-                    - field: createTime
-                      op: gt
-                      val: 2026-01-01 00:00:00
-              orders:
-                - column: createTime
-                  asc: false
-                - column: id
-                  asc: true
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultListSysDictType"
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-type/export:
-    get:
-      tags:
-        - 字典管理
-      summary: Export Excel
-      description: Export matching records to Excel. Supports GET/POST and HTTP Range
-        resume.
-      operationId: exportGet_7
-      parameters:
-        - name: searchDto
-          in: query
-          required: true
-          schema:
-            $ref: "#/components/schemas/SearchDto"
-      responses:
-        "200":
-          description: OK
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-    post:
-      tags:
-        - 字典管理
-      summary: Export Excel
-      description: Export matching records to Excel. Supports GET/POST and HTTP Range
-        resume.
-      operationId: exportPost_7
-      requestBody:
-        description: Search parameters
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SearchDto"
-            example:
-              pageNumber: 1
-              pageSize: 10
-              logic: AND
-              items:
-                - field: status
-                  op: eq
-                  val: 1
-                - logic: OR
-                  children:
-                    - field: type
-                      op: eq
-                      val: A
-                    - field: createTime
-                      op: gt
-                      val: 2026-01-01 00:00:00
-              orders:
-                - column: createTime
-                  asc: false
-                - column: id
-                  asc: true
-        required: true
-      responses:
-        "200":
-          description: OK
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-type/batch:
-    post:
-      tags:
-        - 字典管理
-      summary: Batch Create
-      description: Batch insert entities.
-      operationId: saveBatch_7
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/SysDictType"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultBoolean"
-        "401":
-          description: Unauthorized
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-        "403":
-          description: Forbidden
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-item:
-    post:
-      tags:
-        - 字典管理
-      summary: Create
-      description: Create entity.
-      operationId: create_8
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SysDictItem"
         required: true
       responses:
         "200":
@@ -3774,13 +4780,13 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-item/page:
+  /api/admin/dict-type/page:
     post:
       tags:
         - 字典管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_9
+      operationId: page_10
       requestBody:
         description: Search parameters
         content:
@@ -3815,7 +4821,7 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultPageSysDictItem"
+                $ref: "#/components/schemas/ApiResultPageSysDictType"
         "401":
           description: Unauthorized
           content:
@@ -3828,13 +4834,13 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-item/list:
+  /api/admin/dict-type/list:
     post:
       tags:
         - 字典管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_8
+      operationId: list_9
       requestBody:
         description: Search parameters
         content:
@@ -3869,7 +4875,7 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/ApiResultListSysDictItem"
+                $ref: "#/components/schemas/ApiResultListSysDictType"
         "401":
           description: Unauthorized
           content:
@@ -3882,7 +4888,7 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-item/export:
+  /api/admin/dict-type/export:
     get:
       tags:
         - 字典管理
@@ -3961,13 +4967,299 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
-  /api/admin/dict-item/batch:
+  /api/admin/dict-type/batch:
     post:
       tags:
         - 字典管理
       summary: Batch Create
       description: Batch insert entities.
       operationId: saveBatch_8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SysDictType"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/dict-item:
+    post:
+      tags:
+        - 字典管理
+      summary: Create
+      description: Create entity.
+      operationId: create_10
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SysDictItem"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 字典管理
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_9
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/dict-item/page:
+    post:
+      tags:
+        - 字典管理
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_11
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageSysDictItem"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/dict-item/list:
+    post:
+      tags:
+        - 字典管理
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_10
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysDictItem"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/dict-item/export:
+    get:
+      tags:
+        - 字典管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_9
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - 字典管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_9
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/dict-item/batch:
+    post:
+      tags:
+        - 字典管理
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_9
       requestBody:
         content:
           application/json:
@@ -4001,7 +5293,7 @@ paths:
         - 部门管理
       summary: Create
       description: Create entity.
-      operationId: create_9
+      operationId: create_11
       requestBody:
         content:
           application/json:
@@ -4032,7 +5324,7 @@ paths:
         - 部门管理
       summary: Batch Delete
       description: Delete entities by IDs.
-      operationId: removeBatch_9
+      operationId: removeBatch_10
       requestBody:
         content:
           application/json:
@@ -4066,7 +5358,7 @@ paths:
         - 部门管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_10
+      operationId: page_12
       requestBody:
         description: Search parameters
         content:
@@ -4120,7 +5412,7 @@ paths:
         - 部门管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_9
+      operationId: list_11
       requestBody:
         description: Search parameters
         content:
@@ -4175,7 +5467,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportGet_9
+      operationId: exportGet_10
       parameters:
         - name: searchDto
           in: query
@@ -4203,7 +5495,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportPost_9
+      operationId: exportPost_10
       requestBody:
         description: Search parameters
         content:
@@ -4253,7 +5545,7 @@ paths:
         - 部门管理
       summary: Batch Create
       description: Batch insert entities.
-      operationId: saveBatch_9
+      operationId: saveBatch_10
       requestBody:
         content:
           application/json:
@@ -4287,7 +5579,7 @@ paths:
         - 系统配置
       summary: Create
       description: Create entity.
-      operationId: create_10
+      operationId: create_12
       requestBody:
         content:
           application/json:
@@ -4318,7 +5610,7 @@ paths:
         - 系统配置
       summary: Batch Delete
       description: Delete entities by IDs.
-      operationId: removeBatch_10
+      operationId: removeBatch_11
       requestBody:
         content:
           application/json:
@@ -4386,7 +5678,7 @@ paths:
         - 系统配置
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_11
+      operationId: page_13
       requestBody:
         description: Search parameters
         content:
@@ -4440,7 +5732,7 @@ paths:
         - 系统配置
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_10
+      operationId: list_12
       requestBody:
         description: Search parameters
         content:
@@ -4495,7 +5787,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportGet_10
+      operationId: exportGet_11
       parameters:
         - name: searchDto
           in: query
@@ -4523,7 +5815,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportPost_10
+      operationId: exportPost_11
       requestBody:
         description: Search parameters
         content:
@@ -4573,7 +5865,7 @@ paths:
         - 系统配置
       summary: Batch Create
       description: Batch insert entities.
-      operationId: saveBatch_10
+      operationId: saveBatch_11
       requestBody:
         content:
           application/json:
@@ -4601,10 +5893,1624 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/tag:
+    post:
+      tags:
+        - 标签管理
+      summary: Create
+      description: Create entity.
+      operationId: create_13
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsTag"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 标签管理
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_12
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/tag/page:
+    post:
+      tags:
+        - 标签管理
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_14
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageCmsTag"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/tag/list:
+    post:
+      tags:
+        - 标签管理
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_13
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListCmsTag"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/tag/export:
+    get:
+      tags:
+        - 标签管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_12
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - 标签管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_12
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/tag/batch:
+    post:
+      tags:
+        - 标签管理
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_12
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CmsTag"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/file/upload:
+    post:
+      tags:
+        - CMS文件上传
+      summary: CMS文件上传
+      description: 上传CMS文件到公共桶（自动设置bizType=cms, bucket=flexboot4-public）
+      operationId: upload
+      parameters:
+        - name: tenantId
+          in: query
+          description: 租户ID
+          required: false
+          schema:
+            type: string
+            default: "1"
+        - name: bizId
+          in: query
+          description: 业务ID（如文章ID）
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              format: binary
+              description: 要上传的文件
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResultFileObject"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/category:
+    post:
+      tags:
+        - 栏目管理
+      summary: Create
+      description: Create entity.
+      operationId: create_14
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsCategory"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 栏目管理
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_13
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/category/page:
+    post:
+      tags:
+        - 栏目管理
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_15
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageCmsCategory"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/category/list:
+    post:
+      tags:
+        - 栏目管理
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_14
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListCmsCategory"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/category/export:
+    get:
+      tags:
+        - 栏目管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_13
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - 栏目管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_13
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/category/batch:
+    post:
+      tags:
+        - 栏目管理
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_13
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CmsCategory"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article:
+    post:
+      tags:
+        - 文章管理
+      summary: Create
+      description: Create entity.
+      operationId: create_15
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsArticle"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 文章管理
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_14
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/{id}/view:
+    post:
+      tags:
+        - 文章管理
+      summary: 增加浏览量
+      description: 文章浏览量+1
+      operationId: incrementViewCount
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/{id}/submit:
+    post:
+      tags:
+        - 文章管理
+      summary: 提交文章审核
+      description: 将草稿或被驳回的文章提交审核
+      operationId: submitForReview
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/{id}/reject:
+    post:
+      tags:
+        - 文章管理
+      summary: 驳回文章
+      description: 管理员驳回文章
+      operationId: rejectArticle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/{id}/approve:
+    post:
+      tags:
+        - 文章管理
+      summary: 审核通过
+      description: 管理员审核通过文章
+      operationId: approveArticle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/page:
+    post:
+      tags:
+        - 文章管理
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_16
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageCmsArticle"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/list:
+    post:
+      tags:
+        - 文章管理
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_15
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListCmsArticle"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/export:
+    get:
+      tags:
+        - 文章管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_14
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - 文章管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_14
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article/batch:
+    post:
+      tags:
+        - 文章管理
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_14
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CmsArticle"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-tag:
+    post:
+      tags:
+        - 文章标签关联
+      summary: Create
+      description: Create entity.
+      operationId: create_16
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsArticleTag"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 文章标签关联
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_15
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-tag/page:
+    post:
+      tags:
+        - 文章标签关联
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_17
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageCmsArticleTag"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-tag/list:
+    post:
+      tags:
+        - 文章标签关联
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_16
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListCmsArticleTag"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-tag/export:
+    get:
+      tags:
+        - 文章标签关联
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_15
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - 文章标签关联
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_15
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-tag/batch:
+    post:
+      tags:
+        - 文章标签关联
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_15
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CmsArticleTag"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-file:
+    post:
+      tags:
+        - 文章附件管理
+      summary: Create
+      description: Create entity.
+      operationId: create_17
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsArticleFile"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 文章附件管理
+      summary: Batch Delete
+      description: Delete entities by IDs.
+      operationId: removeBatch_16
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-file/page:
+    post:
+      tags:
+        - 文章附件管理
+      summary: Page Query
+      description: Paged query with optional search parameters.
+      operationId: page_18
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultPageCmsArticleFile"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-file/list:
+    post:
+      tags:
+        - 文章附件管理
+      summary: List Query
+      description: List all entities matching criteria.
+      operationId: list_17
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListCmsArticleFile"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-file/export:
+    get:
+      tags:
+        - 文章附件管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportGet_16
+      parameters:
+        - name: searchDto
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/SearchDto"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    post:
+      tags:
+        - 文章附件管理
+      summary: Export Excel
+      description: Export matching records to Excel. Supports GET/POST and HTTP Range
+        resume.
+      operationId: exportPost_16
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDto"
+            example:
+              pageNumber: 1
+              pageSize: 10
+              logic: AND
+              items:
+                - field: status
+                  op: eq
+                  val: 1
+                - logic: OR
+                  children:
+                    - field: type
+                      op: eq
+                      val: A
+                    - field: createTime
+                      op: gt
+                      val: 2026-01-01 00:00:00
+              orders:
+                - column: createTime
+                  asc: false
+                - column: id
+                  asc: true
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/cms/article-file/batch:
+    post:
+      tags:
+        - 文章附件管理
+      summary: Batch Create
+      description: Batch insert entities.
+      operationId: saveBatch_16
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CmsArticleFile"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
   /api/admin/auth/reset-password:
     post:
       tags:
-        - 系统管理
         - 认证管理
         - 5. 重置密码
       summary: Reset Password
@@ -4638,7 +7544,6 @@ paths:
   /api/admin/auth/refresh:
     post:
       tags:
-        - 系统管理
         - 认证管理
         - 3. 刷新token
       summary: Refresh Token
@@ -4666,7 +7571,6 @@ paths:
   /api/admin/auth/logout:
     post:
       tags:
-        - 系统管理
         - 认证管理
         - 2. 用户登出
       summary: User Logout
@@ -4694,7 +7598,6 @@ paths:
   /api/admin/auth/login:
     post:
       tags:
-        - 系统管理
         - 认证管理
         - 1. 用户登录
       summary: User Login
@@ -4728,7 +7631,6 @@ paths:
   /api/admin/auth/forget-password:
     post:
       tags:
-        - 系统管理
         - 认证管理
         - 4. 忘记密码
       summary: Forget Password
@@ -4763,7 +7665,6 @@ paths:
     post:
       tags:
         - 6. 管理员重置密码
-        - 系统管理
         - 认证管理
       summary: Super/Admin Reset User Password
       description: Super/Admin can reset any user's password by user ID.
@@ -4799,7 +7700,7 @@ paths:
         - apiKey管理
       summary: Create
       description: Create entity.
-      operationId: create_11
+      operationId: create_18
       requestBody:
         content:
           application/json:
@@ -4830,7 +7731,7 @@ paths:
         - apiKey管理
       summary: Batch Delete
       description: Delete entities by IDs.
-      operationId: removeBatch_11
+      operationId: removeBatch_17
       requestBody:
         content:
           application/json:
@@ -4864,7 +7765,7 @@ paths:
         - apiKey管理
       summary: Page Query
       description: Paged query with optional search parameters.
-      operationId: page_12
+      operationId: page_19
       requestBody:
         description: Search parameters
         content:
@@ -4918,7 +7819,7 @@ paths:
         - apiKey管理
       summary: List Query
       description: List all entities matching criteria.
-      operationId: list_11
+      operationId: list_18
       requestBody:
         description: Search parameters
         content:
@@ -4973,7 +7874,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportGet_11
+      operationId: exportGet_17
       parameters:
         - name: searchDto
           in: query
@@ -5001,7 +7902,7 @@ paths:
       summary: Export Excel
       description: Export matching records to Excel. Supports GET/POST and HTTP Range
         resume.
-      operationId: exportPost_11
+      operationId: exportPost_17
       requestBody:
         description: Search parameters
         content:
@@ -5051,7 +7952,7 @@ paths:
         - apiKey管理
       summary: Batch Create
       description: Batch insert entities.
-      operationId: saveBatch_11
+      operationId: saveBatch_17
       requestBody:
         content:
           application/json:
@@ -5108,7 +8009,7 @@ paths:
   /api/admin/monitor/stats:
     get:
       tags:
-        - sys-monitor-controller
+        - 系统监控
       operationId: getStats
       responses:
         "200":
@@ -5217,6 +8118,111 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListVueRoute"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/members:
+    get:
+      tags:
+        - 知识库管理
+      summary: 列出知识库成员
+      operationId: listMembers
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListSysKbMember"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+    delete:
+      tags:
+        - 知识库管理
+      summary: 移除知识库成员
+      operationId: removeMembers
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/fs/list:
+    get:
+      tags:
+        - 知识库管理
+      summary: 获取知识库目录层级对应数据
+      operationId: fsList
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: parentId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultListKbFileTree"
         "401":
           description: Unauthorized
           content:
@@ -5378,7 +8384,6 @@ paths:
   /api/admin/auth/codes:
     get:
       tags:
-        - 系统管理
         - 认证管理
         - 7. 获取权限码
       summary: Get User Permission Codes
@@ -5417,6 +8422,42 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/ApiResultListSysUser"
+        "401":
+          description: Unauthorized
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+        "403":
+          description: Forbidden
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultString"
+  /api/admin/kb/{kbId}/fs/delete/{nodeId}:
+    delete:
+      tags:
+        - 知识库管理
+      summary: 删除目录或文件节点
+      operationId: deleteNode
+      parameters:
+        - name: kbId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ApiResultBoolean"
         "401":
           description: Unauthorized
           content:
@@ -5659,64 +8700,91 @@ components:
           title: 备注
         parentId:
           type: string
+          title: 父菜单ID
         path:
           type: string
+          title: 路由路径
         name:
           type: string
+          title: 路由名称
         component:
           type: string
+          title: 组件路径
         redirect:
           type: string
+          title: 重定向地址
         title:
           type: string
+          title: 菜单标题
         icon:
           type: string
+          title: 菜单图标
         orderNo:
           type: integer
           format: int32
+          title: 排序号
         hideMenu:
           type: boolean
+          title: 是否隐藏菜单
         keepAlive:
           type: boolean
+          title: 是否缓存
         activeIcon:
           type: string
+          title: 活跃状态下的图标
         badge:
           type: string
+          title: 徽章
         badgeType:
           type: string
+          title: 徽章类型（dot:圆点, normal:普通）
         badgeVariants:
           type: string
+          title: 徽章变种（primary:主色, error:错误色, success:成功色, warning:警告色）
         link:
           type: string
+          title: 外链地址
         iframeSrc:
           type: string
+          title: iframe链接
         affixTab:
           type: boolean
+          title: 是否固定标签页
         hideChildrenInMenu:
           type: boolean
+          title: 是否在菜单中隐藏子菜单
         hideBreadcrumb:
           type: boolean
+          title: 是否隐藏面包屑
         hideTab:
           type: boolean
+          title: 是否隐藏标签页
         menuVisibleWithForbidden:
           type: boolean
+          title: 403时是否显示菜单
         authority:
           type: string
+          title: 权限角色列表（逗号分隔）
         authCode:
           type: string
+          title: 权限编码（如：sys:user:add）
         type:
           type: string
+          title: 菜单类型（catalog:目录, menu:菜单, button:按钮, embedded:嵌入, link:链接）
         status:
           type: integer
           format: int32
+          title: 状态（0:禁用, 1:启用）
         parent:
           $ref: "#/components/schemas/SysMenu"
           readOnly: true
+          title: 父菜单
         children:
           type: array
           items:
             $ref: "#/components/schemas/SysMenu"
           readOnly: true
+          title: 子菜单列表
     SysRole:
       type: object
       properties:
@@ -5866,6 +8934,85 @@ components:
         roleId:
           type: integer
           format: int64
+    Sms4jConfig:
+      type: object
+      description: 短信厂商配置
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        configName:
+          type: string
+          description: 配置名称，便于管理员识别，如：阿里云-主账号
+        supplierType:
+          type: string
+          description: 厂商类型，如 alibaba / tencent / huawei / jdcloud / cloopen / yunpian 等
+        supplierTypeStr:
+          type: string
+          description: 厂商类型Str，如 阿里巴巴 / 腾讯 / 华为 / 京东云 等
+          readOnly: true
+        configId:
+          type: string
+          description: sms4j 框架内部标识，同一厂商可配置多个，需全局唯一，新增时系统自动生成
+          readOnly: true
+        accessKeyId:
+          type: string
+          description: AccessKeyId / AppId / 账号，敏感信息
+        accessKeySecret:
+          type: string
+          description: AccessKeySecret / AppKey / 密码，敏感信息
+        signature:
+          type: string
+          description: 短信签名，如：【云途商城】
+        templateId:
+          type: string
+          description: 默认短信模板 ID（部分厂商必填）
+        sdkAppId:
+          type: string
+          description: SDK AppId，腾讯云等厂商专用
+        weight:
+          type: integer
+          format: int32
+          description: 负载均衡权重，数值越大被选中的概率越高，默认 1
+          example: 1
+        isDefault:
+          type: integer
+          format: int32
+          description: 是否为默认配置：1-是，0-否
+        extParams:
+          type: string
+          description: 厂商差异化扩展参数，JSON 格式，存储各厂商特有字段
+        status:
+          type: integer
+          format: int32
+          description: 状态：1-启用，0-禁用
+          example: 1
+        statusStr:
+          type: string
+          description: 状态描述
+          readOnly: true
     SysRoleMenu:
       type: object
       properties:
@@ -5898,6 +9045,64 @@ components:
           type: string
         menuId:
           type: string
+    RenameRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    MoveRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        targetParentId:
+          type: string
+    SysKnowledgeBase:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        name:
+          type: string
+          title: 名称
+        description:
+          type: string
+          title: 描述
+        type:
+          type: string
+          title: "类型: public/team/private"
+        ownerId:
+          type: string
+          title: 创建者用户ID
+        status:
+          type: integer
+          format: int32
+          title: 状态
     SysDictItem:
       type: object
       properties:
@@ -6035,6 +9240,285 @@ components:
         statusStr:
           type: string
           description: "状态: 1-启用, 0-禁用"
+    CmsTag:
+      type: object
+      description: CMS标签
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        tagName:
+          type: string
+          title: 标签名称
+        tagColor:
+          type: string
+          title: 标签颜色
+        useCount:
+          type: integer
+          format: int32
+          title: 使用次数
+    CmsCategory:
+      type: object
+      description: CMS栏目
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        parentId:
+          type: string
+          title: 父栏目ID
+        categoryName:
+          type: string
+          title: 栏目名称
+        categoryCode:
+          type: string
+          title: 栏目编码
+        description:
+          type: string
+          title: 栏目描述
+        coverFileId:
+          type: string
+          title: 封面文件ID
+        sortOrder:
+          type: integer
+          format: int32
+          title: 排序号
+        status:
+          type: integer
+          format: int32
+          title: 状态：0-禁用，1-启用
+        coverFile:
+          $ref: "#/components/schemas/SysFile"
+          readOnly: true
+          title: 封面文件对象
+    CmsArticle:
+      type: object
+      description: CMS文章
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        title:
+          type: string
+          title: 文章标题
+        categoryId:
+          type: string
+          title: 栏目ID
+        author:
+          type: string
+          title: 作者
+        coverFileId:
+          type: string
+          title: 封面文件ID
+        summary:
+          type: string
+          title: 文章摘要
+        content:
+          type: string
+          title: 文章内容
+        viewCount:
+          type: integer
+          format: int32
+          title: 浏览次数
+        likeCount:
+          type: integer
+          format: int32
+          title: 点赞次数
+        status:
+          type: string
+          title: 文章状态：DRAFT/PENDING/PUBLISHED/REJECTED
+        publishTime:
+          type: string
+          format: date-time
+          title: 发布时间
+        reviewerId:
+          type: string
+          title: 审核人ID
+        reviewTime:
+          type: string
+          format: date-time
+          title: 审核时间
+        reviewComment:
+          type: string
+          title: 审核意见
+        sortOrder:
+          type: integer
+          format: int32
+          title: 排序号
+        category:
+          $ref: "#/components/schemas/CmsCategory"
+          readOnly: true
+          title: 所属栏目
+        coverFile:
+          $ref: "#/components/schemas/SysFile"
+          readOnly: true
+          title: 封面文件
+        reviewer:
+          $ref: "#/components/schemas/SysUser"
+          readOnly: true
+          title: 审核人
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsTag"
+          readOnly: true
+          title: 标签列表
+    CmsArticleTag:
+      type: object
+      description: CMS文章标签关联
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        articleId:
+          type: string
+          title: 文章ID
+        tagId:
+          type: string
+          title: 标签ID
+        article:
+          $ref: "#/components/schemas/CmsArticle"
+          readOnly: true
+          title: 关联文章
+        tag:
+          $ref: "#/components/schemas/CmsTag"
+          readOnly: true
+          title: 标签对象
+    CmsArticleFile:
+      type: object
+      description: CMS文章附件
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        articleId:
+          type: string
+          title: 文章ID
+        fileId:
+          type: string
+          title: 文件ID
+        sortOrder:
+          type: integer
+          format: int32
+          title: 排序号
+        article:
+          $ref: "#/components/schemas/CmsArticle"
+          readOnly: true
+          title: 关联文章
+        file:
+          $ref: "#/components/schemas/SysFile"
+          readOnly: true
+          title: 文件对象
     AiApiKey:
       type: object
       properties:
@@ -6281,6 +9765,54 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SysUserRole"
+        error:
+          type: string
+    ApiResultPageSms4jConfig:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageSms4jConfig"
+        error:
+          type: string
+    PageSms4jConfig:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/Sms4jConfig"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListSms4jConfig:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Sms4jConfig"
         error:
           type: string
     ApiResultPageSysRole:
@@ -6543,6 +10075,65 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SysMenu"
+        error:
+          type: string
+    ApiResultInteger:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: integer
+          format: int32
+        error:
+          type: string
+    CreateFolderRequest:
+      type: object
+      properties:
+        parentId:
+          type: string
+        name:
+          type: string
+    ApiResultListString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+        error:
+          type: string
+    ApiResultObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data: {}
+        error:
+          type: string
+    ApiResultListSysKnowledgeBase:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysKnowledgeBase"
         error:
           type: string
     ApiResultFileObject:
@@ -6863,6 +10454,251 @@ components:
             $ref: "#/components/schemas/SysConfig"
         error:
           type: string
+    ApiResultPageCmsTag:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageCmsTag"
+        error:
+          type: string
+    PageCmsTag:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsTag"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListCmsTag:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsTag"
+        error:
+          type: string
+    ApiResultPageCmsCategory:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageCmsCategory"
+        error:
+          type: string
+    PageCmsCategory:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsCategory"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListCmsCategory:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsCategory"
+        error:
+          type: string
+    ReviewRequest:
+      type: object
+      properties:
+        reviewComment:
+          type: string
+    ApiResultPageCmsArticle:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageCmsArticle"
+        error:
+          type: string
+    PageCmsArticle:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsArticle"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListCmsArticle:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsArticle"
+        error:
+          type: string
+    ApiResultPageCmsArticleTag:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageCmsArticleTag"
+        error:
+          type: string
+    PageCmsArticleTag:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsArticleTag"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListCmsArticleTag:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsArticleTag"
+        error:
+          type: string
+    ApiResultPageCmsArticleFile:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PageCmsArticleFile"
+        error:
+          type: string
+    PageCmsArticleFile:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsArticleFile"
+        pageNumber:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int64
+        totalPage:
+          type: integer
+          format: int64
+        totalRow:
+          type: integer
+          format: int64
+        optimizeCountQuery:
+          type: boolean
+          writeOnly: true
+    ApiResultListCmsArticleFile:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsArticleFile"
+        error:
+          type: string
     ResetPasswordReq:
       type: object
       properties:
@@ -7036,6 +10872,18 @@ components:
           $ref: "#/components/schemas/SysUserRole"
         error:
           type: string
+    ApiResultSms4jConfig:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/Sms4jConfig"
+        error:
+          type: string
     ApiResultSysRole:
       type: object
       properties:
@@ -7154,6 +11002,130 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/VueRoute"
+    ApiResultListSysKbMember:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SysKbMember"
+        error:
+          type: string
+    SysKbMember:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        kbId:
+          type: string
+          title: 知识库ID
+        userId:
+          type: string
+          title: 用户ID
+    ApiResultListKbFileTree:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/KbFileTree"
+        error:
+          type: string
+    KbFileTree:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          title: 主键id
+        createTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        lastModifyTime:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        createBy:
+          type: string
+          readOnly: true
+          title: 创建人
+        lastModifyBy:
+          type: string
+          readOnly: true
+          title: 更新人
+        remark:
+          type: string
+          title: 备注
+        kbId:
+          type: string
+          title: 知识库ID
+        parentId:
+          type: string
+          title: 父目录ID（null=根目录）
+        name:
+          type: string
+          title: 节点名称
+        type:
+          type: string
+          title: "类型: FOLDER=目录, FILE=文件"
+        fileId:
+          type: string
+          title: 关联的文件ID（type=FILE时）
+        sortOrder:
+          type: integer
+          format: int32
+          title: 排序顺序
+        sysFile:
+          $ref: "#/components/schemas/SysFile"
+          title: 文件对象
+    ApiResultSysKnowledgeBase:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/SysKnowledgeBase"
+        error:
+          type: string
     ApiResultSysFile:
       type: object
       properties:
@@ -7238,18 +11210,7 @@ components:
           $ref: "#/components/schemas/SysConfig"
         error:
           type: string
-    ApiResultObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        data: {}
-        error:
-          type: string
-    ApiResultListString:
+    ApiResultCmsTag:
       type: object
       properties:
         code:
@@ -7258,9 +11219,55 @@ components:
         message:
           type: string
         data:
-          type: array
-          items:
-            type: string
+          $ref: "#/components/schemas/CmsTag"
+        error:
+          type: string
+    ApiResultCmsCategory:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/CmsCategory"
+        error:
+          type: string
+    ApiResultCmsArticle:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/CmsArticle"
+        error:
+          type: string
+    ApiResultCmsArticleTag:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/CmsArticleTag"
+        error:
+          type: string
+    ApiResultCmsArticleFile:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/CmsArticleFile"
         error:
           type: string
     ApiResultAiApiKey:
@@ -7276,21 +11283,34 @@ components:
         error:
           type: string
 x-tagGroups:
-  - name: 系统管理
-    tags:
-      - 认证管理
-      - 用户管理
-      - 部门管理
-      - 角色管理
-      - 菜单管理
-      - 字典管理
-      - 权限管理
-      - 版本日志
-  - name: 运维管理
-    tags:
-      - 操作日志
-      - apiKey管理
-      - 文件管理
-  - name: 知识库
+  - name: 知识库管理
     tags:
       - 知识库管理
+  - name: 短信管理
+    tags:
+      - 短信厂商配置
+  - name: 内容管理
+    tags:
+      - 文章管理
+      - 文章附件管理
+      - 文章标签关联
+      - 栏目管理
+      - CMS文件上传
+      - 标签管理
+  - name: 运维管理
+    tags:
+      - apiKey管理
+      - 系统配置
+      - 系统监控
+      - 操作日志
+      - 文件管理
+  - name: 系统管理
+    tags:
+      - 字典管理
+      - 版本日志
+      - 认证管理
+      - 部门管理
+      - 菜单管理
+      - 角色管理
+      - 权限管理
+      - 用户管理

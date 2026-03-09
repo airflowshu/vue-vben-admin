@@ -40,7 +40,7 @@ const gridOptions: VxeGridProps<DictItem> = {
   },
   toolbarConfig: {
     custom: true,
-    slots: { buttons: 'toolbar-buttons' },
+    slots: { tools: 'toolbar-tools' },
   },
   height: 'auto',
 };
@@ -59,7 +59,9 @@ async function fetchItems() {
   try {
     gridApi.setLoading(true);
     const items = await getDictItemList({
-      logic: 'and',
+      pageNumber: 0,
+      pageSize: 0,
+      logic: 'AND',
       items: [{ field: 'typeId', op: 'eq', val: currentTypeId.value }],
       orders: [{ column: 'orderNo', asc: true }],
     });
@@ -127,7 +129,7 @@ function handleItemSuccess() {
   <Drawer title="字典项管理" class="w-[800px]">
     <div class="flex h-full flex-col">
       <Grid>
-        <template #toolbar-buttons>
+        <template #toolbar-tools>
           <Button type="primary" @click="handleAdd">新增字典项</Button>
         </template>
 

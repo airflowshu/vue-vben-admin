@@ -52,6 +52,61 @@ const CheckboxGroup = defineAsyncComponent(() =>
 const DatePicker = defineAsyncComponent(
   () => import('ant-design-vue/es/date-picker'),
 );
+const ColorPicker = defineComponent({
+  name: 'ColorPicker',
+  inheritAttrs: false,
+  props: {
+    disabled: {
+      default: false,
+      type: Boolean,
+    },
+    showText: {
+      default: true,
+      type: Boolean,
+    },
+    value: {
+      default: '',
+      type: String,
+    },
+  },
+  emits: ['update:value'],
+  setup: (props, { attrs, emit }) => {
+    const safeColor = computed(() => {
+      const color = props.value;
+      return /^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(color) ? color : '#1677ff';
+    });
+
+    const updateValue = (value: string) => {
+      emit('update:value', value.slice(0, 20));
+    };
+
+    return () =>
+      h('div', { class: 'flex items-center gap-2' }, [
+        h('input', {
+          disabled: props.disabled,
+          onInput: (event: Event) => {
+            updateValue((event.target as HTMLInputElement).value);
+          },
+          type: 'color',
+          value: safeColor.value,
+        }),
+        props.showText
+          ? h('input', {
+              class:
+                'h-8 w-full rounded-md border border-[var(--ant-color-border)] px-3 outline-none',
+              disabled: props.disabled,
+              maxlength: 20,
+              onInput: (event: Event) => {
+                updateValue((event.target as HTMLInputElement).value);
+              },
+              placeholder: String(attrs.placeholder ?? '#1677ff'),
+              type: 'text',
+              value: props.value,
+            })
+          : null,
+      ]);
+  },
+});
 const Divider = defineAsyncComponent(() => import('ant-design-vue/es/divider'));
 const Input = defineAsyncComponent(() => import('ant-design-vue/es/input'));
 const InputNumber = defineAsyncComponent(
@@ -491,6 +546,7 @@ export type ComponentType =
   | 'Cascader'
   | 'Checkbox'
   | 'CheckboxGroup'
+  | 'ColorPicker'
   | 'DatePicker'
   | 'DefaultButton'
   | 'Divider'
@@ -544,6 +600,7 @@ async function initComponentAdapter() {
     Cascader,
     Checkbox,
     CheckboxGroup,
+    ColorPicker,
     DatePicker,
     // 自定义默认按钮
     DefaultButton: (props, { attrs, slots }) => {

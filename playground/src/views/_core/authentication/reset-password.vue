@@ -20,8 +20,8 @@ const router = useRouter();
 const loading = ref(false);
 
 // 从 URL 获取 token 和 email 参数
-const token = computed(() => route.query.token as string || '');
-const email = computed(() => route.query.email as string || '');
+const token = computed(() => (route.query.token as string) || '');
+const email = computed(() => (route.query.email as string) || '');
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
