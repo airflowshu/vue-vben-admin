@@ -153,11 +153,6 @@ function refreshList() {
 }
 
 // 知识库类型标签颜色
-const typeColors: Record<string, string> = {
-  public: 'blue',
-  team: 'purple',
-  private: 'orange',
-};
 
 // 知识库类型标签文本
 const typeLabels: Record<string, string> = {
@@ -172,10 +167,6 @@ const typeIcons: Record<string, string> = {
 };
 
 // 状态标签颜色
-const statusColors: Record<number, string> = {
-  0: 'error',
-  1: 'success',
-};
 
 // 状态标签文本
 const statusLabels: Record<number, string> = {
@@ -293,7 +284,10 @@ onMounted(() => {
                 <Tag class="type-tag">
                   {{ typeLabels[kb.type] }}
                 </Tag>
-                <Tag :class="['status-tag', kb.status === 1 ? 'status-success' : 'status-error']">
+                <Tag
+                  class="status-tag"
+                  :class="[kb.status === 1 ? 'status-success' : 'status-error']"
+                >
                   {{ statusLabels[kb.status] }}
                 </Tag>
               </div>
@@ -389,11 +383,31 @@ onMounted(() => {
   --kb-input-focus: hsl(var(--primary));
   --kb-input-shadow: 0 2px 8px rgb(0 0 0 / 2%);
   --kb-card-foreground: hsl(var(--primary-foreground));
-  --kb-card-muted: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 20%);
-  --kb-card-strong: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 10%);
-  --kb-card-tag-bg: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 75%);
-  --kb-card-divider: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 85%);
-  --kb-card-action-hover: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 80%);
+  --kb-card-muted: color-mix(
+    in srgb,
+    hsl(var(--primary-foreground)),
+    transparent 20%
+  );
+  --kb-card-strong: color-mix(
+    in srgb,
+    hsl(var(--primary-foreground)),
+    transparent 10%
+  );
+  --kb-card-tag-bg: color-mix(
+    in srgb,
+    hsl(var(--primary-foreground)),
+    transparent 75%
+  );
+  --kb-card-divider: color-mix(
+    in srgb,
+    hsl(var(--primary-foreground)),
+    transparent 85%
+  );
+  --kb-card-action-hover: color-mix(
+    in srgb,
+    hsl(var(--primary-foreground)),
+    transparent 80%
+  );
   --kb-card-shadow-hover: 0 20px 40px rgb(0 0 0 / 12%);
 
   min-height: 100%;
@@ -466,7 +480,7 @@ onMounted(() => {
     &:hover,
     &.ant-input-affix-wrapper-focused {
       border-color: var(--kb-input-focus);
-      box-shadow: 0 0 0 2px hsl(var(--primary) / 0.1);
+      box-shadow: 0 0 0 2px hsl(var(--primary) / 10%);
     }
 
     .ant-input-prefix {
@@ -517,10 +531,15 @@ onMounted(() => {
   justify-content: center;
   width: 90px;
   height: 90px;
-  background: color-mix(in srgb, hsl(var(--primary-foreground)), transparent 76%);
+  background: color-mix(
+    in srgb,
+    hsl(var(--primary-foreground)),
+    transparent 76%
+  );
   border-radius: 24px;
   box-shadow:
-    inset 0 0 10px color-mix(in srgb, hsl(var(--primary-foreground)), transparent 65%),
+    inset 0 0 10px
+      color-mix(in srgb, hsl(var(--primary-foreground)), transparent 65%),
     0 8px 18px rgb(0 0 0 / 14%);
 }
 

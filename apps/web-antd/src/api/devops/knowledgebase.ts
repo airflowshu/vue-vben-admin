@@ -186,6 +186,7 @@ export interface KbFileItem {
   parentId?: null | string;
   name?: string;
   fileName?: string;
+  type?: 'FILE' | 'FOLDER';
   isFolder: number;
   fileSize?: number;
   fileExt?: null | string;
@@ -210,6 +211,7 @@ export interface KbFileItem {
   tokenEstimate?: null | string;
   version?: null | string;
   kbId?: string;
+  sysFile?: Partial<KbFileItem>;
 }
 
 /**
@@ -319,28 +321,32 @@ export function uploadFiles(kbId: string, files: File[], parentId?: string) {
   if (parentId) {
     formData.append('parentId', parentId);
   }
-  return requestClient.post<string[]>(`/admin/kb/${kbId}/files/upload`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  return requestClient.post<string[]>(
+    `/admin/kb/${kbId}/files/upload`,
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
+  );
 }
 
 /**
  * 目录树节点类型
  */
-export type TreeNodeType = 'folder' | 'file';
+export type TreeNodeType = 'file' | 'folder';
 
 /**
  * 目录树节点
  */
 export interface KbTreeNode {
   id: string;
-  parentId?: string | null;
+  parentId?: null | string;
   name: string;
   type: TreeNodeType;
   children?: KbTreeNode[];
   isLeaf?: boolean;
   expanded?: boolean;
-  fileExt?: string | null;
+  fileExt?: null | string;
   fileSize?: number;
   aiStatus?: string;
   createTime?: string;
@@ -399,10 +405,10 @@ export function renameKbTreeNode(kbId: string, id: string, name: string) {
 export interface KbFileListItem {
   id: string;
   kbId: string;
-  parentId: string | null;
+  parentId: null | string;
   name: string;
   type: 'FILE' | 'FOLDER';
-  fileId?: string | null;
+  fileId?: null | string;
   sortOrder: number;
   delFlag: number;
 }
@@ -411,10 +417,7 @@ export interface KbFileListItem {
  * 获取文件列表
  */
 export function getKbFileList(kbId: string, parentId?: string) {
-  return requestClient.get<KbFileListItem[]>(
-    `/admin/kb/${kbId}/file-list`,
-    {
-      params: { parentId },
-    },
-  );
+  return requestClient.get<KbFileListItem[]>(`/admin/kb/${kbId}/file-list`, {
+    params: { parentId },
+  });
 }

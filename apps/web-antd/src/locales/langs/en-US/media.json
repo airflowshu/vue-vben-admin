@@ -1,0 +1,25 @@
+{
+  "title": "Video Center",
+  "server": {
+    "title": "Streaming Server",
+    "test": "Test Stream"
+  },
+  "gateway": {
+    "title": "Video Gateway",
+    "reload": "Reload Gateway"
+  },
+  "device": {
+    "title": "Video Device",
+    "live": "Live Playback",
+    "playback": "Recording Playback",
+    "ptz": "PTZ Control"
+  },
+  "screen": {
+    "title": "Screen Display",
+    "save": "Save Layout"
+  },
+  "cascade": {
+    "title": "GB Cascade",
+    "bind": "Cascade Bind"
+  }
+}

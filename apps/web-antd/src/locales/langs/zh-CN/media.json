@@ -1,0 +1,25 @@
+{
+  "title": "视频中心",
+  "server": {
+    "title": "流媒体服务",
+    "test": "测试流媒体"
+  },
+  "gateway": {
+    "title": "视频网关",
+    "reload": "重载网关"
+  },
+  "device": {
+    "title": "视频设备",
+    "live": "实时播放",
+    "playback": "录像回放",
+    "ptz": "云台控制"
+  },
+  "screen": {
+    "title": "分屏展示",
+    "save": "保存分屏"
+  },
+  "cascade": {
+    "title": "国标级联",
+    "bind": "级联绑定"
+  }
+}

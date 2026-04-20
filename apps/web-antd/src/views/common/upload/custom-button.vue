@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, ref } from 'vue';
+import { ref } from 'vue';
 
 import {
   CameraOutlined,
@@ -7,7 +7,6 @@ import {
   UploadOutlined,
 } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
-
 import Upload from 'ant-design-vue/es/upload';
 
 const fileList = ref<any[]>([]);
@@ -24,19 +23,6 @@ const handleChange = (info: any) => {
 };
 
 // 自定义上传按钮组件
-const UploadButton = (props: { loading: boolean }) => {
-  return h(
-    'div',
-    {
-      class: 'custom-upload-btn',
-    },
-    [
-      props.loading
-        ? h(CloudUploadOutlined, { spin: true, style: { fontSize: '24px' } })
-        : h(CameraOutlined, { style: { fontSize: '24px' } }),
-    ],
-  );
-};
 </script>
 
 <template>
@@ -88,9 +74,7 @@ const UploadButton = (props: { loading: boolean }) => {
         action="https://www.mocky.io/v2/5cc8019a300000980a055e76"
         @change="handleChange"
       >
-        <div
-          class="custom-upload-area"
-        >
+        <div class="custom-upload-area">
           <CloudUploadOutlined style="font-size: 48px; color: #1890ff" />
           <p class="mt-2">点击或拖拽文件到此区域上传</p>
         </div>

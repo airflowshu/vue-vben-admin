@@ -1,0 +1,21 @@
+{
+  "title": "内容管理",
+  "category": {
+    "title": "栏目管理"
+  },
+  "article": {
+    "title": "文章管理",
+    "review": "文章审核"
+  },
+  "tag": {
+    "title": "标签管理"
+  },
+  "articleFile": {
+    "title": "文章附件"
+  },
+  "template": {
+    "title": "模板管理",
+    "save": "模板保存",
+    "publish": "模板发布"
+  }
+}

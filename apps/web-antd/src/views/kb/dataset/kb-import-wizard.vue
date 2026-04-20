@@ -1,8 +1,22 @@
 <script lang="ts" setup>
-import { ref, reactive, computed, watch } from 'vue';
-import { message } from 'ant-design-vue';
-import { Steps, Step, Button, Upload, Table, Checkbox, CheckboxGroup, Select, InputNumber, Tooltip, Progress } from 'ant-design-vue';
+import { computed, reactive, ref, watch } from 'vue';
+
 import { IconifyIcon } from '@vben/icons';
+
+import {
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  InputNumber,
+  message,
+  Progress,
+  Select,
+  Step,
+  Steps,
+  Table,
+  Tooltip,
+  Upload,
+} from 'ant-design-vue';
 
 import { uploadFile } from '#/api/devops/knowledgebase';
 
@@ -11,7 +25,7 @@ interface UploadFile {
   name: string;
   size: number;
   progress: number;
-  status: 'uploading' | 'success' | 'error';
+  status: 'error' | 'success' | 'uploading';
   rawFile?: File;
   error?: string;
 }
@@ -24,7 +38,6 @@ const props = defineProps<{
 const emit = defineEmits(['close', 'success']);
 
 const currentStep = ref(0);
-const loading = ref(false);
 const uploading = ref(false);
 
 // Step 1: 文件选择
@@ -40,13 +53,14 @@ const config = reactive({
     chunkCondition: 'length',
     chunkValue: 1000,
     indexing: ['title'],
-    paramMode: 'default'
-  }
+    paramMode: 'default',
+  },
 });
 
 // Step 3: 数据预览 (暂用模拟数据)
 const previewFiles = ref<UploadFile[]>([]);
 const previewContent = ref('');
+const activePreviewFileId = computed(() => previewFiles.value[0]?.id ?? '');
 
 // Step 4: 确认上传
 const finalFiles = computed(() => selectedFiles.value);
@@ -55,7 +69,7 @@ const steps = [
   { title: '选择文件' },
   { title: '参数设置' },
   { title: '数据预览' },
-  { title: '确认上传' }
+  { title: '确认上传' },
 ];
 
 // 格式化文件大小
@@ -64,7 +78,7 @@ function formatFileSize(bytes: number): string {
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
 }
 
 // 文件选择处理
@@ -99,9 +113,10 @@ function removeFile(id: string) {
 watch(currentStep, (step) => {
   if (step === 2) {
     previewFiles.value = selectedFiles.value.map((f) => ({ ...f }));
-    previewContent.value = selectedFiles.value.length > 0
-      ? `已选择 ${selectedFiles.value.length} 个文件\n\n文件列表：\n${selectedFiles.value.map((f) => `- ${f.name} (${formatFileSize(f.size)})`).join('\n')}`
-      : '';
+    previewContent.value =
+      selectedFiles.value.length > 0
+        ? `已选择 ${selectedFiles.value.length} 个文件\n\n文件列表：\n${selectedFiles.value.map((f) => `- ${f.name} (${formatFileSize(f.size)})`).join('\n')}`
+        : '';
   }
 });
 
@@ -139,7 +154,7 @@ async function handleStartUpload() {
             parentId: props.parentId,
             bizType: 'kb_dataset',
           },
-          file.rawFile!
+          file.rawFile!,
         );
         file.status = 'success';
         file.progress = 100;
@@ -152,7 +167,9 @@ async function handleStartUpload() {
     }
 
     // 检查是否全部成功
-    const successCount = selectedFiles.value.filter((f) => f.status === 'success').length;
+    const successCount = selectedFiles.value.filter(
+      (f) => f.status === 'success',
+    ).length;
 
     if (successCount > 0) {
       message.success(`成功上传 ${successCount} 个文件`);
@@ -196,7 +213,9 @@ async function handleStartUpload() {
           <div class="dragger-inner">
             <IconifyIcon icon="mdi:cloud-upload-outline" class="upload-icon" />
             <p class="upload-text">点击或拖动文件到此处上传</p>
-            <p class="upload-hint">支持 .txt, .docx, .csv, .xlsx, .pdf, .md, .html, .pptx 类型文件</p>
+            <p class="upload-hint">
+              支持 .txt, .docx, .csv, .xlsx, .pdf, .md, .html, .pptx 类型文件
+            </p>
             <p class="upload-hint">最多支持 15 个文件，单个文件最大 100 MB</p>
           </div>
         </Upload.Dragger>
@@ -208,21 +227,30 @@ async function handleStartUpload() {
               { title: '文件名', dataIndex: 'name', key: 'name' },
               { title: '文件上传进度', dataIndex: 'progress', key: 'progress' },
               { title: '文件大小', dataIndex: 'size', key: 'size' },
-              { title: '操作', key: 'action', width: 80 }
+              { title: '操作', key: 'action', width: 80 },
             ]"
             :data-source="selectedFiles"
           >
             <template #bodyCell="{ column, record }">
               <template v-if="column.key === 'name'">
                 <div class="flex items-center gap-2">
-                  <IconifyIcon icon="mdi:file-document-outline" class="wizard-primary-icon" />
+                  <IconifyIcon
+                    icon="mdi:file-document-outline"
+                    class="wizard-primary-icon"
+                  />
                   <span>{{ record.name }}</span>
                 </div>
               </template>
               <template v-else-if="column.key === 'progress'">
                 <Progress
                   :percent="record.progress"
-                  :status="record.status === 'error' ? 'exception' : record.status === 'success' ? 'success' : 'active'"
+                  :status="
+                    record.status === 'error'
+                      ? 'exception'
+                      : record.status === 'success'
+                        ? 'success'
+                        : 'active'
+                  "
                   size="small"
                   stroke-color="hsl(var(--success))"
                 />
@@ -231,7 +259,12 @@ async function handleStartUpload() {
                 {{ formatFileSize(record.size) }}
               </template>
               <template v-else-if="column.key === 'action'">
-                <Button type="text" size="small" danger @click="removeFile(record.id)">
+                <Button
+                  type="text"
+                  size="small"
+                  danger
+                  @click="removeFile(record.id)"
+                >
                   <IconifyIcon icon="mdi:trash-can-outline" />
                 </Button>
               </template>
@@ -257,9 +290,12 @@ async function handleStartUpload() {
           <h3 class="section-title">文件解析设置</h3>
           <div class="config-card active">
             <Checkbox v-model:checked="config.parsing.pdfEnhanced">
-              <span class="font-medium ml-2">PDF增强解析</span>
+              <span class="ml-2 font-medium">PDF增强解析</span>
               <Tooltip title="对PDF中的表格、公式等进行增强识别">
-                <IconifyIcon icon="mdi:help-circle-outline" class="ml-1 wizard-muted-icon" />
+                <IconifyIcon
+                  icon="mdi:help-circle-outline"
+                  class="wizard-muted-icon ml-1"
+                />
               </Tooltip>
             </Checkbox>
             <Tag color="blue" class="ml-auto">1积分/页</Tag>
@@ -268,7 +304,7 @@ async function handleStartUpload() {
 
         <div class="config-section mt-8">
           <h3 class="section-title">数据处理方式设置</h3>
-          <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="mb-6 grid grid-cols-2 gap-4">
             <div
               class="mode-card"
               :class="{ active: config.processing.mode === 'chunk' }"
@@ -277,7 +313,11 @@ async function handleStartUpload() {
               <div class="mode-radio"><div class="radio-inner"></div></div>
               <div class="mode-info">
                 <div class="mode-name">
-                  分块存储 <IconifyIcon icon="mdi:help-circle-outline" class="wizard-muted-icon" />
+                  分块存储
+                  <IconifyIcon
+                    icon="mdi:help-circle-outline"
+                    class="wizard-muted-icon"
+                  />
                 </div>
               </div>
             </div>
@@ -289,19 +329,35 @@ async function handleStartUpload() {
               <div class="mode-radio"><div class="radio-inner"></div></div>
               <div class="mode-info">
                 <div class="mode-name">
-                  问答对提取 <IconifyIcon icon="mdi:help-circle-outline" class="wizard-muted-icon" />
+                  问答对提取
+                  <IconifyIcon
+                    icon="mdi:help-circle-outline"
+                    class="wizard-muted-icon"
+                  />
                 </div>
               </div>
             </div>
           </div>
 
           <div class="config-item mb-6">
-            <div class="item-label">分块条件 <IconifyIcon icon="mdi:help-circle-outline" class="wizard-muted-icon" /></div>
+            <div class="item-label">
+              分块条件
+              <IconifyIcon
+                icon="mdi:help-circle-outline"
+                class="wizard-muted-icon"
+              />
+            </div>
             <div class="flex gap-2">
-              <Select v-model:value="config.processing.chunkCondition" style="width: 200px">
+              <Select
+                v-model:value="config.processing.chunkCondition"
+                style="width: 200px"
+              >
                 <Select.Option value="length">原文长度大于</Select.Option>
               </Select>
-              <InputNumber v-model:value="config.processing.chunkValue" style="width: 120px" />
+              <InputNumber
+                v-model:value="config.processing.chunkValue"
+                style="width: 120px"
+              />
             </div>
           </div>
 
@@ -310,13 +366,25 @@ async function handleStartUpload() {
             <CheckboxGroup v-model:value="config.processing.indexing">
               <div class="flex gap-6">
                 <Checkbox value="title">
-                  将标题加入索引 <IconifyIcon icon="mdi:help-circle-outline" class="wizard-muted-icon" />
+                  将标题加入索引
+                  <IconifyIcon
+                    icon="mdi:help-circle-outline"
+                    class="wizard-muted-icon"
+                  />
                 </Checkbox>
                 <Checkbox value="auto">
-                  自动生成补充索引 <IconifyIcon icon="mdi:help-circle-outline" class="wizard-muted-icon" />
+                  自动生成补充索引
+                  <IconifyIcon
+                    icon="mdi:help-circle-outline"
+                    class="wizard-muted-icon"
+                  />
                 </Checkbox>
                 <Checkbox value="image">
-                  图片自动索引 <IconifyIcon icon="mdi:help-circle-outline" class="wizard-muted-icon" />
+                  图片自动索引
+                  <IconifyIcon
+                    icon="mdi:help-circle-outline"
+                    class="wizard-muted-icon"
+                  />
                 </Checkbox>
               </div>
             </CheckboxGroup>
@@ -352,7 +420,9 @@ async function handleStartUpload() {
         </div>
 
         <div class="wizard-footer-simple">
-          <Button type="primary" class="next-btn-small" @click="next">下一步</Button>
+          <Button type="primary" class="next-btn-small" @click="next">
+            下一步
+          </Button>
         </div>
       </div>
 
@@ -366,9 +436,12 @@ async function handleStartUpload() {
                 v-for="file in previewFiles"
                 :key="file.id"
                 class="preview-file-item"
-                :class="{ active: file.active }"
+                :class="{ active: file.id === activePreviewFileId }"
               >
-                <IconifyIcon icon="mdi:file-document-outline" class="wizard-primary-icon" />
+                <IconifyIcon
+                  icon="mdi:file-document-outline"
+                  class="wizard-primary-icon"
+                />
                 <span class="truncate">{{ file.name }}</span>
               </div>
             </div>
@@ -384,7 +457,9 @@ async function handleStartUpload() {
           </div>
         </div>
         <div class="wizard-footer-simple">
-          <Button type="primary" class="next-btn-small" @click="next">下一步</Button>
+          <Button type="primary" class="next-btn-small" @click="next">
+            下一步
+          </Button>
         </div>
       </div>
 
@@ -396,14 +471,17 @@ async function handleStartUpload() {
             :columns="[
               { title: '来源名', dataIndex: 'name', key: 'name' },
               { title: '状态', dataIndex: 'status', key: 'status' },
-              { title: '操作', key: 'action', width: 80 }
+              { title: '操作', key: 'action', width: 80 },
             ]"
             :data-source="finalFiles"
           >
             <template #bodyCell="{ column, record }">
               <template v-if="column.key === 'name'">
                 <div class="flex items-center gap-2">
-                  <IconifyIcon icon="mdi:file-document-outline" class="wizard-primary-icon" />
+                  <IconifyIcon
+                    icon="mdi:file-document-outline"
+                    class="wizard-primary-icon"
+                  />
                   <span>{{ record.name }}</span>
                 </div>
               </template>
@@ -412,12 +490,18 @@ async function handleStartUpload() {
                   :class="{
                     'status-uploading': record.status === 'uploading',
                     'status-success': record.status === 'success',
-                    'status-error': record.status === 'error'
+                    'status-error': record.status === 'error',
                   }"
                 >
-                  <template v-if="record.status === 'uploading'">上传中</template>
-                  <template v-else-if="record.status === 'success'">上传成功</template>
-                  <template v-else-if="record.status === 'error'">{{ record.error || '上传失败' }}</template>
+                  <template v-if="record.status === 'uploading'"
+                    >上传中</template
+                  >
+                  <template v-else-if="record.status === 'success'"
+                    >上传成功</template
+                  >
+                  <template v-else-if="record.status === 'error'">{{
+                    record.error || '上传失败'
+                  }}</template>
                 </span>
               </template>
               <template v-else-if="column.key === 'action'">
@@ -428,7 +512,10 @@ async function handleStartUpload() {
                   :disabled="record.status === 'uploading'"
                   @click="removeFile(record.id)"
                 >
-                  <IconifyIcon icon="mdi:trash-can-outline" class="wizard-muted-icon" />
+                  <IconifyIcon
+                    icon="mdi:trash-can-outline"
+                    class="wizard-muted-icon"
+                  />
                 </Button>
               </template>
             </template>
@@ -632,12 +719,13 @@ async function handleStartUpload() {
   border-radius: 8px;
 
   &.active {
-    background: hsl(var(--primary) / 0.08);
+    background: hsl(var(--primary) / 8%);
     border-color: var(--kb-wizard-primary);
   }
 }
 
-.mode-card, .param-card {
+.mode-card,
+.param-card {
   display: flex;
   gap: 12px;
   align-items: center;
@@ -681,7 +769,8 @@ async function handleStartUpload() {
   }
 }
 
-.mode-name, .param-name {
+.mode-name,
+.param-name {
   display: flex;
   gap: 4px;
   align-items: center;
@@ -768,7 +857,6 @@ async function handleStartUpload() {
     white-space: pre-wrap;
   }
 }
-
 
 .wizard-primary-icon {
   font-size: 18px;

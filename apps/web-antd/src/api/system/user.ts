@@ -56,6 +56,11 @@ export interface PageResult<T> {
   records: T[];
 }
 
+export interface DownloadBlobResponse {
+  data: Blob;
+  headers?: Record<string, string>;
+}
+
 /**
  * 获取用户分页列表
  */
@@ -134,21 +139,20 @@ export function assignUserRole(userId: string, roleIds: string[]) {
 }
 
 /**
- * 重置用户密码
+ * 管理员触发用户重置密码邮件
  */
-export function resetPasswordApi(data: {
-  newPassword: string;
-  userId?: string;
-}) {
-  return requestClient.post('/admin/auth/reset-password', data);
+export function adminResetPasswordApi(data: { userId: string }) {
+  return requestClient.post('/admin/auth/admin/reset-password', data);
 }
 
 /**
  * 导出用户列表
  */
-export function exportUsers(params: SearchRequest): Promise<Blob> {
+export function exportUsers(
+  params: SearchRequest,
+): Promise<DownloadBlobResponse> {
   return requestClient.download('/admin/user/export', {
     method: 'POST',
     data: params,
-  });
+  }) as Promise<DownloadBlobResponse>;
 }

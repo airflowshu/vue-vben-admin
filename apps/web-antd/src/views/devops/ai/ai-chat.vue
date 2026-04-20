@@ -55,9 +55,9 @@ const fetchKnowledgeBases = async () => {
     const responseData = res.data;
     const list = Array.isArray(responseData?.data)
       ? responseData.data
-      : (Array.isArray(responseData)
+      : Array.isArray(responseData)
         ? responseData
-        : []);
+        : [];
     if (Array.isArray(list)) {
       knowledgeBaseList.value = list;
     }
@@ -91,10 +91,12 @@ const handleFileChange = (event: Event) => {
   const input = event.target as HTMLInputElement;
   const files = input.files;
   if (files && files.length > 0) {
-    const file = files[0];
-    message.success(`已选择文件: ${file.name}`);
-    // TODO: 实现实际上传逻辑
-    console.log('上传文件:', file.name);
+    const file = files.item(0);
+    if (file) {
+      message.success(`Selected file: ${file.name}`);
+      // TODO: implement actual upload logic
+      console.log('Upload file:', file.name);
+    }
   }
   // 清空 input，允许重复选择同一文件
   input.value = '';
@@ -519,6 +521,28 @@ onMounted(async () => {
   }
 }
 
+@media (max-width: 768px) {
+  .chat-messages {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .message-bubble {
+    max-width: 90%;
+    padding: 12px 16px;
+  }
+
+  .message-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .chat-input-wrapper {
+    padding: 12px 16px 16px;
+  }
+}
+
 .ai-chat-container {
   --chat-bg: hsl(var(--card));
   --chat-header-bg: hsl(var(--card));
@@ -538,7 +562,8 @@ onMounted(async () => {
   --chat-user-bubble-from: hsl(var(--primary));
   --chat-user-bubble-to: hsl(var(--primary));
   --chat-user-foreground: hsl(var(--primary-foreground));
-  --chat-user-shadow: 0 4px 15px color-mix(in srgb, hsl(var(--primary)), transparent 70%);
+  --chat-user-shadow: 0 4px 15px
+    color-mix(in srgb, hsl(var(--primary)), transparent 70%);
   --chat-ai-bubble-bg: hsl(var(--muted));
   --chat-ai-foreground: hsl(var(--foreground));
   --chat-ai-avatar-from: hsl(var(--success));
@@ -687,9 +712,9 @@ onMounted(async () => {
 
   display: flex;
   gap: 16px;
-  animation: fadeIn 0.3s ease;
   width: 100%;
   max-width: none;
+  animation: fadeIn 0.3s ease;
 
   &.user {
     flex-direction: row-reverse;
@@ -731,8 +756,8 @@ onMounted(async () => {
     .message-bubble {
       color: var(--chat-ai-foreground);
       background: var(--chat-ai-bubble-bg);
-      border-radius: 20px 20px 20px 4px;
       border: 1px solid var(--chat-border);
+      border-radius: 20px 20px 20px 4px;
     }
   }
 }
@@ -776,12 +801,12 @@ onMounted(async () => {
   display: flex;
   gap: 10px;
   align-items: flex-start;
+  max-width: 72%;
   min-height: 24px;
   padding: 14px 20px;
   font-size: 15px;
   line-height: 1.6;
   word-break: break-word;
-  max-width: 72%;
 
   .message-text {
     flex: 1;
@@ -816,7 +841,8 @@ onMounted(async () => {
 
   &:focus-within {
     border-color: hsl(var(--primary));
-    box-shadow: 0 0 0 2px color-mix(in srgb, hsl(var(--primary)), transparent 90%);
+    box-shadow: 0 0 0 2px
+      color-mix(in srgb, hsl(var(--primary)), transparent 90%);
   }
 }
 
@@ -964,28 +990,6 @@ onMounted(async () => {
   .kb-item-selected {
     color: var(--chat-kb-active-fg);
     background: var(--chat-kb-active-bg) !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .chat-messages {
-    padding: 16px;
-    gap: 16px;
-  }
-
-  .message-bubble {
-    max-width: 90%;
-    padding: 12px 16px;
-  }
-
-  .message-avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-  }
-
-  .chat-input-wrapper {
-    padding: 12px 16px 16px;
   }
 }
 </style>

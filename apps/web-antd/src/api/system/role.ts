@@ -37,7 +37,7 @@ export interface RoleMenuRecord {
  */
 export interface MenuTreeNode {
   id: string;
-  parentId: string | null;
+  parentId: null | string;
   title: string;
   name: string;
   type: string;
@@ -120,6 +120,6 @@ export function saveRoleMenus(roleId: string, menuIds: string[]) {
 /**
  * 获取菜单树列表（用于权限分配）
  */
-export function getMenuTree(params?: SearchRequest) {
+export function getMenuTree(params?: Partial<SearchRequest>) {
   return requestClient.post<MenuTreeNode[]>('/admin/menu/list', params ?? {});
 }

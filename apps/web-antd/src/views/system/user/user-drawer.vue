@@ -6,12 +6,12 @@ import { ref, shallowRef } from 'vue';
 import { AccessControl } from '@vben/access';
 import { useVbenDrawer, useVbenForm, z } from '@vben/common-ui';
 
-import { Button, Modal, message } from 'ant-design-vue';
+import { Button, message, Modal } from 'ant-design-vue';
 
 import {
+  adminResetPasswordApi,
   createUser,
   getDeptList,
-  resetPasswordApi,
   updateUser,
 } from '#/api/system/user';
 
@@ -20,21 +20,16 @@ const emit = defineEmits(['success']);
 const isUpdate = ref(false);
 const recordId = ref('');
 const currentRecord = shallowRef<null | UserRecord>(null);
-
-// 部门列表
 const deptTreeData = ref<any[]>([]);
 
-// 转换列表为树形结构
 function listToTree(list: any[]) {
   const map = new Map<string, any>();
   const roots: any[] = [];
 
-  // 第一遍：建立所有节点的映射
   for (const item of list) {
     map.set(item.id, { ...item, children: [] });
   }
 
-  // 第二遍：建立父子关系
   for (const node of list) {
     const parentId =
       node.parentId === '0' || node.parentId === 0 ? null : node.parentId;
@@ -44,10 +39,10 @@ function listToTree(list: any[]) {
       roots.push(map.get(node.id));
     }
   }
+
   return roots;
 }
 
-// 获取部门树数据
 const loadDeptTree = async () => {
   try {
     const depts = await getDeptList({ pageNumber: 1, pageSize: 1000 });
@@ -57,20 +52,18 @@ const loadDeptTree = async () => {
   }
 };
 
-// 重置用户密码
 async function handleResetPassword() {
   if (!recordId.value) return;
 
   Modal.confirm({
-    title: '确认重置密码',
-    content: `是否确认将用户 "${currentRecord.value?.realName}" 的密码重置为 111111？`,
+    title: 'Confirm send reset link',
+    content: `Send a one-time password reset link to "${currentRecord.value?.realName}"?`,
     onOk: async () => {
       try {
-        await resetPasswordApi({
-          newPassword: '111111',
+        await adminResetPasswordApi({
           userId: recordId.value,
         });
-        message.success('密码重置成功');
+        message.success('Reset link sent');
       } catch (error) {
         console.error(error);
       }
@@ -84,44 +77,46 @@ const [Form, formApi] = useVbenForm({
     {
       component: 'Input',
       fieldName: 'username',
-      label: '用户名',
+      label: 'Username',
       rules: 'required',
     },
     {
       component: 'Input',
       fieldName: 'realName',
-      label: '真实姓名',
+      label: 'Real Name',
       rules: 'required',
     },
     {
       component: 'Input',
       fieldName: 'email',
-      label: '邮箱',
-      rules: z.string().email('请输入正确的邮箱地址'),
+      label: 'Email',
+      rules: z.string().email('Please enter a valid email address'),
     },
     {
       component: 'Input',
       fieldName: 'phone',
-      label: '手机号',
-      rules: z.string().regex(/^1[3-9]\d{9}$/, '请输入正确的手机号'),
+      label: 'Phone',
+      rules: z
+        .string()
+        .regex(/^1[3-9]\d{9}$/, 'Please enter a valid phone number'),
     },
     {
       component: 'Select',
       fieldName: 'gender',
-      label: '性别',
+      label: 'Gender',
       componentProps: {
         style: { width: '100%' },
         options: [
-          { label: '男', value: 'male' },
-          { label: '女', value: 'female' },
+          { label: 'Male', value: 'male' },
+          { label: 'Female', value: 'female' },
         ],
-        placeholder: '请选择性别',
+        placeholder: 'Please select gender',
       },
     },
     {
       component: 'TreeSelect',
       fieldName: 'deptId',
-      label: '所属部门',
+      label: 'Department',
       componentProps: {
         style: { width: '100%' },
         fieldNames: {
@@ -130,31 +125,31 @@ const [Form, formApi] = useVbenForm({
           value: 'id',
         },
         treeData: deptTreeData,
-        placeholder: '请选择部门',
+        placeholder: 'Please select department',
         allowClear: true,
       },
     },
     {
       component: 'Input',
       fieldName: 'avatar',
-      label: '头像',
+      label: 'Avatar',
     },
     {
       component: 'RadioGroup',
       fieldName: 'status',
-      label: '状态',
+      label: 'Status',
       defaultValue: 1,
       componentProps: {
         options: [
-          { label: '启用', value: 1 },
-          { label: '禁用', value: 0 },
+          { label: 'Enabled', value: 1 },
+          { label: 'Disabled', value: 0 },
         ],
       },
     },
     {
       component: 'Textarea',
       fieldName: 'remark',
-      label: '备注',
+      label: 'Remark',
     },
   ],
 });
@@ -167,10 +162,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
       if (isUpdate.value) {
         await updateUser(recordId.value, data);
-        message.success('修改成功');
+        message.success('Updated successfully');
       } else {
         await createUser(data);
-        message.success('新增成功');
+        message.success('Created successfully');
       }
 
       emit('success');
@@ -189,7 +184,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
       if (isUpdate.value && data?.record) {
         recordId.value = data.record.id;
-
         formApi.setValues({
           ...data.record,
         });
@@ -203,15 +197,18 @@ const [Drawer, drawerApi] = useVbenDrawer({
 </script>
 
 <template>
-  <Drawer :title="isUpdate ? '编辑用户' : '新增用户'">
+  <Drawer :title="isUpdate ? 'Edit User' : 'Create User'">
     <Form />
 
-    <!-- 重置密码按钮 - 仅超级管理员可见 -->
-    <AccessControl v-if="isUpdate" :codes="['super']" type="role">
+    <AccessControl
+      v-if="isUpdate"
+      :codes="['sys:user:reset-password']"
+      type="code"
+    >
       <div class="mt-4 border-t border-gray-200 pt-4">
         <Button type="primary" danger @click="handleResetPassword">
           <span class="i-ant-design:key-outlined mr-1"></span>
-          重置密码
+          Send reset link
         </Button>
       </div>
     </AccessControl>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { UserOption } from '#/api/devops/aikey';
-import type { KnowledgeBase } from '#/api/devops/knowledgebase';
+import type { KbMember, KnowledgeBase } from '#/api/devops/knowledgebase';
 
 import { ref, watch } from 'vue';
 
@@ -55,9 +55,9 @@ function handleCollabConfirm(users: UserOption[]) {
 // 监听协作者变化，自动调整类型
 watch(
   () => selectedCollaborators.value.length,
-  (count) => {
+  async (count) => {
     // 获取当前表单的类型值
-    const currentType = formApi.getValues()?.type;
+    const currentType = (await formApi.getValues())?.type;
     // 如果有除自己以外的协作者（简单判断数量大于1），且当前是私有，则自动切换为团队
     // 注意：这里假设初始状态只有自己
     if (count > 1 && currentType === 'private') {
@@ -226,13 +226,13 @@ const [Drawer, drawerApi] = useVbenDrawer({
           const members = await getKnowledgeBaseMembers(
             drawerData.value.record.id,
           );
-          if (members.data) {
-            selectedCollaborators.value = members.data.map((m) => ({
+          if (members.length > 0) {
+            selectedCollaborators.value = members.map((m: KbMember) => ({
               id: m.userId,
               username: m.username,
               realName: m.realName,
             }));
-            originalMembers.value = members.data.map((m) => m.userId);
+            originalMembers.value = members.map((m: KbMember) => m.userId);
           }
         } catch (error) {
           console.error('加载成员失败', error);
@@ -271,7 +271,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
           <div class="flex items-center justify-end gap-1">
             <span
               class="collab-label after:relative after:top-[-0.5px] after:ml-0.5 after:content-[':']"
-              >协作者</span>
+              >协作者</span
+            >
             <Tooltip title="配置协作者">
               <IconifyIcon
                 icon="mdi:cog"
@@ -285,7 +286,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         <!-- 仿照 Form Item Control 样式 -->
         <div class="flex-1">
           <div
-            class="collab-select flex flex-wrap gap-2 min-h-[32px] p-1 rounded transition-colors cursor-pointer"
+            class="collab-select flex min-h-[32px] cursor-pointer flex-wrap gap-2 rounded p-1 transition-colors"
             @click="openCollabModal"
           >
             <template v-if="selectedCollaborators.length > 0">
@@ -294,8 +295,13 @@ const [Drawer, drawerApi] = useVbenDrawer({
                 :key="user.id"
                 :title="`${user.realName || user.username}`"
               >
-                <Avatar size="small" class="bg-primary/10 text-primary border border-primary/20">
-                  {{ (user.realName || user.username)?.charAt(0)?.toUpperCase() }}
+                <Avatar
+                  size="small"
+                  class="border border-primary/20 bg-primary/10 text-primary"
+                >
+                  {{
+                    (user.realName || user.username)?.charAt(0)?.toUpperCase()
+                  }}
                 </Avatar>
               </Tooltip>
             </template>
@@ -328,9 +334,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
 }
 
 .collab-gear-icon {
-  cursor: pointer;
-  color: var(--kb-form-muted);
   font-size: 16px;
+  color: var(--kb-form-muted);
+  cursor: pointer;
   transition: color 0.2s ease;
 
   &:hover {

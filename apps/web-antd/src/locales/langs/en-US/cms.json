@@ -1,0 +1,21 @@
+{
+  "title": "Content Management",
+  "category": {
+    "title": "Category Management"
+  },
+  "article": {
+    "title": "Article Management",
+    "review": "Article Review"
+  },
+  "tag": {
+    "title": "Tag Management"
+  },
+  "articleFile": {
+    "title": "Article Attachment"
+  },
+  "template": {
+    "title": "Template Management",
+    "save": "Template Save",
+    "publish": "Template Publish"
+  }
+}

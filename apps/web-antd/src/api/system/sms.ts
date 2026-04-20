@@ -20,7 +20,7 @@ export interface SmsConfig {
   sdkAppId?: string;
   weight?: number;
   isDefault?: number;
-  extParams?: string;
+  extParams?: null | Record<string, any>;
   status: number;
   statusStr?: string;
 }
@@ -37,4 +37,11 @@ export function getSmsConfigList(params: SearchRequest) {
  */
 export function updateSmsConfig(id: string, data: Partial<SmsConfig>) {
   return requestClient.put<boolean>(`/admin/sms/config/${id}`, data);
+}
+
+/**
+ * Create a new sms config.
+ */
+export function createSmsConfig(data: Partial<SmsConfig>) {
+  return requestClient.post<boolean>('/admin/sms/config', data);
 }
