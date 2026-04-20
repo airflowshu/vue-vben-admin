@@ -1,7 +1,7 @@
-import type { MediaSearchRequest } from './types';
 import type {
   MediaScreen,
   MediaScreenDetail,
+  MediaSearchRequest,
   ScreenSaveRequest,
 } from './types';
 
@@ -24,7 +24,9 @@ export function deleteMediaScreen(id: string) {
 }
 
 export function getMediaScreenDetail(id: string) {
-  return requestClient.get<MediaScreenDetail>(`/admin/media/screen/${id}/detail`);
+  return requestClient.get<MediaScreenDetail>(
+    `/admin/media/screen/${id}/detail`,
+  );
 }
 
 export function saveMediaScreenLayout(data: ScreenSaveRequest) {

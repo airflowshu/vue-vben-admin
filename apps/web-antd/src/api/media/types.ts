@@ -265,26 +265,26 @@ export interface ScreenSaveRequest {
   enabled?: boolean;
   isDefault?: boolean;
   slots: Array<{
+    channelId?: string;
+    height?: number;
     id?: string;
+    optionsJson?: string;
+    sessionType?: string;
     slotIndex: number;
     slotName?: string;
+    width?: number;
     x?: number;
     y?: number;
-    width?: number;
-    height?: number;
-    channelId?: string;
-    sessionType?: string;
-    optionsJson?: string;
   }>;
 }
 
 export interface CascadeBindRequest {
   platformId: string;
   bindings: Array<{
-    id?: string;
     channelId: string;
-    gbChannelCode: string;
     enabled?: boolean;
+    gbChannelCode: string;
+    id?: string;
     liveEnabled?: boolean;
     playbackEnabled?: boolean;
   }>;

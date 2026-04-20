@@ -1,10 +1,16 @@
-import type { MediaSearchRequest } from './types';
-import type { GatewayReloadRequest, MediaGateway } from './types';
+import type {
+  GatewayReloadRequest,
+  MediaGateway,
+  MediaSearchRequest,
+} from './types';
 
 import { requestClient } from '#/api/request';
 
 export function getMediaGatewayList(params: MediaSearchRequest) {
-  return requestClient.post<MediaGateway[]>('/admin/media/gateway/list', params);
+  return requestClient.post<MediaGateway[]>(
+    '/admin/media/gateway/list',
+    params,
+  );
 }
 
 export function createMediaGateway(data: Partial<MediaGateway>) {

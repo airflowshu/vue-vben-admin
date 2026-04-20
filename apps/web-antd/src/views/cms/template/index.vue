@@ -433,9 +433,9 @@ function formatDateTime(value?: null | string) {
 function statusColor(status?: string) {
   return status === 'SUCCESS'
     ? 'success'
-    : (status === 'FAILED'
+    : status === 'FAILED'
       ? 'error'
-      : 'default');
+      : 'default';
 }
 
 function openLink(url?: null | string) {
@@ -820,7 +820,9 @@ onBeforeRouteLeave(() => {
           class="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground"
         >
           <span>文件大小：{{ formatBytes(currentFile?.size) }}</span>
-          <span>最后修改：{{ formatDateTime(currentFile?.lastModifiedTime) }}</span>
+          <span
+            >最后修改：{{ formatDateTime(currentFile?.lastModifiedTime) }}</span
+          >
           <span>资源域：{{ currentFile?.assetBaseUrl || '-' }}</span>
           <span>行数：{{ editorStats.lines }}</span>
           <span>字符数：{{ editorStats.chars }}</span>
@@ -836,7 +838,9 @@ onBeforeRouteLeave(() => {
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-2">
-                <span class="font-medium">最近发布：{{ lastPublishResult.publishName }}</span>
+                <span class="font-medium"
+                  >最近发布：{{ lastPublishResult.publishName }}</span
+                >
                 <Tag :color="statusColor(lastPublishResult.status)">
                   {{ lastPublishResult.status }}
                 </Tag>

@@ -1,5 +1,5 @@
-import type { MediaSearchRequest } from './types';
 import type {
+  MediaSearchRequest,
   MediaServer,
   MediaServerTestRequest,
   MediaServerTestResult,
@@ -24,10 +24,17 @@ export function deleteMediaServer(id: string) {
 }
 
 export function testMediaServer(data: MediaServerTestRequest) {
-  return requestClient.post<MediaServerTestResult>('/admin/media/server/test', data);
+  return requestClient.post<MediaServerTestResult>(
+    '/admin/media/server/test',
+    data,
+  );
 }
 
-export function getMediaServerStreams(id: string, app?: string, stream?: string) {
+export function getMediaServerStreams(
+  id: string,
+  app?: string,
+  stream?: string,
+) {
   return requestClient.get<Array<Record<string, any>>>(
     `/admin/media/server/${id}/streams`,
     { params: { app, stream } },

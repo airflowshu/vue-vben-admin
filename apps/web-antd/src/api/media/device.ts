@@ -1,10 +1,10 @@
-import type { MediaSearchRequest } from './types';
 import type {
   ChannelLiveRequest,
   MediaChannel,
   MediaDevice,
   MediaDeviceDetail,
   MediaPlayResponse,
+  MediaSearchRequest,
   PlaybackQueryRequest,
   PlaybackRecordItem,
   PlaybackStartRequest,
@@ -30,15 +30,22 @@ export function deleteMediaDevice(id: string) {
 }
 
 export function getMediaDeviceDetail(id: string) {
-  return requestClient.get<MediaDeviceDetail>(`/admin/media/device/${id}/detail`);
+  return requestClient.get<MediaDeviceDetail>(
+    `/admin/media/device/${id}/detail`,
+  );
 }
 
 export function getMediaDeviceChannels(id: string) {
-  return requestClient.get<MediaChannel[]>(`/admin/media/device/${id}/channels`);
+  return requestClient.get<MediaChannel[]>(
+    `/admin/media/device/${id}/channels`,
+  );
 }
 
 export function getMediaChannelList(params: MediaSearchRequest) {
-  return requestClient.post<MediaChannel[]>('/admin/media/channel/list', params);
+  return requestClient.post<MediaChannel[]>(
+    '/admin/media/channel/list',
+    params,
+  );
 }
 
 export function saveMediaChannel(data: Partial<MediaChannel>) {
@@ -50,11 +57,16 @@ export function deleteMediaChannel(id: string) {
 }
 
 export function startChannelLive(data: ChannelLiveRequest) {
-  return requestClient.post<MediaPlayResponse>('/admin/media/channel/live', data);
+  return requestClient.post<MediaPlayResponse>(
+    '/admin/media/channel/live',
+    data,
+  );
 }
 
 export function stopChannelLive(sessionId: string) {
-  return requestClient.post<boolean>(`/admin/media/channel/live/stop/${sessionId}`);
+  return requestClient.post<boolean>(
+    `/admin/media/channel/live/stop/${sessionId}`,
+  );
 }
 
 export function queryChannelPlayback(data: PlaybackQueryRequest) {

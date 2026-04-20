@@ -381,11 +381,14 @@ onUnmounted(() => {
                     <span
                       class="font-bold"
                       :class="[getStatusColor(disk.usage)]"
-                      >●</span>
+                      >●</span
+                    >
                     <span class="font-medium">{{ disk.path }}</span>
                     <Tag color="blue">{{ disk.fsType }}</Tag>
                   </div>
-                  <span :class="getStatusColor(disk.usage)">{{ disk.usage }}%</span>
+                  <span :class="getStatusColor(disk.usage)"
+                    >{{ disk.usage }}%</span
+                  >
                 </div>
                 <Progress
                   :percent="disk.usage"

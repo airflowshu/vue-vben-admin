@@ -61,7 +61,9 @@ export function saveTemplateFile(data: { content: string; path: string }) {
 }
 
 export function publishTemplateSite() {
-  return requestClient.post<CmsTemplatePublishResult>('/admin/cms/template/publish');
+  return requestClient.post<CmsTemplatePublishResult>(
+    '/admin/cms/template/publish',
+  );
 }
 
 export function getTemplatePublishHistory(params?: {

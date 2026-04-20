@@ -1,8 +1,8 @@
-import type { MediaSearchRequest } from './types';
 import type {
-  CascadeBindRequest,
   CascadeBindingView,
+  CascadeBindRequest,
   MediaCascadePlatform,
+  MediaSearchRequest,
 } from './types';
 
 import { requestClient } from '#/api/request';
@@ -14,7 +14,9 @@ export function getMediaCascadePlatformList(params: MediaSearchRequest) {
   );
 }
 
-export function createMediaCascadePlatform(data: Partial<MediaCascadePlatform>) {
+export function createMediaCascadePlatform(
+  data: Partial<MediaCascadePlatform>,
+) {
   return requestClient.post<boolean>('/admin/media/cascade', data);
 }
 
@@ -36,7 +38,10 @@ export function getCascadeBindings(id: string) {
 }
 
 export function saveCascadeBindings(data: CascadeBindRequest) {
-  return requestClient.post<CascadeBindingView[]>('/admin/media/cascade/bind', data);
+  return requestClient.post<CascadeBindingView[]>(
+    '/admin/media/cascade/bind',
+    data,
+  );
 }
 
 export function registerCascadePlatform(id: string) {
