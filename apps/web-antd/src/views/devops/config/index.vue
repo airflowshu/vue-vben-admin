@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
-import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
 import type { SearchRequest } from '#/api/common';
 import type { SysConfig } from '#/api/devops/sysconfig';
 
 import { ref } from 'vue';
 
-import {AccessControl} from "@vben/access";
+import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
 import { Button, message, Modal, Popconfirm, Tag } from 'ant-design-vue';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -97,7 +97,7 @@ const formOptions: VbenFormProps = {
   wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
 };
 
-const gridOptions: VxeGridProps = {
+const gridOptions: VxeGridProps<SysConfig> = {
   columns: [
     { field: 'configKey', title: '配置键', minWidth: 180 },
     { field: 'configValue', title: '配置值', minWidth: 200 },
@@ -208,7 +208,7 @@ const gridOptions: VxeGridProps = {
   stripe: true,
 };
 
-function handleRowClick(row: any) {
+function handleRowClick(row: SysConfig) {
   selectedRowId.value = row.id;
   detailApi.setData(row);
   detailApi.open();
@@ -251,17 +251,17 @@ function handleEdit(row: SysConfig) {
   editApi.open();
 }
 
-const gridEvents = {
-  cellClick: ({ row }: any) => {
+const gridEvents: VxeGridListeners<SysConfig> = {
+  cellClick: ({ row }) => {
     handleRowClick(row);
   },
 };
 
-const [Grid, gridApi] = useVbenVxeGrid({
+const [Grid, gridApi] = useVbenVxeGrid<SysConfig>({
   formOptions,
   gridOptions,
   gridEvents,
-} as any);
+});
 </script>
 
 <template>

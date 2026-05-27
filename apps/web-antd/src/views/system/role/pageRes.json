@@ -33,10 +33,7 @@
                 "component": "/system/role/index",
                 "createBy": "super",
                 "createTime": "2026-01-15T16:26:35.398432",
-                "hideBreadcrumb": false,
                 "hideChildrenInMenu": false,
-                "hideMenu": false,
-                "hideTab": false,
                 "icon": "carbon:user-role",
                 "id": "150",
                 "iframeSrc": null,
@@ -55,7 +52,10 @@
                 "status": 1,
                 "title": "system.role.title",
                 "type": "menu",
-                "version": 0
+                "version": 0,
+                "hideInMenu": false,
+                "hideInBreadcrumb": false,
+                "hideInTab": false
               },
               {
                 "activeIcon": null,
@@ -69,10 +69,7 @@
                 "component": "/system/dept/list",
                 "createBy": null,
                 "createTime": "2026-01-05T02:05:15.772823",
-                "hideBreadcrumb": false,
                 "hideChildrenInMenu": false,
-                "hideMenu": false,
-                "hideTab": false,
                 "icon": "carbon:container-services",
                 "id": "114",
                 "iframeSrc": null,
@@ -91,7 +88,10 @@
                 "status": 1,
                 "title": "system.dept.title",
                 "type": "menu",
-                "version": 0
+                "version": 0,
+                "hideInMenu": false,
+                "hideInBreadcrumb": false,
+                "hideInTab": false
               },
               {
                 "activeIcon": null,
@@ -105,10 +105,7 @@
                 "component": "/system/menu/list",
                 "createBy": null,
                 "createTime": "2026-01-05T02:05:15.716669",
-                "hideBreadcrumb": false,
                 "hideChildrenInMenu": false,
-                "hideMenu": false,
-                "hideTab": false,
                 "icon": "carbon:menu",
                 "id": "110",
                 "iframeSrc": null,
@@ -127,7 +124,10 @@
                 "status": 1,
                 "title": "system.menu.title",
                 "type": "menu",
-                "version": 0
+                "version": 0,
+                "hideInMenu": false,
+                "hideInBreadcrumb": false,
+                "hideInTab": false
               },
               {
                 "activeIcon": null,
@@ -141,10 +141,7 @@
                 "component": "/system/user/list",
                 "createBy": "super",
                 "createTime": "2026-01-13T11:57:48.771226",
-                "hideBreadcrumb": false,
                 "hideChildrenInMenu": false,
-                "hideMenu": false,
-                "hideTab": false,
                 "icon": "carbon:user-multiple",
                 "id": "140",
                 "iframeSrc": null,
@@ -163,7 +160,10 @@
                 "status": 1,
                 "title": "system.user.title",
                 "type": "menu",
-                "version": 0
+                "version": 0,
+                "hideInMenu": false,
+                "hideInBreadcrumb": false,
+                "hideInTab": false
               },
               {
                 "activeIcon": null,
@@ -177,10 +177,7 @@
                 "component": "/system/dict/index",
                 "createBy": null,
                 "createTime": "2026-01-09T13:55:47.962167",
-                "hideBreadcrumb": false,
                 "hideChildrenInMenu": false,
-                "hideMenu": false,
-                "hideTab": false,
                 "icon": "carbon:language",
                 "id": "130",
                 "iframeSrc": null,
@@ -199,16 +196,16 @@
                 "status": 1,
                 "title": "system.dict.title",
                 "type": "menu",
-                "version": 0
+                "version": 0,
+                "hideInMenu": false,
+                "hideInBreadcrumb": false,
+                "hideInTab": false
               }
             ],
             "component": null,
             "createBy": null,
             "createTime": "2026-01-05T02:05:15.704869",
-            "hideBreadcrumb": false,
             "hideChildrenInMenu": false,
-            "hideMenu": false,
-            "hideTab": false,
             "icon": "carbon:settings",
             "id": "109",
             "iframeSrc": null,
@@ -220,14 +217,17 @@
             "name": "System",
             "orderNo": 9997,
             "parent": null,
-            "parentId": "0",
+            "parentId": null,
             "path": "/system",
             "redirect": null,
             "remark": null,
             "status": 1,
             "title": "system.title",
             "type": "catalog",
-            "version": 0
+            "version": 0,
+            "hideInMenu": false,
+            "hideInBreadcrumb": false,
+            "hideInTab": false
           },
           {
             "activeIcon": null,
@@ -250,10 +250,7 @@
                 "component": null,
                 "createBy": null,
                 "createTime": "2026-01-05T02:05:15.746674",
-                "hideBreadcrumb": false,
                 "hideChildrenInMenu": false,
-                "hideMenu": false,
-                "hideTab": false,
                 "icon": null,
                 "id": "112",
                 "iframeSrc": null,
@@ -272,7 +269,10 @@
                 "status": 1,
                 "title": "common.edit",
                 "type": "button",
-                "version": 0
+                "version": 0,
+                "hideInMenu": false,
+                "hideInBreadcrumb": false,
+                "hideInTab": false
               },
               {
                 "activeIcon": null,
@@ -286,10 +286,7 @@
                 "component": null,
                 "createBy": null,
                 "createTime": "2026-01-05T02:05:15.759969",
-                "hideBreadcrumb": false,
                 "hideChildrenInMenu": false,
-                "hideMenu": false,
-                "hideTab": false,
                 "icon": null,
                 "id": "113",
                 "iframeSrc": null,
@@ -308,12 +305,15 @@
                 "status": 1,
                 "title": "common.delete",
                 "type": "button",
-                "version": 0
+                "version": 0,
+                "hideInMenu": false,
+                "hideInBreadcrumb": false,
+                "hideInTab": false
               },
               {
                 "activeIcon": null,
                 "affixTab": false,
-                "authCode": "sys:menu:create",
+                "authCode": "sys:menu:add",
                 "authority": null,
                 "badge": null,
                 "badgeType": null,
@@ -322,10 +322,7 @@
                 "component": null,
                 "createBy": null,
                 "createTime": "2026-01-05T02:05:15.73282",
-                "hideBreadcrumb": false,
                 "hideChildrenInMenu": false,
-                "hideMenu": false,
-                "hideTab": false,
                 "icon": null,
                 "id": "111",
                 "iframeSrc": null,
@@ -344,16 +341,16 @@
                 "status": 1,
                 "title": "common.create",
                 "type": "button",
-                "version": 0
+                "version": 0,
+                "hideInMenu": false,
+                "hideInBreadcrumb": false,
+                "hideInTab": false
               }
             ],
             "component": "/system/menu/list",
             "createBy": null,
             "createTime": "2026-01-05T02:05:15.716669",
-            "hideBreadcrumb": false,
             "hideChildrenInMenu": false,
-            "hideMenu": false,
-            "hideTab": false,
             "icon": "carbon:menu",
             "id": "110",
             "iframeSrc": null,
@@ -376,10 +373,7 @@
               "component": null,
               "createBy": null,
               "createTime": "2026-01-05T02:05:15.704869",
-              "hideBreadcrumb": false,
               "hideChildrenInMenu": false,
-              "hideMenu": false,
-              "hideTab": false,
               "icon": "carbon:settings",
               "id": "109",
               "iframeSrc": null,
@@ -391,14 +385,17 @@
               "name": "System",
               "orderNo": 9997,
               "parent": null,
-              "parentId": "0",
+              "parentId": null,
               "path": "/system",
               "redirect": null,
               "remark": null,
               "status": 1,
               "title": "system.title",
               "type": "catalog",
-              "version": 0
+              "version": 0,
+              "hideInMenu": false,
+              "hideInBreadcrumb": false,
+              "hideInTab": false
             },
             "parentId": "109",
             "path": "/system/menu",
@@ -407,12 +404,15 @@
             "status": 1,
             "title": "system.menu.title",
             "type": "menu",
-            "version": 0
+            "version": 0,
+            "hideInMenu": false,
+            "hideInBreadcrumb": false,
+            "hideInTab": false
           },
           {
             "activeIcon": null,
             "affixTab": false,
-            "authCode": "sys:menu:create",
+            "authCode": "sys:menu:add",
             "authority": null,
             "badge": null,
             "badgeType": null,
@@ -421,10 +421,7 @@
             "component": null,
             "createBy": null,
             "createTime": "2026-01-05T02:05:15.73282",
-            "hideBreadcrumb": false,
             "hideChildrenInMenu": false,
-            "hideMenu": false,
-            "hideTab": false,
             "icon": null,
             "id": "111",
             "iframeSrc": null,
@@ -447,10 +444,7 @@
               "component": "/system/menu/list",
               "createBy": null,
               "createTime": "2026-01-05T02:05:15.716669",
-              "hideBreadcrumb": false,
               "hideChildrenInMenu": false,
-              "hideMenu": false,
-              "hideTab": false,
               "icon": "carbon:menu",
               "id": "110",
               "iframeSrc": null,
@@ -469,7 +463,10 @@
               "status": 1,
               "title": "system.menu.title",
               "type": "menu",
-              "version": 0
+              "version": 0,
+              "hideInMenu": false,
+              "hideInBreadcrumb": false,
+              "hideInTab": false
             },
             "parentId": "110",
             "path": null,
@@ -478,7 +475,10 @@
             "status": 1,
             "title": "common.create",
             "type": "button",
-            "version": 0
+            "version": 0,
+            "hideInMenu": false,
+            "hideInBreadcrumb": false,
+            "hideInTab": false
           }
         ],
         "orderNo": 3,
@@ -487,6 +487,7 @@
         "roleValue": "test",
         "status": 1,
         "version": 0
-      }]
+      }
+    ]
   }
 }

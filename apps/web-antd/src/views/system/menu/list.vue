@@ -46,15 +46,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
               })),
             };
             const data = await getMenuList(params);
-            // 转换 parentId 为 '0' 的节点为根节点，防止 vxe-table 无法识别
-            // 并且包装为 items 结构，以匹配 adapter/vxe-table.ts 中的全局 proxyConfig.response.list = 'items' 设置
+            // 包装为 items 结构，以匹配 adapter/vxe-table.ts 中的全局 proxyConfig.response.list = 'items' 设置
             return {
-              items: data.map((item) => {
-                if (item.parentId === '0') {
-                  return { ...item, parentId: null };
-                }
-                return item;
-              }),
+              items: data,
             };
           } catch (error) {
             console.error(error);

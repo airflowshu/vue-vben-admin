@@ -55,6 +55,19 @@ const titleSuffix = ref<string>();
 // 数据是否已加载完成（用于控制校验时机）
 const isDataLoaded = ref(false);
 
+function buildSubmitData(
+  values: Omit<SystemMenuApi.SystemMenu, 'children' | 'id' | 'meta'> & {
+    linkSrc?: string;
+  },
+) {
+  const { linkSrc, ...data } = values;
+  return {
+    ...data,
+    iframeSrc: data.type === 'embedded' ? linkSrc : undefined,
+    link: data.type === 'link' ? linkSrc : undefined,
+  };
+}
+
 const schema: VbenFormSchema[] = [
   {
     component: 'RadioGroup',
@@ -410,7 +423,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'hideMenu',
+    fieldName: 'hideInMenu',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInMenu'),
@@ -440,7 +453,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'hideBreadcrumb',
+    fieldName: 'hideInBreadcrumb',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInBreadcrumb'),
@@ -455,7 +468,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'hideTab',
+    fieldName: 'hideInTab',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInTab'),
@@ -483,8 +496,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
       isDataLoaded.value = false;
       const data = drawerApi.getData<SystemMenuApi.SystemMenu>();
       if (data) {
-        formData.value = data;
-        // 平铺字段直接设置，linkSrc 需要从数据中获取
+        formData.value = {
+          ...data,
+          linkSrc:
+            data.type === 'embedded'
+              ? data.iframeSrc
+              : data.type === 'link'
+                ? data.link
+                : undefined,
+        };
         formApi.setValues(formData.value);
         titleSuffix.value = formData.value.title
           ? $t(formData.value.title)
@@ -508,14 +528,16 @@ async function onSubmit() {
     drawerApi.lock();
     const data =
       await formApi.getValues<
-        Omit<SystemMenuApi.SystemMenu, 'children' | 'id' | 'meta'>
+        Omit<SystemMenuApi.SystemMenu, 'children' | 'id' | 'meta'> & {
+          linkSrc?: string;
+        }
       >();
+    const submitData = buildSubmitData(data);
 
-    // linkSrc 已经直接在表单中使用，无需额外处理
     try {
       await (formData.value?.id
-        ? updateMenu(formData.value.id, data)
-        : createMenu(data));
+        ? updateMenu(formData.value.id, submitData)
+        : createMenu(submitData));
       drawerApi.close();
       emit('success');
     } finally {

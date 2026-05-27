@@ -74,10 +74,10 @@ const treeData = computed<DeptTreeNode[]>(() => {
   const allDeptNode: DeptTreeNode = {
     id: 'ALL',
     parentId: '0',
-    deptName: '??????',
+    deptName: '全部',
     children: [],
     orderNo: 0,
-    status: 1, // ????????????????????????
+    status: 1, // 根节点默认启用
     key: 'ALL',
     isRoot: true,
   };
@@ -99,7 +99,7 @@ function handleTreeSelect(keys: TreeKey[]) {
       key === undefined || key === 'ALL' ? null : String(key);
     gridApi.reload();
   } else {
-    // ?????????????????????????????
+    // 取消选择时回到全部部门
     selectedKeys.value = ['ALL'];
     selectedDeptId.value = null;
     gridApi.reload();
@@ -111,12 +111,12 @@ function listToTree(list: DeptRecord[]): DeptTreeNode[] {
   const map = new Map<string, DeptTreeNode>();
   const roots: DeptTreeNode[] = [];
 
-  // ????????????????????
+  // 先建立 id 到节点的映射
   for (const item of list) {
     map.set(item.id, { ...item, children: [], key: item.id });
   }
 
-  // ???????????????
+  // 再按 parentId 组装树结构
   for (const item of list) {
     const node = map.get(item.id);
     if (!node) continue;
@@ -485,7 +485,7 @@ loadDeptTree();
           <Grid>
             <template #toolbar-buttons>
               <!--      type声明code为权限码控制，type声明为role为角色控制        -->
-              <AccessControl :codes="['sys:user:create']" type="code">
+              <AccessControl :codes="['sys:user:add']" type="code">
                 <Button type="primary" @click="handleAdd">新增用户</Button>
               </AccessControl>
               <AccessControl :codes="['sys:user:delete']" type="code">

@@ -7,6 +7,11 @@ export interface AiApiKey {
   keyName: string;
   apiKey: string;
   userId: string;
+  user?: {
+    id: string;
+    realName?: string;
+    username?: string;
+  };
   status: number;
   statusStr: string;
   quote: number;

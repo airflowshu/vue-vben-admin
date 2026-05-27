@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
-import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
 import type { SearchRequest } from '#/api/common';
 import type { AiApiKey } from '#/api/devops/aikey';
 
@@ -87,7 +87,7 @@ const formOptions: VbenFormProps = {
   wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
 };
 
-const gridOptions: VxeGridProps = {
+const gridOptions: VxeGridProps<AiApiKey> = {
   columns: [
     { field: 'keyName', title: 'Key名称', minWidth: 150 },
     {
@@ -223,7 +223,7 @@ const gridOptions: VxeGridProps = {
   stripe: true,
 };
 
-function handleRowClick(row: any) {
+function handleRowClick(row: AiApiKey) {
   selectedRowId.value = row.id;
   detailApi.setData(row);
   detailApi.open();
@@ -260,17 +260,17 @@ async function handleDelete(row: AiApiKey) {
   });
 }
 
-const gridEvents = {
-  cellClick: ({ row }: any) => {
+const gridEvents: VxeGridListeners<AiApiKey> = {
+  cellClick: ({ row }) => {
     handleRowClick(row);
   },
 };
 
-const [Grid, gridApi] = useVbenVxeGrid({
+const [Grid, gridApi] = useVbenVxeGrid<AiApiKey>({
   formOptions,
   gridOptions,
   gridEvents,
-} as any);
+});
 </script>
 
 <template>

@@ -101,10 +101,10 @@ export namespace SystemMenuApi {
     badgeVariants?: string;
     keepAlive?: boolean;
     affixTab?: boolean;
-    hideMenu?: boolean;
+    hideInMenu?: boolean;
     hideChildrenInMenu?: boolean;
-    hideBreadcrumb?: boolean;
-    hideTab?: boolean;
+    hideInBreadcrumb?: boolean;
+    hideInTab?: boolean;
     orderNo?: number;
   }
 }
@@ -150,9 +150,9 @@ async function getMenuList(params?: SearchRequest) {
           version: it.version,
           activeIcon: it.activeIcon,
           keepAlive: it.keepAlive,
-          hideInMenu: it.hideMenu,
-          hideInTab: it.hideTab,
-          hideInBreadcrumb: it.hideBreadcrumb,
+          hideInMenu: it.hideInMenu,
+          hideInTab: it.hideInTab,
+          hideInBreadcrumb: it.hideInBreadcrumb,
           hideChildrenInMenu: it.hideChildrenInMenu,
           iframeSrc: it.iframeSrc,
           link: it.link,
@@ -161,11 +161,8 @@ async function getMenuList(params?: SearchRequest) {
           badgeVariants: it.badgeVariants,
           order: it.orderNo ?? it.order,
         };
-        // 转换 parentId 为 '0' 的节点为根节点
-        const parentId = it.parentId === '0' ? null : it.parentId;
         return {
           ...it,
-          parentId,
           meta,
           type: mapType(it.type),
           children: undefined,
