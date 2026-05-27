@@ -1,18 +1,20 @@
-import type { ComputedRef } from 'vue';
+import type { ComputedRef, VNode } from 'vue';
 import type {
   RouteLocationNormalized,
+  RouteLocationNormalizedLoaded,
+  RouteLocationNormalizedLoadedGeneric,
   Router,
   RouteRecordNormalized,
 } from 'vue-router';
 
 import type { TabDefinition } from '@vben-core/typings';
 
-import { toRaw } from 'vue';
+import { markRaw, toRaw } from 'vue';
 
 import { preferences } from '@vben-core/preferences';
 import {
   createStack,
-  openRouteInNewWindow,
+  openWindow,
   Stack,
   startProgress,
   stopProgress,
@@ -20,7 +22,14 @@ import {
 
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
+interface RouteCached {
+  component: VNode;
+  key: string;
+  route: RouteLocationNormalizedLoadedGeneric;
+}
+
 interface TabbarState {
+  cachedRoutes: Map<string, RouteCached>;
   /**
    * @zh_CN 当前打开的标签页列表缓存
    */
@@ -362,8 +371,9 @@ export const useTabbarStore = defineStore('core-tabbar', {
      * @zh_CN 新窗口打开标签页
      * @param tab
      */
-    async openTabInNewWindow(tab: TabDefinition) {
-      openRouteInNewWindow(tab.fullPath || tab.path);
+    async openTabInNewWindow(tab: TabDefinition, router: Router) {
+      const href = router.resolve(tab.fullPath || tab.path).href;
+      openWindow(new URL(href, location.href).href, { target: '_blank' });
     },
 
     /**
@@ -553,6 +563,25 @@ export const useTabbarStore = defineStore('core-tabbar', {
       }
       this.cachedTabs = cacheMap;
     },
+    /**
+     * 添加缓存的route
+     * @param component
+     * @param route
+     */
+    addCachedRoute(component: VNode, route: RouteLocationNormalizedLoaded) {
+      const key = getTabKey(route);
+      if (this.cachedRoutes.has(key)) {
+        return;
+      }
+      this.cachedRoutes.set(key, {
+        key,
+        component: markRaw(component),
+        route: markRaw(route),
+      });
+    },
+    removeCachedRoute(key: string) {
+      this.cachedRoutes.delete(key);
+    },
   },
   getters: {
     affixTabs(): TabDefinition[] {
@@ -576,6 +605,9 @@ export const useTabbarStore = defineStore('core-tabbar', {
     getTabs(): TabDefinition[] {
       const normalTabs = this.tabs.filter((tab) => !isAffixTab(tab));
       return [...this.affixTabs, ...normalTabs].filter(Boolean);
+    },
+    getCachedRoutes(): Map<string, RouteCached> {
+      return this.cachedRoutes;
     },
   },
   persist: [
@@ -604,6 +636,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
   ],
   state: (): TabbarState => ({
     visitHistory: createStack<string>(true, MAX_VISIT_HISTORY),
+    cachedRoutes: new Map<string, RouteCached>(),
     cachedTabs: new Set(),
     dragEndIndex: 0,
     excludeCachedTabs: new Set(),

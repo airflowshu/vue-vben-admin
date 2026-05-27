@@ -30,6 +30,7 @@ const routes: RouteRecordRaw[] = [
             meta: {
               icon: 'mdi:page-previous-outline',
               title: $t('demos.access.pageAccess'),
+              domCached: true,
             },
           },
           {
@@ -121,6 +122,16 @@ const routes: RouteRecordRaw[] = [
             meta: {
               icon: 'lucide:tags',
               title: $t('demos.features.watermark'),
+            },
+          },
+          {
+            name: 'PreferencesExtensionDemo',
+            path: '/demos/features/preferences-extension',
+            component: () =>
+              import('#/views/demos/features/preferences-extension/index.vue'),
+            meta: {
+              icon: 'lucide:sliders-horizontal',
+              title: $t('demos.features.preferencesExtension'),
             },
           },
           {
