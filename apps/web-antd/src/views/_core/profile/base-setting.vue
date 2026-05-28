@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import type { VbenFormSchema } from '#/adapter/form';
 
-import { computed, markRaw, onMounted, ref } from 'vue';
+import { computed, markRaw, onMounted, ref, watch } from 'vue';
 
 import { ProfileBaseSetting } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
 
 import { message } from 'ant-design-vue';
 
-import { updateUser } from '#/api/system/user';
+import { updateCurrentUserProfileApi } from '#/api/system/user';
 import AvatarUpload from '#/views/common/upload/avatar.vue';
 
 const userStore = useUserStore();
 
 // 头像文件ID
-const avatarFileId = ref(userStore.userInfo?.profileFileId || '');
+const avatarFileId = ref(String(userStore.userInfo?.profileFileId ?? ''));
 
 // 处理头像上传后的文件ID
 function handleAvatarFileIdChange(fileId: string) {
@@ -49,10 +49,14 @@ const formSchema = computed((): VbenFormSchema[] => {
       fieldName: 'realName',
       component: 'Input',
       label: '姓名',
+      rules: 'required',
     },
     {
       fieldName: 'username',
       component: 'Input',
+      componentProps: {
+        disabled: true,
+      },
       label: '用户名',
     },
     {
@@ -66,8 +70,12 @@ const formSchema = computed((): VbenFormSchema[] => {
       label: '角色',
     },
     {
-      fieldName: 'introduction',
+      fieldName: 'remark',
       component: 'Textarea',
+      componentProps: {
+        maxlength: 500,
+        showCount: true,
+      },
       label: '个人简介',
     },
   ];
@@ -77,22 +85,31 @@ async function handleSubmit(values: Record<string, any>) {
   try {
     // 移除角色字段（只读字段不允许修改）
     // eslint-disable-next-line unused-imports/no-unused-vars
-    const { roles, ...submitData } = values;
+    const { roles, username, ...editableValues } = values;
 
     // 始终包含头像文件ID（新上传的或原有的）
-    submitData.profileFileId =
-      avatarFileId.value || userStore.userInfo?.profileFileId || '';
+    const updatedUserInfo = await updateCurrentUserProfileApi({
+      profileFileId: avatarFileId.value,
+      realName: String(editableValues.realName ?? ''),
+      remark: String(editableValues.remark ?? ''),
+    });
 
-    if (userStore.userInfo?.id) {
-      await updateUser(userStore.userInfo.id, submitData);
-      // Update store，包含 profileFileId
-      userStore.setUserInfo({
-        ...userStore.userInfo,
-        ...submitData,
-        profileFileId: submitData.profileFileId,
-      });
-      message.success('更新成功');
-    }
+    userStore.setUserInfo({
+      ...userStore.userInfo,
+      ...updatedUserInfo,
+      avatar: String(updatedUserInfo.avatar ?? userStore.userInfo?.avatar ?? ''),
+      realName: String(updatedUserInfo.realName ?? ''),
+      userId: String(
+        updatedUserInfo.userId ??
+          updatedUserInfo.id ??
+          userStore.userInfo?.userId ??
+          '',
+      ),
+      username: String(updatedUserInfo.username ?? userStore.userInfo?.username ?? ''),
+    });
+    avatarFileId.value = String(updatedUserInfo.profileFileId ?? '');
+    profileBaseSettingRef.value?.getFormApi().setValues(updatedUserInfo);
+    message.success('更新成功');
   } catch (error) {
     console.error(error);
   }
@@ -102,6 +119,13 @@ onMounted(() => {
   // 从 store 获取用户信息并填充表单
   profileBaseSettingRef.value?.getFormApi().setValues(userStore.userInfo || {});
 });
+
+watch(
+  () => userStore.userInfo?.profileFileId,
+  (profileFileId) => {
+    avatarFileId.value = String(profileFileId ?? '');
+  },
+);
 </script>
 <template>
   <ProfileBaseSetting

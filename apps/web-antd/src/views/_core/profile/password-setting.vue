@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import type { VbenFormSchema } from '#/adapter/form';
+import type { Recordable } from '@vben/types';
 
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import { ProfilePasswordSetting, z } from '@vben/common-ui';
 
 import { message } from 'ant-design-vue';
+
+import { updateCurrentUserPasswordApi } from '#/api/system/user';
+import { useAuthStore } from '#/store';
+
+const authStore = useAuthStore();
+const loading = ref(false);
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -16,6 +23,7 @@ const formSchema = computed((): VbenFormSchema[] => {
       componentProps: {
         placeholder: '请输入旧密码',
       },
+      rules: z.string().min(1, { message: '请输入旧密码' }),
     },
     {
       fieldName: 'newPassword',
@@ -25,6 +33,10 @@ const formSchema = computed((): VbenFormSchema[] => {
         passwordStrength: true,
         placeholder: '请输入新密码',
       },
+      rules: z
+        .string()
+        .min(1, { message: '请输入新密码' })
+        .min(8, { message: '密码长度至少8位' }),
     },
     {
       fieldName: 'confirmPassword',
@@ -40,6 +52,7 @@ const formSchema = computed((): VbenFormSchema[] => {
           return z
             .string({ required_error: '请再次输入新密码' })
             .min(1, { message: '请再次输入新密码' })
+            .min(8, { message: '密码长度至少8位' })
             .refine((value) => value === newPassword, {
               message: '两次输入的密码不一致',
             });
@@ -50,14 +63,26 @@ const formSchema = computed((): VbenFormSchema[] => {
   ];
 });
 
-function handleSubmit() {
-  message.success('密码修改成功');
+async function handleSubmit(values: Recordable<any>) {
+  loading.value = true;
+  try {
+    await updateCurrentUserPasswordApi({
+      confirmPassword: values.confirmPassword,
+      newPassword: values.newPassword,
+      oldPassword: values.oldPassword,
+    });
+    message.success('密码修改成功，请重新登录');
+    await authStore.logout(false);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 <template>
   <ProfilePasswordSetting
     class="w-1/3"
     :form-schema="formSchema"
+    :loading="loading"
     @submit="handleSubmit"
   />
 </template>

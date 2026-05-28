@@ -67,6 +67,43 @@ export interface UserAvatarUploadResult {
   url: string;
 }
 
+export interface SecurityPhoneBindResult {
+  bound: boolean;
+  phoneMasked: string;
+}
+
+export interface SecurityEmailBindResult {
+  bound: boolean;
+  emailMasked: string;
+}
+
+export interface UserProfileUpdateParams {
+  profileFileId?: string;
+  realName: string;
+  remark?: string;
+}
+
+export interface UserMfaTotpSetupResult {
+  accountName: string;
+  digits: number;
+  issuer: string;
+  manualKey: string;
+  otpauthUri: string;
+  period: number;
+}
+
+export interface UserMfaTotpStatusResult {
+  deviceName?: null | string;
+  enabled: boolean;
+  type?: null | 'TOTP' | string;
+}
+
+export interface CurrentUserPasswordUpdateParams {
+  confirmPassword: string;
+  newPassword: string;
+  oldPassword: string;
+}
+
 /**
  * 获取用户分页列表
  */
@@ -96,6 +133,13 @@ export function getUserInfo() {
 }
 
 /**
+ * 更新当前用户基本资料
+ */
+export function updateCurrentUserProfileApi(data: UserProfileUpdateParams) {
+  return requestClient.put<Record<string, any>>('/admin/user/profile', data);
+}
+
+/**
  * 上传当前用户头像
  */
 export function uploadCurrentUserAvatarApi(file: File) {
@@ -108,6 +152,81 @@ export function uploadCurrentUserAvatarApi(file: File) {
       },
     },
   );
+}
+
+/**
+ * 修改当前用户密码
+ */
+export function updateCurrentUserPasswordApi(
+  data: CurrentUserPasswordUpdateParams,
+) {
+  return requestClient.put<string>('/admin/user/password', data);
+}
+
+/**
+ * 发送当前用户密保手机绑定验证码
+ */
+export function sendSecurityPhoneCodeApi(phone: string) {
+  return requestClient.post<string>('/admin/user/security-phone/code', {
+    phone,
+  });
+}
+
+/**
+ * 绑定或更换当前用户密保手机
+ */
+export function bindSecurityPhoneApi(data: { code: string; phone: string }) {
+  return requestClient.put<SecurityPhoneBindResult>(
+    '/admin/user/security-phone',
+    data,
+  );
+}
+
+/**
+ * 发送当前用户备用邮箱绑定验证码
+ */
+export function sendSecurityEmailCodeApi(email: string) {
+  return requestClient.post<string>('/admin/user/security-email/code', {
+    email,
+  });
+}
+
+/**
+ * 绑定或更换当前用户备用邮箱
+ */
+export function bindSecurityEmailApi(data: { code: string; email: string }) {
+  return requestClient.put<SecurityEmailBindResult>(
+    '/admin/user/security-email',
+    data,
+  );
+}
+
+/**
+ * 初始化当前用户 TOTP MFA 绑定
+ */
+export function setupMfaTotpApi() {
+  return requestClient.post<UserMfaTotpSetupResult>(
+    '/admin/user/mfa/totp/setup',
+  );
+}
+
+/**
+ * 确认绑定当前用户 TOTP MFA
+ */
+export function confirmMfaTotpApi(data: { code: string; deviceName?: string }) {
+  return requestClient.post<UserMfaTotpStatusResult>(
+    '/admin/user/mfa/totp/confirm',
+    data,
+  );
+}
+
+/**
+ * 关闭当前用户 TOTP MFA
+ */
+export function disableMfaTotpApi(data: { code: string; password: string }) {
+  return requestClient.delete<UserMfaTotpStatusResult>('/admin/user/mfa/totp', {
+    data,
+  });
 }
 
 /**

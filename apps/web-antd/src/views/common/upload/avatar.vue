@@ -72,6 +72,7 @@ const handleDelete = () => {
     onOk: () => {
       imageUrl.value = '';
       emit('update:value', '');
+      emit('update:fileId', '');
       message.success('头像已删除');
     },
   });
@@ -189,7 +190,7 @@ const handleUpload = async () => {
           />
           <div v-else-if="!pendingFile" class="no-image">
             <CameraOutlined style="font-size: 64px; color: #d9d9d9" />
-            <p class="mt-2 text-gray-500">选择一张图片作为头像</p>
+            <p class="mt-2 text-gray-500">选择一张图片</p>
           </div>
           <div v-else class="pending-preview-content">
             <img

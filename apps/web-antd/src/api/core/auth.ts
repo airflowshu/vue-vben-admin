@@ -3,19 +3,51 @@ import { baseRequestClient, requestClient } from '#/api/request';
 export namespace AuthApi {
   /** 登录接口参数 */
   export interface LoginParams {
+    code?: string;
+    loginType?: 'password' | 'sms' | string;
     password?: string;
+    phone?: string;
     username?: string;
   }
 
   /** 登录接口返回值 */
   export interface LoginResult {
-    accessToken: string;
+    accessToken?: string;
+    expiresIn?: number;
+    mfaChallengeToken?: string;
+    mfaMethods?: string[];
+    mfaRequired?: boolean;
   }
 
   export interface RefreshTokenResult {
     data: string;
     status: number;
   }
+
+  export interface LoginMethodOption {
+    codeLength?: number;
+    cooldownSeconds?: number;
+    enabled: boolean;
+    providers?: string[];
+  }
+
+  export interface LoginOptions {
+    methods: {
+      forgetPassword?: LoginMethodOption;
+      password?: LoginMethodOption;
+      qrcode?: LoginMethodOption;
+      register?: LoginMethodOption;
+      sms?: LoginMethodOption;
+      thirdParty?: LoginMethodOption;
+    };
+  }
+}
+
+/**
+ * 获取登录方式开关
+ */
+export async function getLoginOptionsApi() {
+  return requestClient.get<AuthApi.LoginOptions>('/admin/auth/options');
 }
 
 /**
@@ -23,6 +55,23 @@ export namespace AuthApi {
  */
 export async function loginApi(data: AuthApi.LoginParams) {
   return requestClient.post<AuthApi.LoginResult>('/admin/auth/login', data);
+}
+
+/**
+ * MFA 二次验证
+ */
+export async function verifyMfaApi(data: {
+  challengeToken: string;
+  code: string;
+}) {
+  return requestClient.post<AuthApi.LoginResult>('/admin/auth/mfa/verify', data);
+}
+
+/**
+ * 发送手机号登录验证码
+ */
+export async function sendSmsCodeApi(phone: string) {
+  return requestClient.post<string>('/admin/auth/sms-code', { phone });
 }
 
 /**
@@ -41,7 +90,7 @@ export async function refreshTokenApi() {
  * 退出登录
  */
 export async function logoutApi() {
-  return baseRequestClient.post('/admin/auth/logout', {
+  return requestClient.post('/admin/auth/logout', undefined, {
     withCredentials: true,
   });
 }
