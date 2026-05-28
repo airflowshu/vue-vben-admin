@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type { FileObject } from '#/api/core/file';
-
 import { ref, watch } from 'vue';
-
-import { useUserStore } from '@vben/stores';
 
 import {
   CameraOutlined,
@@ -15,7 +11,7 @@ import {
 import { Button, message, Modal, Tooltip } from 'ant-design-vue';
 import Upload from 'ant-design-vue/es/upload';
 
-import { uploadSingleFileApi } from '#/api/core/file';
+import { uploadCurrentUserAvatarApi } from '#/api/system/user';
 
 const props = defineProps<{
   value?: string;
@@ -26,7 +22,6 @@ const emit = defineEmits<{
   'update:value': [value: string];
 }>();
 
-const userStore = useUserStore();
 const imageUrl = ref(props.value || '');
 const modalVisible = ref(false);
 const uploadLoading = ref(false);
@@ -122,23 +117,16 @@ const handleUpload = async () => {
 
   uploadLoading.value = true;
   try {
-    const fileObj: FileObject = await uploadSingleFileApi({
-      bizId: userStore.userInfo?.id,
-      bizType: 'sys_user_avatar',
-      file: pendingFile.value,
-    });
+    const uploadResult = await uploadCurrentUserAvatarApi(pendingFile.value);
 
-    // 从 FileObject.location 获取文件访问地址
-    const fileUrl = fileObj.location?.endpoint
-      ? `${fileObj.location.endpoint}/${fileObj.location.bucket}/${fileObj.location.objectKey}`
-      : '';
+    const fileUrl = uploadResult.url || '';
 
     if (fileUrl) {
       imageUrl.value = fileUrl;
       emit('update:value', fileUrl);
       // 将文件 ID 传递给父组件，用于更新用户信息的 profileFileId
-      if (fileObj.id) {
-        emit('update:fileId', fileObj.id);
+      if (uploadResult.fileId) {
+        emit('update:fileId', uploadResult.fileId);
       }
       message.success('头像上传成功');
       closeModal();

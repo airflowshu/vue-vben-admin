@@ -17,6 +17,6 @@
     "title": "System Config"
   },
   "monitor": {
-    "title": "System Monitor"
+    "title": "Runtime Monitor"
   }
 }

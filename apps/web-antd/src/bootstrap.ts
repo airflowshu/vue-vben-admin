@@ -18,6 +18,14 @@ import App from './app.vue';
 import { router } from './router';
 
 // 预加载图标集合，解决图标不显示问题
+async function loadCarbonIcons() {
+  const carbonIcons = await import(
+    // eslint-disable-next-line n/no-extraneous-import
+    /* @vite-ignore */ '@iconify-json/carbon'
+  );
+  addCollection(carbonIcons.icons);
+}
+
 async function loadMdiIcons() {
   const mdiIcons = await import(
     // eslint-disable-next-line n/no-extraneous-import
@@ -36,8 +44,7 @@ async function loadLucideIcons() {
 
 async function bootstrap(namespace: string) {
   // 预加载图标集合，解决图标不显示问题
-  await loadMdiIcons();
-  await loadLucideIcons();
+  await Promise.all([loadCarbonIcons(), loadMdiIcons(), loadLucideIcons()]);
 
   // 初始化组件适配器
   await initComponentAdapter();

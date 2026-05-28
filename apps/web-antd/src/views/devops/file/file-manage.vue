@@ -188,16 +188,30 @@ function base64Encode(str: string): string {
   }
 }
 
+function buildPreviewUrl(accessUrl: string, fileName?: string) {
+  const params = new URLSearchParams({
+    url: base64Encode(accessUrl),
+  });
+  if (fileName) {
+    params.set('fullfilename', fileName);
+  }
+  return `${PREVIEW_PREFIX}?${params.toString()}`;
+}
+
 // 处理行点击预览文件
 async function handleRowClick(row: FileObject) {
   if (!row.id) return;
 
   try {
-    const data: FileAccessDescriptor = await getFileAccessUrl(row.id);
+    const data: FileAccessDescriptor = await getFileAccessUrl(
+      row.id,
+      600,
+      false,
+    );
 
     if (data.url) {
-      // KKFileView 需要 Base64 编码的 URL
-      const previewUrl = `${PREVIEW_PREFIX}?url=${base64Encode(data.url)}`;
+      // KKFileView 需要 Base64 编码的 URL；本地签名 URL 没有后缀时通过 fullfilename 传入原文件名。
+      const previewUrl = buildPreviewUrl(data.url, row.fileName);
       window.open(previewUrl, '_blank');
     } else {
       message.error('无法获取文件访问地址');
@@ -245,17 +259,19 @@ function getFileIcon(ext: string) {
   return 'lucide:file';
 }
 
-function handleDownload(row: FileObject) {
-  if (
-    !row.location?.endpoint ||
-    !row.location?.bucket ||
-    !row.location?.objectKey
-  ) {
-    message.error('文件下载地址无效');
-    return;
+async function handleDownload(row: FileObject) {
+  if (!row.id) return;
+  try {
+    const data: FileAccessDescriptor = await getFileAccessUrl(row.id, 600, true);
+    if (data.url) {
+      window.open(data.url, '_blank');
+    } else {
+      message.error('无法获取文件下载地址');
+    }
+  } catch (error) {
+    console.error('获取下载地址失败:', error);
+    message.error('获取下载地址失败');
   }
-  const url = `${row.location.endpoint}/${row.location.bucket}/${row.location.objectKey}`;
-  window.open(url, '_blank');
 }
 
 function handleDelete(row: FileObject) {

@@ -61,6 +61,12 @@ export interface DownloadBlobResponse {
   headers?: Record<string, string>;
 }
 
+export interface UserAvatarUploadResult {
+  expireAt?: string;
+  fileId: string;
+  url: string;
+}
+
 /**
  * 获取用户分页列表
  */
@@ -87,6 +93,21 @@ export function getUserById(id: string) {
  */
 export function getUserInfo() {
   return requestClient.get<Record<string, any>>('/admin/user/info');
+}
+
+/**
+ * 上传当前用户头像
+ */
+export function uploadCurrentUserAvatarApi(file: File) {
+  return requestClient.upload<UserAvatarUploadResult>(
+    '/admin/user/avatar/upload',
+    { file },
+    {
+      headers: {
+        'Content-Type': undefined,
+      },
+    },
+  );
 }
 
 /**

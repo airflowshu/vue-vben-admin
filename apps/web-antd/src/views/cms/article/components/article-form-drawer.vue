@@ -31,7 +31,7 @@ import {
 } from '#/api/cms/article-tag';
 import { getCategoryList } from '#/api/cms/category';
 import { getTagList } from '#/api/cms/tag';
-import { uploadCmsFileApi } from '#/api/cms/upload';
+import { getCmsFileAccessUrl, uploadCmsFileApi } from '#/api/cms/upload';
 
 interface DrawerData {
   mode: 'create' | 'edit';
@@ -136,14 +136,9 @@ async function syncArticleTags(currentArticleId: string) {
   }
 }
 
-function getFileUrl(fileData: {
-  location?: { bucket?: string; endpoint?: string; objectKey?: string };
-}) {
-  const endpoint = fileData.location?.endpoint;
-  const bucket = fileData.location?.bucket;
-  const objectKey = fileData.location?.objectKey;
-  if (!endpoint || !bucket || !objectKey) return '';
-  return `${endpoint}/${bucket}/${objectKey}`;
+async function getFileUrl(fileId?: string) {
+  if (!fileId) return '';
+  return (await getCmsFileAccessUrl(fileId, 3600, false)).url || '';
 }
 
 function triggerCoverUpload() {
@@ -162,7 +157,7 @@ async function handleCoverChange(event: Event) {
       tenantId: '1',
     });
     model.coverFileId = fileData.id || '';
-    coverPreviewUrl.value = getFileUrl(fileData);
+    coverPreviewUrl.value = await getFileUrl(fileData.id);
     message.success('封面上传成功');
   } catch (error) {
     console.error(error);
@@ -225,7 +220,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       model.content = detail.content || '';
       model.status = detail.status || 'DRAFT';
       model.sortOrder = detail.sortOrder ?? 0;
-      coverPreviewUrl.value = getFileUrl(detail.coverFile || {});
+      coverPreviewUrl.value = await getFileUrl(detail.coverFileId);
       await loadTagIds(data.record.id);
     } else {
       articleId.value = '';
