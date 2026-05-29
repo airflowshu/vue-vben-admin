@@ -32,8 +32,8 @@ import {
   Tree,
 } from 'ant-design-vue';
 import dayjs from 'dayjs';
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
+import * as editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+import * as htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 
 import {
   getTemplateFile,
@@ -149,12 +149,14 @@ function ensureMonacoEnvironment() {
   if (typeof window === 'undefined' || window.MonacoEnvironment) {
     return;
   }
+  const EditorWorker = editorWorker.default;
+  const HtmlWorker = htmlWorker.default;
   window.MonacoEnvironment = {
     getWorker(_workerId: string, label: string) {
       if (label === 'handlebars' || label === 'html' || label === 'razor') {
-        return new htmlWorker();
+        return new HtmlWorker();
       }
-      return new editorWorker();
+      return new EditorWorker();
     },
   };
 }
@@ -400,12 +402,11 @@ function findFirstFilePath(nodes: CmsTemplateTreeNode[]): null | string {
 }
 
 function countHtmlFiles(nodes: CmsTemplateTreeNode[]): number {
-  return nodes.reduce((count, node) => {
-    if (!node.directory) {
-      return count + 1;
-    }
-    return count + countHtmlFiles(node.children ?? []);
-  }, 0);
+  let count = 0;
+  for (const node of nodes) {
+    count += node.directory ? countHtmlFiles(node.children ?? []) : 1;
+  }
+  return count;
 }
 
 function formatBytes(size?: number) {
@@ -431,11 +432,13 @@ function formatDateTime(value?: null | string) {
 }
 
 function statusColor(status?: string) {
-  return status === 'SUCCESS'
-    ? 'success'
-    : status === 'FAILED'
-      ? 'error'
-      : 'default';
+  if (status === 'SUCCESS') {
+    return 'success';
+  }
+  if (status === 'FAILED') {
+    return 'error';
+  }
+  return 'default';
 }
 
 function openLink(url?: null | string) {
@@ -706,7 +709,14 @@ onBeforeRouteLeave(() => {
   if (!isDirty.value) {
     return true;
   }
-  return window.confirm('当前模板存在未保存修改，确定离开当前页面吗？');
+  return new Promise<boolean>((resolve) => {
+    Modal.confirm({
+      title: '离开当前页面',
+      content: '当前模板存在未保存修改，确定离开当前页面吗？',
+      onCancel: () => resolve(false),
+      onOk: () => resolve(true),
+    });
+  });
 });
 </script>
 

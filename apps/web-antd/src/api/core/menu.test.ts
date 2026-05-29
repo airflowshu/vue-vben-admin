@@ -29,7 +29,10 @@ describe('getAllMenusApi permission mapping', () => {
             name: 'SystemUserResetPassword',
             path: 'reset-password',
             authCode: 'sys:user:reset-password',
-            meta: { authority: ['sys:user:list'], title: 'common.resetPassword' },
+            meta: {
+              authority: ['sys:user:list'],
+              title: 'common.resetPassword',
+            },
           },
         ],
       },

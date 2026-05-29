@@ -243,7 +243,7 @@ const handleUpload = async () => {
     >
       <img
         v-if="previewImage"
-        style=" display: block;width: 100%"
+        style="display: block; width: 100%"
         :src="previewImage"
         alt="头像预览"
       />

@@ -122,7 +122,7 @@ function listToTree(list: DeptRecord[]): DeptTreeNode[] {
     if (!node) continue;
     const parentId = item.parentId === '0' ? null : item.parentId;
     if (parentId && map.has(parentId)) {
-      map.get(parentId)!.children!.push(node);
+      map.get(parentId)?.children?.push(node);
     } else {
       roots.push(node);
     }

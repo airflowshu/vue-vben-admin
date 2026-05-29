@@ -116,7 +116,7 @@ function handleConfirm() {
   &:focus,
   &:hover {
     border-color: var(--kb-rename-primary);
-    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.1);
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 10%);
   }
 }
 
@@ -142,7 +142,7 @@ function handleConfirm() {
   border-radius: 6px;
 
   &:hover {
-    background: hsl(var(--primary) / 0.9);
+    background: hsl(var(--primary) / 90%);
   }
 }
 </style>

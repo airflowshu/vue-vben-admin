@@ -95,7 +95,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData<{ isUpdate: boolean; record?: RoleRecord }>();
+      const data = drawerApi.getData<{
+        isUpdate: boolean;
+        record?: RoleRecord;
+      }>();
       isUpdate.value = data?.isUpdate || false;
 
       nextTick(() => {

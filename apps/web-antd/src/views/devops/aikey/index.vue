@@ -307,7 +307,10 @@ const [Grid, gridApi] = useVbenVxeGrid<AiApiKey>({
       </template>
 
       <template #action="{ row }">
-        <Popconfirm title="确定要切换状态吗？" @confirm="handleStatusChange(row)">
+        <Popconfirm
+          title="确定要切换状态吗？"
+          @confirm="handleStatusChange(row)"
+        >
           <Tag
             :color="row.status === 1 ? 'error' : 'success'"
             class="cursor-pointer hover:opacity-80"
@@ -315,7 +318,11 @@ const [Grid, gridApi] = useVbenVxeGrid<AiApiKey>({
           >
             <template #icon>
               <IconifyIcon
-                :icon="row.status === 1 ? 'ant-design:close-circle' : 'ant-design:check-circle'"
+                :icon="
+                  row.status === 1
+                    ? 'ant-design:close-circle'
+                    : 'ant-design:check-circle'
+                "
               />
             </template>
             {{ row.status === 1 ? '禁用' : '启用' }}
@@ -332,9 +339,7 @@ const [Grid, gridApi] = useVbenVxeGrid<AiApiKey>({
       </template>
 
       <template #toolbar-tools>
-        <Button type="primary" @click="createApi.open()">
-          创建新Key
-        </Button>
+        <Button type="primary" @click="createApi.open()"> 创建新Key </Button>
       </template>
     </Grid>
     <DetailModal />

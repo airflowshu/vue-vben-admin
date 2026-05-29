@@ -39,7 +39,10 @@ export interface PageResult<T> {
  * Get API Key page list
  */
 export function getApiKeyPage(params: SearchRequest) {
-  return requestClient.post<PageResult<AiApiKey>>('/admin/api-key/page', params);
+  return requestClient.post<PageResult<AiApiKey>>(
+    '/admin/api-key/page',
+    params,
+  );
 }
 
 /**

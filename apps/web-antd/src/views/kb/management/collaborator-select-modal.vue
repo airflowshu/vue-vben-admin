@@ -261,9 +261,7 @@ const [Modal, modalApi] = useVbenModal({
   --kb-collab-muted-foreground: hsl(var(--muted-foreground));
   --kb-collab-primary: hsl(var(--primary));
   --kb-collab-danger: hsl(var(--destructive));
-}
 
-.kb-collab-panel {
   border-top: 1px solid var(--kb-collab-border);
 }
 

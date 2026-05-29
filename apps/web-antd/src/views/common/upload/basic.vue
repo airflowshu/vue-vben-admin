@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue';
-
 import Upload from 'ant-design-vue/es/upload';
 
 const props = defineProps<{
@@ -27,7 +26,7 @@ const handleChange = (info: any) => {
 };
 
 const handleDrop = (e: DragEvent) => {
-  console.log(e.dataTransfer?.files);
+  console.warn(e.dataTransfer?.files);
 };
 </script>
 

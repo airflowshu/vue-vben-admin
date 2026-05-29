@@ -26,7 +26,7 @@
     "#/*": "./src/*"
   },
   "dependencies": {
-    "@ant-design/icons-vue": "^7.0.1",
+    "@ant-design/icons-vue": "catalog:",
     "@vben-core/menu-ui": "workspace:*",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
@@ -46,7 +46,7 @@
     "@vueuse/integrations": "catalog:",
     "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
-    "monaco-editor": "^0.55.1",
+    "monaco-editor": "catalog:",
     "pinia": "catalog:",
     "qrcode": "catalog:",
     "vue": "catalog:",

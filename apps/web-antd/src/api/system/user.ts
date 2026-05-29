@@ -95,7 +95,7 @@ export interface UserMfaTotpSetupResult {
 export interface UserMfaTotpStatusResult {
   deviceName?: null | string;
   enabled: boolean;
-  type?: null | 'TOTP' | string;
+  type?: 'TOTP' | null | string;
 }
 
 export interface CurrentUserPasswordUpdateParams {

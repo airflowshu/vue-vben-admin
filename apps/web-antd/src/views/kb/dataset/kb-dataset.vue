@@ -37,7 +37,6 @@ import KbLocalUpload from './kb-local-upload.vue';
 import KbRenameModal from './kb-rename-modal.vue';
 import KbSourceSelectModal from './kb-source-select-modal.vue';
 
-// eslint-disable-next-line no-redeclare
 interface BreadcrumbItem {
   title: string;
   path: string;

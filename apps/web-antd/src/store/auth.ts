@@ -1,5 +1,7 @@
 import type { Recordable, UserInfo } from '@vben/types';
 
+import type { AuthApi } from '#/api';
+
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -18,7 +20,6 @@ import {
   logoutApi,
   verifyMfaApi,
 } from '#/api';
-import type { AuthApi } from '#/api';
 import { $t } from '#/locales';
 
 interface MfaChallengeState {
@@ -66,7 +67,10 @@ export const useAuthStore = defineStore('auth', () => {
     };
   }
 
-  async function authVerifyMfa(code: string, onSuccess?: () => Promise<void> | void) {
+  async function authVerifyMfa(
+    code: string,
+    onSuccess?: () => Promise<void> | void,
+  ) {
     if (!mfaChallenge.value?.token) {
       throw new Error('MFA challenge is missing');
     }
@@ -127,7 +131,9 @@ export const useAuthStore = defineStore('auth', () => {
     } else {
       onSuccess
         ? await onSuccess?.()
-        : await router.push(userInfo.homePath || preferences.app.defaultHomePath);
+        : await router.push(
+            userInfo.homePath || preferences.app.defaultHomePath,
+          );
     }
 
     if (userInfo?.realName) {

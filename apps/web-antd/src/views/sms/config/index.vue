@@ -58,6 +58,7 @@ const refreshing = ref(false);
 const showCreateModal = ref(false);
 const selectedSupplierType = ref('');
 const selectedConfig = ref<null | SmsConfig>(null);
+const extParamsPlaceholder = '{"region":"cn-hangzhou"}';
 
 const draftMap = reactive<Record<string, SmsConfigDraft>>({});
 const savingMap = reactive<Record<string, boolean>>({});
@@ -113,7 +114,7 @@ function ensureDraft(id: string) {
   if (!draftMap[id]) {
     resetDraft(id);
   }
-  return draftMap[id]!;
+  return draftMap[id] ?? {};
 }
 
 async function openCreateModal(supplierType: string, config?: SmsConfig) {
@@ -545,7 +546,7 @@ fetchConfigs();
                 <a-textarea
                   v-model:value="draftMap[card.config.id]!.extParams"
                   :auto-size="{ minRows: 2, maxRows: 4 }"
-                  placeholder='{"region":"cn-hangzhou"}'
+                  :placeholder="extParamsPlaceholder"
                 />
               </a-form-item>
 
@@ -584,7 +585,6 @@ fetchConfigs();
 
 <style scoped lang="scss">
 .sms-page {
-  padding: 8px;
   --sms-card-bg: var(--bg-container);
   --sms-card-border: rgb(148 163 184 / 18%);
   --sms-card-shadow: 0 18px 36px rgb(15 23 42 / 6%);
@@ -600,12 +600,8 @@ fetchConfigs();
   --sms-subtle-bg-strong: rgb(255 255 255 / 66%);
   --sms-subtle-border: rgb(148 163 184 / 14%);
   --sms-icon-border: rgb(255 255 255 / 50%);
-  --sms-overview-bg: linear-gradient(
-      135deg,
-      rgb(15 23 42 / 3%),
-      transparent
-    ),
-    rgb(15 23 42 / 2%);
+  --sms-overview-bg:
+    linear-gradient(135deg, rgb(15 23 42 / 3%), transparent), rgb(15 23 42 / 2%);
   --sms-pending-color: #595959;
   --sms-pending-bg: #fafafa;
   --sms-pending-border: #d9d9d9;
@@ -618,21 +614,16 @@ fetchConfigs();
   --sms-config-btn-color: #1677ff;
   --sms-config-btn-bg: linear-gradient(180deg, #f7fbff 0%, #edf4ff 100%);
   --sms-config-btn-hover-color: #0958d9;
-  --sms-config-btn-hover-bg: linear-gradient(
-    180deg,
-    #eef6ff 0%,
-    #e3efff 100%
-  );
+  --sms-config-btn-hover-bg: linear-gradient(180deg, #eef6ff 0%, #e3efff 100%);
   --sms-config-btn-active-bg: #dbeafe;
   --sms-config-btn-shadow: inset 0 1px 0 rgb(255 255 255 / 85%);
+
+  padding: 8px;
 }
 
 :global(.dark .sms-page) {
-  --sms-card-bg: linear-gradient(
-      180deg,
-      rgb(255 255 255 / 3%),
-      rgb(255 255 255 / 1%)
-    ),
+  --sms-card-bg:
+    linear-gradient(180deg, rgb(255 255 255 / 3%), rgb(255 255 255 / 1%)),
     var(--bg-container);
   --sms-card-border: rgb(148 163 184 / 22%);
   --sms-card-shadow: 0 18px 36px rgb(0 0 0 / 18%);

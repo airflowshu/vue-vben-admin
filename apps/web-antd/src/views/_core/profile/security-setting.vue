@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { UserMfaTotpSetupResult } from '#/api/system/user';
+
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
 
 import { useUserStore } from '@vben/stores';
@@ -11,10 +13,10 @@ import {
   Drawer,
   Form,
   Input,
+  message,
   Modal,
   Space,
   Tag,
-  message,
 } from 'ant-design-vue';
 
 import {
@@ -25,7 +27,6 @@ import {
   sendSecurityEmailCodeApi,
   sendSecurityPhoneCodeApi,
   setupMfaTotpApi,
-  type UserMfaTotpSetupResult,
 } from '#/api/system/user';
 import { useAuthStore } from '#/store';
 
@@ -95,21 +96,21 @@ const mfaText = computed(() =>
     : '未绑定 MFA 设备，绑定后登录需输入认证器动态码',
 );
 
-const mfaOtpAuthUri = computed(() => mfaSetup.value?.otpauthUri ?? 'about:blank');
+const mfaOtpAuthUri = computed(
+  () => mfaSetup.value?.otpauthUri ?? 'about:blank',
+);
 const mfaQrCode = useQRCode(mfaOtpAuthUri);
 
-const codeLength = computed(
-  () =>
-    activeBindType.value === 'phone'
-      ? (authStore.loginOptions?.methods?.sms?.codeLength ?? 6)
-      : 6,
+const codeLength = computed(() =>
+  activeBindType.value === 'phone'
+    ? (authStore.loginOptions?.methods?.sms?.codeLength ?? 6)
+    : 6,
 );
 
-const cooldownSeconds = computed(
-  () =>
-    activeBindType.value === 'phone'
-      ? (authStore.loginOptions?.methods?.sms?.cooldownSeconds ?? 60)
-      : 60,
+const cooldownSeconds = computed(() =>
+  activeBindType.value === 'phone'
+    ? (authStore.loginOptions?.methods?.sms?.cooldownSeconds ?? 60)
+    : 60,
 );
 
 const sendButtonText = computed(() =>
@@ -191,16 +192,27 @@ function openBindModal(type: BindType) {
 }
 
 function handleItemAction(key: string) {
-  if (key === 'securityPhone') {
-    openBindModal('phone');
-  } else if (key === 'securityEmail') {
-    openBindModal('email');
-  } else if (key === 'securityMfa') {
-    if (mfaEnabled.value) {
-      mfaDisableOpen.value = true;
-    } else {
-      openMfaSetupModal();
+  switch (key) {
+    case 'securityEmail': {
+      openBindModal('email');
+
+      break;
     }
+    case 'securityMfa': {
+      if (mfaEnabled.value) {
+        mfaDisableOpen.value = true;
+      } else {
+        openMfaSetupModal();
+      }
+
+      break;
+    }
+    case 'securityPhone': {
+      openBindModal('phone');
+
+      break;
+    }
+    // No default
   }
 }
 
@@ -250,11 +262,9 @@ async function handleSendCode() {
   }
   try {
     sending.value = true;
-    if (activeBindType.value === 'email') {
-      await sendSecurityEmailCodeApi(target);
-    } else {
-      await sendSecurityPhoneCodeApi(target);
-    }
+    await (activeBindType.value === 'email'
+      ? sendSecurityEmailCodeApi(target)
+      : sendSecurityPhoneCodeApi(target));
     message.success('验证码已发送，请注意查收');
     startCountdown();
   } finally {
@@ -406,10 +416,7 @@ onBeforeUnmount(() => {
           {{ item.description }}
         </div>
       </div>
-      <Button
-        type="link"
-        @click="handleItemAction(item.key)"
-      >
+      <Button type="link" @click="handleItemAction(item.key)">
         {{ item.action }}
       </Button>
     </div>
@@ -480,7 +487,8 @@ onBeforeUnmount(() => {
           <img :src="mfaQrCode" alt="MFA QR Code" />
         </div>
         <div class="security-settings__mfa-copy">
-          使用 Microsoft Authenticator、Google Authenticator 等认证器扫描二维码。
+          使用 Microsoft Authenticator、Google Authenticator
+          等认证器扫描二维码。
         </div>
         <Divider>账户名</Divider>
         <Input :value="mfaSetup.accountName" readonly />
@@ -563,9 +571,9 @@ onBeforeUnmount(() => {
 
 .security-settings__item {
   display: flex;
+  gap: 16px;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
   padding: 16px;
   border: 1px solid hsl(var(--border));
   border-radius: 8px;
@@ -577,8 +585,8 @@ onBeforeUnmount(() => {
 
 .security-settings__title-row {
   display: flex;
-  align-items: center;
   gap: 8px;
+  align-items: center;
 }
 
 .security-settings__title {

@@ -949,9 +949,24 @@ onMounted(async () => {
 
 <style scoped>
 .device-page {
+  --device-panel-bg: hsl(var(--card));
+  --device-panel-border: hsl(var(--border));
+  --device-subtle-bg: hsl(var(--muted));
+  --device-subtle-border: hsl(var(--border));
+  --device-text: hsl(var(--foreground));
+  --device-muted-text: hsl(var(--muted-foreground));
+  --device-video-bg: #05070d;
+  --device-link: hsl(var(--primary));
+  --device-row-active-bg: color-mix(
+    in srgb,
+    hsl(var(--primary)),
+    transparent 90%
+  );
+
   display: flex;
   flex-direction: column;
   gap: 16px;
+  color: var(--device-text);
 }
 
 .device-page__header {
@@ -967,7 +982,7 @@ onMounted(async () => {
 
 .device-page__header p {
   margin: 8px 0 0;
-  color: rgb(0 0 0 / 45%);
+  color: var(--device-muted-text);
 }
 
 .device-page__layout {
@@ -978,7 +993,8 @@ onMounted(async () => {
 
 .device-page__panel {
   padding: 16px;
-  background: #fff;
+  background: var(--device-panel-bg);
+  border: 1px solid var(--device-panel-border);
   border-radius: 16px;
 }
 
@@ -1007,7 +1023,8 @@ onMounted(async () => {
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  background: #fafafa;
+  background: var(--device-subtle-bg);
+  border: 1px solid var(--device-subtle-border);
   border-radius: 12px;
 }
 
@@ -1024,7 +1041,8 @@ onMounted(async () => {
   place-items: center;
   min-height: 320px;
   overflow: hidden;
-  background: #000;
+  background: var(--device-video-bg);
+  border: 1px solid var(--device-subtle-border);
   border-radius: 12px;
 }
 
@@ -1047,6 +1065,10 @@ onMounted(async () => {
   word-break: break-all;
 }
 
+.device-page__urls a {
+  color: var(--device-link);
+}
+
 .device-page__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1054,7 +1076,31 @@ onMounted(async () => {
 }
 
 .device-page :deep(.device-page__row--active > td) {
-  background: rgb(22 119 255 / 8%) !important;
+  background: var(--device-row-active-bg) !important;
+}
+
+:global(.dark) .device-page {
+  --device-panel-bg: color-mix(
+    in srgb,
+    hsl(var(--card)),
+    hsl(var(--background)) 12%
+  );
+  --device-subtle-bg: color-mix(
+    in srgb,
+    hsl(var(--muted)),
+    hsl(var(--card)) 32%
+  );
+  --device-subtle-border: color-mix(
+    in srgb,
+    hsl(var(--border)),
+    hsl(var(--foreground)) 10%
+  );
+  --device-video-bg: #02040a;
+  --device-row-active-bg: color-mix(
+    in srgb,
+    hsl(var(--primary)),
+    transparent 82%
+  );
 }
 
 .drawer-form-label :deep(.ant-form-item-label) {

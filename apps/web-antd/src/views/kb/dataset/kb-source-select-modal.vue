@@ -80,7 +80,7 @@ defineExpose(modalApi);
   --kb-source-foreground: hsl(var(--foreground));
   --kb-source-muted: hsl(var(--muted-foreground));
   --kb-source-hover: hsl(var(--accent));
-  --kb-source-active: hsl(var(--primary) / 0.08);
+  --kb-source-active: hsl(var(--primary) / 8%);
   --kb-source-primary: hsl(var(--primary));
 }
 
@@ -108,7 +108,7 @@ defineExpose(modalApi);
   &.active {
     background: var(--kb-source-active);
     border-color: var(--kb-source-primary);
-    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.4);
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 40%);
 
     .source-radio {
       border-color: var(--kb-source-primary);

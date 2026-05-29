@@ -278,9 +278,13 @@ onMounted(() => {
 
 <style scoped>
 .media-page {
+  --media-text: hsl(var(--foreground));
+  --media-muted-text: hsl(var(--muted-foreground));
+
   display: flex;
   flex-direction: column;
   gap: 16px;
+  color: var(--media-text);
 }
 
 .media-page__header {
@@ -296,7 +300,7 @@ onMounted(() => {
 
 .media-page__header p {
   margin: 8px 0 0;
-  color: rgb(0 0 0 / 45%);
+  color: var(--media-muted-text);
 }
 
 .media-page__inline {

@@ -6,7 +6,8 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 
 import { AuthenticationCodeLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
-import { Form, Input, Modal, message } from 'ant-design-vue';
+
+import { Form, Input, message, Modal } from 'ant-design-vue';
 
 import { sendSmsCodeApi } from '#/api';
 import { useAuthStore } from '#/store';
@@ -171,7 +172,8 @@ async function handleMfaVerify() {
           />
         </Form.Item>
         <div class="text-muted-foreground text-sm">
-          请打开 Microsoft Authenticator 或其他认证器应用查看动态验证码。验证有效期约
+          请打开 Microsoft Authenticator
+          或其他认证器应用查看动态验证码。验证有效期约
           {{ mfaExpiresInMinutes }} 分钟。
         </div>
       </Form>

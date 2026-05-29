@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { DeptRecord } from '#/api/system/dept';
+
 import { ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
@@ -7,7 +9,6 @@ import { message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { createDept, updateDept } from '#/api/system/dept';
-import type { DeptRecord } from '#/api/system/dept';
 
 const emit = defineEmits(['success']);
 

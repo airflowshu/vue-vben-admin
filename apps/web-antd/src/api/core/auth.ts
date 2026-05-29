@@ -64,7 +64,10 @@ export async function verifyMfaApi(data: {
   challengeToken: string;
   code: string;
 }) {
-  return requestClient.post<AuthApi.LoginResult>('/admin/auth/mfa/verify', data);
+  return requestClient.post<AuthApi.LoginResult>(
+    '/admin/auth/mfa/verify',
+    data,
+  );
 }
 
 /**

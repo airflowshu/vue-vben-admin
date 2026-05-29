@@ -262,7 +262,11 @@ function getFileIcon(ext: string) {
 async function handleDownload(row: FileObject) {
   if (!row.id) return;
   try {
-    const data: FileAccessDescriptor = await getFileAccessUrl(row.id, 600, true);
+    const data: FileAccessDescriptor = await getFileAccessUrl(
+      row.id,
+      600,
+      true,
+    );
     if (data.url) {
       window.open(data.url, '_blank');
     } else {
@@ -275,12 +279,17 @@ async function handleDownload(row: FileObject) {
 }
 
 function handleDelete(row: FileObject) {
+  const id = row.id;
+  if (!id) {
+    message.error('文件ID为空，无法删除');
+    return;
+  }
   Modal.confirm({
     title: '确认删除',
     content: `是否确认删除文件 "${row.fileName}"？`,
     onOk: async () => {
       try {
-        await deleteFiles([row.id!]);
+        await deleteFiles([id]);
         message.success('删除成功');
         await gridApi.reload();
       } catch (error) {
@@ -297,7 +306,11 @@ function handleBatchDelete() {
     return;
   }
 
-  const ids = selected.map((item) => item.id!);
+  const ids = selected.flatMap((item) => (item.id ? [item.id] : []));
+  if (ids.length === 0) {
+    message.warning('所选文件缺少ID，无法删除');
+    return;
+  }
   Modal.confirm({
     title: '确认删除',
     content: `是否确认删除选中的 ${ids.length} 个文件？`,

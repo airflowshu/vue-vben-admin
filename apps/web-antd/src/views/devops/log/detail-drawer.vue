@@ -178,12 +178,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         title="返回结果"
         size="small"
       >
-        <JsonViewer
-          :value="jsonResultValue"
-          copyable
-          :expand-depth="2"
-          boxed
-        />
+        <JsonViewer :value="jsonResultValue" copyable :expand-depth="2" boxed />
       </Card>
 
       <!-- 错误信息 -->

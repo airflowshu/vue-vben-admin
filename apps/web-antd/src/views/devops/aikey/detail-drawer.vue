@@ -41,7 +41,6 @@ function formatTime(time?: string) {
   if (!time) return '-';
   return time.replace('T', ' ').slice(0, 19);
 }
-
 </script>
 
 <template>

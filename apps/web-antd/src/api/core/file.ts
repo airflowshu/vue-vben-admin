@@ -119,10 +119,13 @@ export function getFileAccessUrl(
   ttlSeconds?: number,
   attachment?: boolean,
 ) {
-  return requestClient.get<FileAccessDescriptor>(`/admin/file/${id}/access-url`, {
-    params: {
-      ttlSeconds,
-      attachment,
+  return requestClient.get<FileAccessDescriptor>(
+    `/admin/file/${id}/access-url`,
+    {
+      params: {
+        ttlSeconds,
+        attachment,
+      },
     },
-  });
+  );
 }

@@ -169,15 +169,18 @@ const formOptions: VbenFormProps = {
 const [Form, formApi] = useVbenForm(formOptions);
 
 // 手动校验配置值格式
-async function validateConfigValue(value: string, type: string): Promise<boolean> {
+async function validateConfigValue(
+  value: string,
+  type: string,
+): Promise<boolean> {
   if (!value) return false;
 
   switch (type) {
-    case 'NUMBER': {
-      return /^-?\d+(\.\d+)?$/.test(value);
-    }
     case 'BOOLEAN': {
       return /^(true|false|0|1)$/i.test(value);
+    }
+    case 'NUMBER': {
+      return /^-?\d+(\.\d+)?$/.test(value);
     }
     case 'JSON': {
       try {
@@ -195,8 +198,9 @@ async function validateConfigValue(value: string, type: string): Promise<boolean
         return false;
       }
     }
-    default:
+    default: {
       return true;
+    }
   }
 }
 
@@ -213,9 +217,14 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const data = await formApi.getValues();
 
       // 手动校验配置值格式
-      const isValid = await validateConfigValue(data.configValue, data.configType);
+      const isValid = await validateConfigValue(
+        data.configValue,
+        data.configType,
+      );
       if (!isValid) {
-        message.error(`配置值格式不正确，请检查是否为有效的 ${data.configType} 格式`);
+        message.error(
+          `配置值格式不正确，请检查是否为有效的 ${data.configType} 格式`,
+        );
         return;
       }
 

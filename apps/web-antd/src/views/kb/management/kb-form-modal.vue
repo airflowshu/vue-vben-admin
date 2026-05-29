@@ -20,12 +20,6 @@ import {
 
 import CollaboratorSelectModal from './collaborator-select-modal.vue';
 
-interface Props {
-  [key: string]: any;
-}
-
-const props = defineProps<Props>();
-
 const emit = defineEmits(['success']);
 
 const userStore = useUserStore();
@@ -57,7 +51,8 @@ watch(
   () => selectedCollaborators.value.length,
   async (count) => {
     // 获取当前表单的类型值
-    const currentType = (await formApi.getValues())?.type;
+    const formValues = await formApi.getValues();
+    const currentType = formValues?.type;
     // 如果有除自己以外的协作者（简单判断数量大于1），且当前是私有，则自动切换为团队
     // 注意：这里假设初始状态只有自己
     if (count > 1 && currentType === 'private') {

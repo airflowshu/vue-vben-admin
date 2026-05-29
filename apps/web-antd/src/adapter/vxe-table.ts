@@ -120,19 +120,10 @@ setupVbenVxeTable({
       renderTableDefault({ attrs, options, props }, { column, row }) {
         const defaultProps = { size: 'small', type: 'link', ...props };
         let align = 'end';
-        switch (column.align) {
-          case 'center': {
-            align = 'center';
-            break;
-          }
-          case 'left': {
-            align = 'start';
-            break;
-          }
-          default: {
-            align = 'end';
-            break;
-          }
+        if (column.align === 'center') {
+          align = 'center';
+        } else if (column.align === 'left') {
+          align = 'start';
         }
         const presets: Record<string, Record<string, any>> = {
           delete: {

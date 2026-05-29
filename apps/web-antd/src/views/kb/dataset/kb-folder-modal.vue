@@ -55,7 +55,7 @@ defineExpose(modalApi);
 .kb-folder-panel {
   --kb-folder-border: hsl(var(--input));
   --kb-folder-focus: hsl(var(--primary));
-  --kb-folder-focus-shadow: hsl(var(--primary) / 0.1);
+  --kb-folder-focus-shadow: hsl(var(--primary) / 10%);
   --kb-folder-icon: hsl(var(--warning));
 }
 

@@ -1,8 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error vite plugin type compatibility
 import Vue from '@vitejs/plugin-vue';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error vite plugin type compatibility
 import VueJsx from '@vitejs/plugin-vue-jsx';
 import { configDefaults, defineConfig } from 'vitest/config';
 

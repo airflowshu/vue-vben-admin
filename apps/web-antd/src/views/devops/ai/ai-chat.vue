@@ -53,11 +53,12 @@ const fetchKnowledgeBases = async () => {
     });
     // 处理返回数据：可能是 {code: 0, data: [...]} 或直接 [...]
     const responseData = res.data;
-    const list = Array.isArray(responseData?.data)
-      ? responseData.data
-      : Array.isArray(responseData)
-        ? responseData
-        : [];
+    let list: KnowledgeBase[] = [];
+    if (Array.isArray(responseData?.data)) {
+      list = responseData.data;
+    } else if (Array.isArray(responseData)) {
+      list = responseData;
+    }
     if (Array.isArray(list)) {
       knowledgeBaseList.value = list;
     }
@@ -95,7 +96,7 @@ const handleFileChange = (event: Event) => {
     if (file) {
       message.success(`Selected file: ${file.name}`);
       // TODO: implement actual upload logic
-      console.log('Upload file:', file.name);
+      console.warn('Upload file:', file.name);
     }
   }
   // 清空 input，允许重复选择同一文件
@@ -698,7 +699,7 @@ onMounted(async () => {
 
 // 消息项
 .message-item {
-  @keyframes fadeIn {
+  @keyframes fade-in {
     from {
       opacity: 0;
       transform: translateY(10px);
@@ -714,7 +715,7 @@ onMounted(async () => {
   gap: 16px;
   width: 100%;
   max-width: none;
-  animation: fadeIn 0.3s ease;
+  animation: fade-in 0.3s ease;
 
   &.user {
     flex-direction: row-reverse;
@@ -806,7 +807,7 @@ onMounted(async () => {
   padding: 14px 20px;
   font-size: 15px;
   line-height: 1.6;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 
   .message-text {
     flex: 1;

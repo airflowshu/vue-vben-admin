@@ -55,3 +55,14 @@ export async function logoutApi() {
 export async function getAccessCodesApi() {
   return requestClient.get<string[]>('/auth/codes');
 }
+
+/**
+ * 重置密码 - 提交新密码
+ */
+export async function resetPasswordApi(data: {
+  email: string;
+  newPassword: string;
+  token: string;
+}) {
+  return requestClient.post('/auth/reset-password', data);
+}

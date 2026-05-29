@@ -148,13 +148,16 @@ async function handleStartUpload() {
       file.progress = 0;
 
       try {
+        if (!file.rawFile) {
+          throw new Error('文件内容为空');
+        }
         await uploadFile(
           {
             kbId: props.kbId,
             parentId: props.parentId,
             bizType: 'kb_dataset',
           },
-          file.rawFile!,
+          file.rawFile,
         );
         file.status = 'success';
         file.progress = 100;

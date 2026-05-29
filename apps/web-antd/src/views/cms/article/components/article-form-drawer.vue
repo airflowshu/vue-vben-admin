@@ -138,7 +138,8 @@ async function syncArticleTags(currentArticleId: string) {
 
 async function getFileUrl(fileId?: string) {
   if (!fileId) return '';
-  return (await getCmsFileAccessUrl(fileId, 3600, false)).url || '';
+  const result = await getCmsFileAccessUrl(fileId, 3600, false);
+  return result.url || '';
 }
 
 function triggerCoverUpload() {

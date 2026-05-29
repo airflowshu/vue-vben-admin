@@ -23,7 +23,7 @@ import { requestClient } from '#/api/request';
 interface CpuStats {
   usage: number;
   cores: number;
-  cgroupVersion?: string | null;
+  cgroupVersion?: null | string;
   physicalCores: number;
   quotaCores?: null | number;
   source?: string;
@@ -33,8 +33,8 @@ interface CpuStats {
 
 interface MemStats {
   usage: number;
-  cgroupVersion?: string | null;
-  limit?: string | null;
+  cgroupVersion?: null | string;
+  limit?: null | string;
   source?: string;
   total: string;
   used: string;
@@ -223,7 +223,8 @@ async function fetchMonitorStats() {
     diskInfo.value = (data.disks ?? []).map((disk) => ({
       ...disk,
       scope:
-        disk.scope ?? (runtime?.containerized ? 'container-visible' : 'host-visible'),
+        disk.scope ??
+        (runtime?.containerized ? 'container-visible' : 'host-visible'),
       source: disk.source ?? runtime?.metricSources.disk ?? 'oshi',
     }));
     threadInfo.value = {
@@ -287,7 +288,9 @@ function getScopeLabel(scope: RuntimeInfo['scope']): string {
 
 function shortContainerId(value?: null | string): string {
   if (!value) return '-';
-  return value.length > 16 ? `${value.slice(0, 12)}...${value.slice(-4)}` : value;
+  return value.length > 16
+    ? `${value.slice(0, 12)}...${value.slice(-4)}`
+    : value;
 }
 
 function threadPercent(value: number): number {
@@ -434,7 +437,9 @@ onUnmounted(() => {
                 </Tag>
               </DescriptionsItem>
               <DescriptionsItem label="监控口径">
-                <Tag :color="runtimeInfo.scope === 'CONTAINER' ? 'gold' : 'cyan'">
+                <Tag
+                  :color="runtimeInfo.scope === 'CONTAINER' ? 'gold' : 'cyan'"
+                >
                   {{ getScopeLabel(runtimeInfo.scope) }}
                 </Tag>
               </DescriptionsItem>
@@ -494,19 +499,13 @@ onUnmounted(() => {
                 <DescriptionsItem label="核心数">
                   <Tag color="blue">{{ cpuInfo.cores }}个</Tag>
                 </DescriptionsItem>
-                <DescriptionsItem
-                  v-if="cpuInfo.quotaCores"
-                  label="容器配额"
-                >
+                <DescriptionsItem v-if="cpuInfo.quotaCores" label="容器配额">
                   <Tag color="gold">{{ cpuInfo.quotaCores }}核</Tag>
                 </DescriptionsItem>
                 <DescriptionsItem label="物理核心">
                   <Tag color="green">{{ cpuInfo.physicalCores }}个</Tag>
                 </DescriptionsItem>
-                <DescriptionsItem
-                  v-if="cpuInfo.cgroupVersion"
-                  label="cgroup"
-                >
+                <DescriptionsItem v-if="cpuInfo.cgroupVersion" label="cgroup">
                   {{ cpuInfo.cgroupVersion }}
                 </DescriptionsItem>
                 <DescriptionsItem label="频率">
@@ -541,7 +540,9 @@ onUnmounted(() => {
                   <Tag color="blue">{{ memInfo.total }}</Tag>
                 </DescriptionsItem>
                 <DescriptionsItem v-if="memInfo.limit" label="限制">
-                  <Tag :color="memInfo.limit === 'limited' ? 'gold' : 'default'">
+                  <Tag
+                    :color="memInfo.limit === 'limited' ? 'gold' : 'default'"
+                  >
                     {{ memInfo.limit === 'limited' ? '容器限制' : '不限' }}
                   </Tag>
                 </DescriptionsItem>
@@ -589,9 +590,7 @@ onUnmounted(() => {
         <!-- 磁盘监控 -->
         <Col :span="24" :lg="12">
           <Card
-            :title="
-              runtimeInfo.containerized ? '容器可见挂载' : '磁盘监控'
-            "
+            :title="runtimeInfo.containerized ? '容器可见挂载' : '磁盘监控'"
             :bordered="false"
             class="h-full"
           >

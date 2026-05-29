@@ -175,7 +175,7 @@ async function handleStartUpload() {
 
   try {
     // 批量上传
-    const files = filesToUpload.map((f) => f.rawFile!).filter(Boolean);
+    const files = filesToUpload.flatMap((f) => (f.rawFile ? [f.rawFile] : []));
     const uploadedIds = await uploadFiles(props.kbId, files, props.parentId);
 
     // 更新文件状态

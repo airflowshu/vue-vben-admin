@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { AuthenticationResetPassword, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
-import { message } from 'ant-design-vue';
+import { message } from 'antdv-next';
 
 import { resetPasswordApi } from '#/api/core/auth';
 

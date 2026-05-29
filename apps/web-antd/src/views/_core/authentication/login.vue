@@ -7,7 +7,7 @@ import { computed, markRaw, onMounted, reactive, watch } from 'vue';
 import { AuthenticationLogin, SliderCaptcha, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
-import { Form, Input, Modal, message } from 'ant-design-vue';
+import { Form, Input, message, Modal } from 'ant-design-vue';
 
 import { useAuthStore } from '#/store';
 
@@ -110,7 +110,9 @@ const showForgetPassword = computed(
 const showQrcodeLogin = computed(
   () => loginMethods.value.qrcode?.enabled ?? false,
 );
-const showRegister = computed(() => loginMethods.value.register?.enabled ?? false);
+const showRegister = computed(
+  () => loginMethods.value.register?.enabled ?? false,
+);
 const showThirdPartyLogin = computed(
   () => loginMethods.value.thirdParty?.enabled ?? false,
 );
@@ -174,7 +176,8 @@ async function handleMfaVerify() {
           />
         </Form.Item>
         <div class="text-muted-foreground text-sm">
-          请打开 Microsoft Authenticator 或其他认证器应用查看动态验证码。验证有效期约
+          请打开 Microsoft Authenticator
+          或其他认证器应用查看动态验证码。验证有效期约
           {{ mfaExpiresInMinutes }} 分钟。
         </div>
       </Form>

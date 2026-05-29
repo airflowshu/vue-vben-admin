@@ -205,7 +205,7 @@ function toTree(list: any[]) {
 // 递归清理菜单数据，移除 parent 引用避免循环
 function cleanMenuData(menus: any[]): any[] {
   return menus.map((item) => {
-    const { parent, ...rest } = item;
+    const { parent: _parent, ...rest } = item;
     const children =
       item.children && item.children.length > 0
         ? cleanMenuData(item.children)

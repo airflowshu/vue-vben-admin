@@ -69,7 +69,12 @@ function createSearch() {
 }
 
 function buildSlotsByLayout(layoutType: string) {
-  const size = layoutType === 'ONE' ? 1 : layoutType === 'FOUR' ? 4 : 9;
+  let size = 9;
+  if (layoutType === 'ONE') {
+    size = 1;
+  } else if (layoutType === 'FOUR') {
+    size = 4;
+  }
   return Array.from({ length: size }).map((_, index) => ({
     slotIndex: index,
     slotName: `窗口 ${index + 1}`,
@@ -324,9 +329,21 @@ onMounted(() => {
 
 <style scoped>
 .screen-page {
+  --screen-panel-bg: hsl(var(--card));
+  --screen-panel-border: hsl(var(--border));
+  --screen-subtle-bg: hsl(var(--muted));
+  --screen-subtle-border: hsl(var(--border));
+  --screen-text: hsl(var(--foreground));
+  --screen-muted-text: hsl(var(--muted-foreground));
+  --screen-slot-bg: linear-gradient(135deg, #0f172a, #1f2937);
+  --screen-slot-border: rgb(148 163 184 / 24%);
+  --screen-slot-text: #f8fafc;
+  --screen-slot-muted: rgb(248 250 252 / 72%);
+
   display: flex;
   flex-direction: column;
   gap: 16px;
+  color: var(--screen-text);
 }
 
 .screen-page__header {
@@ -342,7 +359,7 @@ onMounted(() => {
 
 .screen-page__header p {
   margin: 8px 0 0;
-  color: rgb(0 0 0 / 45%);
+  color: var(--screen-muted-text);
 }
 
 .screen-page__layout {
@@ -354,7 +371,8 @@ onMounted(() => {
 .screen-page__panel {
   min-height: 420px;
   padding: 16px;
-  background: #fff;
+  background: var(--screen-panel-bg);
+  border: 1px solid var(--screen-panel-border);
   border-radius: 16px;
 }
 
@@ -367,15 +385,16 @@ onMounted(() => {
 .screen-page__slot {
   min-height: 120px;
   padding: 16px;
-  color: #fff;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: var(--screen-slot-text);
+  background: var(--screen-slot-bg);
+  border: 1px solid var(--screen-slot-border);
   border-radius: 12px;
 }
 
 .screen-page__slot-index {
   margin-bottom: 8px;
   font-size: 12px;
-  opacity: 0.75;
+  color: var(--screen-slot-muted);
 }
 
 .screen-page__grid {
@@ -395,8 +414,39 @@ onMounted(() => {
   flex-direction: column;
   gap: 8px;
   padding: 12px;
-  background: #fafafa;
+  background: var(--screen-subtle-bg);
+  border: 1px solid var(--screen-subtle-border);
   border-radius: 12px;
+}
+
+:global(.dark) .screen-page {
+  --screen-panel-bg: color-mix(
+    in srgb,
+    hsl(var(--card)),
+    hsl(var(--background)) 12%
+  );
+  --screen-subtle-bg: color-mix(
+    in srgb,
+    hsl(var(--muted)),
+    hsl(var(--card)) 32%
+  );
+  --screen-subtle-border: color-mix(
+    in srgb,
+    hsl(var(--border)),
+    hsl(var(--foreground)) 10%
+  );
+  --screen-slot-bg: linear-gradient(
+    135deg,
+    color-mix(in srgb, hsl(var(--primary)), hsl(var(--card)) 74%),
+    color-mix(in srgb, hsl(var(--card)), #020617 34%)
+  );
+  --screen-slot-border: color-mix(
+    in srgb,
+    hsl(var(--primary)),
+    hsl(var(--border)) 62%
+  );
+  --screen-slot-text: hsl(var(--foreground));
+  --screen-slot-muted: hsl(var(--muted-foreground));
 }
 
 @media (width <= 1280px) {

@@ -696,7 +696,6 @@ onMounted(() => {
     letter-spacing: 2px;
     background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
     background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
@@ -798,7 +797,6 @@ onMounted(() => {
   font-size: 26px;
   font-weight: 700;
   background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
-  background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }

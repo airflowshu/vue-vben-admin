@@ -97,7 +97,9 @@ async function handleSubmit(values: Record<string, any>) {
     userStore.setUserInfo({
       ...userStore.userInfo,
       ...updatedUserInfo,
-      avatar: String(updatedUserInfo.avatar ?? userStore.userInfo?.avatar ?? ''),
+      avatar: String(
+        updatedUserInfo.avatar ?? userStore.userInfo?.avatar ?? '',
+      ),
       realName: String(updatedUserInfo.realName ?? ''),
       userId: String(
         updatedUserInfo.userId ??
@@ -105,7 +107,9 @@ async function handleSubmit(values: Record<string, any>) {
           userStore.userInfo?.userId ??
           '',
       ),
-      username: String(updatedUserInfo.username ?? userStore.userInfo?.username ?? ''),
+      username: String(
+        updatedUserInfo.username ?? userStore.userInfo?.username ?? '',
+      ),
     });
     avatarFileId.value = String(updatedUserInfo.profileFileId ?? '');
     profileBaseSettingRef.value?.getFormApi().setValues(updatedUserInfo);

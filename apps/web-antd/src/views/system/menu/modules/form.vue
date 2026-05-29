@@ -43,7 +43,7 @@ function toTree(list: SystemMenuApi.SystemMenu[]) {
   map.forEach((node) => {
     const pid = (node as any).parentId;
     if (pid && map.has(pid)) {
-      map.get(pid)!.children!.push(node);
+      map.get(pid)?.children?.push(node);
     } else {
       roots.push(node);
     }
@@ -496,14 +496,16 @@ const [Drawer, drawerApi] = useVbenDrawer({
       isDataLoaded.value = false;
       const data = drawerApi.getData<SystemMenuApi.SystemMenu>();
       if (data) {
+        let linkSrc: string | undefined;
+        if (data.type === 'embedded') {
+          linkSrc = data.iframeSrc;
+        } else if (data.type === 'link') {
+          linkSrc = data.link;
+        }
+
         formData.value = {
           ...data,
-          linkSrc:
-            data.type === 'embedded'
-              ? data.iframeSrc
-              : data.type === 'link'
-                ? data.link
-                : undefined,
+          linkSrc,
         };
         formApi.setValues(formData.value);
         titleSuffix.value = formData.value.title
@@ -526,12 +528,11 @@ async function onSubmit() {
   const { valid } = await formApi.validate();
   if (valid) {
     drawerApi.lock();
-    const data =
-      await formApi.getValues<
-        Omit<SystemMenuApi.SystemMenu, 'children' | 'id' | 'meta'> & {
-          linkSrc?: string;
-        }
-      >();
+    const data = await formApi.getValues<
+      Omit<SystemMenuApi.SystemMenu, 'children' | 'id' | 'meta'> & {
+        linkSrc?: string;
+      }
+    >();
     const submitData = buildSubmitData(data);
 
     try {

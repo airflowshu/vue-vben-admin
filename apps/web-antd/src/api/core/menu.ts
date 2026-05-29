@@ -45,7 +45,7 @@ export async function getAllMenusApi() {
           authority.push(authCode);
         }
         const meta = {
-          ...(backendItem.meta ?? {}),
+          ...backendItem.meta,
           ...(authority.length > 0 ? { authority } : {}),
         };
         return {

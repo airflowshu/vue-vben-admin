@@ -68,9 +68,9 @@
   "devDependencies": {
     "@changesets/changelog-github": "catalog:",
     "@changesets/cli": "catalog:",
-    "@iconify-json/carbon": "^1.2.22",
-    "@iconify-json/lucide": "^1.2.94",
-    "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/carbon": "catalog:",
+    "@iconify-json/lucide": "catalog:",
+    "@iconify-json/mdi": "catalog:",
     "@playwright/test": "catalog:",
     "@tsdown/css": "catalog:",
     "@types/node": "catalog:",

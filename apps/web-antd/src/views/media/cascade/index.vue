@@ -97,7 +97,7 @@ async function loadRows() {
   try {
     rows.value = await getMediaCascadePlatformList(createSearch());
     if (rows.value[0]?.id) {
-      await openBindings(rows.value[0]!);
+      await openBindings(rows.value[0]);
     }
   } catch (error) {
     console.error(error);
@@ -423,9 +423,15 @@ onMounted(async () => {
 
 <style scoped>
 .cascade-page {
+  --cascade-text: hsl(var(--foreground));
+  --cascade-muted-text: hsl(var(--muted-foreground));
+  --cascade-subtle-bg: hsl(var(--muted));
+  --cascade-subtle-border: hsl(var(--border));
+
   display: flex;
   flex-direction: column;
   gap: 16px;
+  color: var(--cascade-text);
 }
 
 .cascade-page__header {
@@ -441,7 +447,7 @@ onMounted(async () => {
 
 .cascade-page__header p {
   margin: 8px 0 0;
-  color: rgb(0 0 0 / 45%);
+  color: var(--cascade-muted-text);
 }
 
 .cascade-page__grid {
@@ -461,13 +467,18 @@ onMounted(async () => {
   gap: 12px;
   align-items: center;
   padding: 12px;
-  background: #fafafa;
+  background: var(--cascade-subtle-bg);
+  border: 1px solid var(--cascade-subtle-border);
   border-radius: 12px;
 }
 
 .cascade-page__binding-meta {
   display: flex;
   flex-direction: column;
+}
+
+.cascade-page__binding-meta span {
+  color: var(--cascade-muted-text);
 }
 
 .drawer-form-label :deep(.ant-form-item-label) {
