@@ -8,10 +8,9 @@ import {
   FileImageOutlined,
   PlusOutlined,
 } from '@ant-design/icons-vue';
+import { uploadCurrentUserAvatarApi } from '@flexboot4/admin-web';
 import { Button, message, Modal, Tooltip } from 'ant-design-vue';
 import Upload from 'ant-design-vue/es/upload';
-
-import { uploadCurrentUserAvatarApi } from '#/api/system/user';
 
 const props = defineProps<{
   value?: string;

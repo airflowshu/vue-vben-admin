@@ -27,6 +27,12 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "catalog:",
+    "@flexboot4/admin-web": "workspace:*",
+    "@flexboot4/cms-web": "workspace:*",
+    "@flexboot4/kb-web": "workspace:*",
+    "@flexboot4/media-web": "workspace:*",
+    "@flexboot4/sms4j-web": "workspace:*",
+    "@flexboot4/web-kit": "workspace:*",
     "@vben-core/menu-ui": "workspace:*",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",

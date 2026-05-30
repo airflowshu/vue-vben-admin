@@ -6,9 +6,9 @@ import { computed, markRaw, onMounted, ref, watch } from 'vue';
 import { ProfileBaseSetting } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
 
+import { updateCurrentUserProfileApi } from '@flexboot4/admin-web';
 import { message } from 'ant-design-vue';
 
-import { updateCurrentUserProfileApi } from '#/api/system/user';
 import AvatarUpload from '#/views/common/upload/avatar.vue';
 
 const userStore = useUserStore();

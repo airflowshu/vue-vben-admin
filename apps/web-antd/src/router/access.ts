@@ -6,16 +6,24 @@ import type {
 import { generateAccessible } from '@vben/access';
 import { preferences } from '@vben/preferences';
 
+import { mergeFlexbootPages } from '@flexboot4/web-kit';
 import { message } from 'ant-design-vue';
 
 import { getAllMenusApi } from '#/api';
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
+import { enabledFlexbootModules } from '#/modules/enabled';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 
 async function generateAccess(options: GenerateMenuAndRoutesOptions) {
-  const pageMap: ComponentRecordType = import.meta.glob('../views/**/*.vue');
+  const corePageMap: ComponentRecordType = import.meta.glob(
+    '../views/**/*.vue',
+  );
+  const pageMap: ComponentRecordType = {
+    ...corePageMap,
+    ...mergeFlexbootPages(enabledFlexbootModules),
+  };
 
   const layoutMap: ComponentRecordType = {
     BasicLayout,

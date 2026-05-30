@@ -2,6 +2,13 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import { mergeRouteModules, traverseTreeValues } from '@vben/utils';
 
+import {
+  mergeFlexbootComponentKeys,
+  setFlexbootComponentKeys,
+} from '@flexboot4/web-kit';
+
+import { enabledFlexbootModules } from '#/modules/enabled';
+
 import { coreRoutes, fallbackNotFoundRoute } from './core';
 
 const dynamicRouteFiles = import.meta.glob('./modules/**/*.ts', {
@@ -34,7 +41,7 @@ const coreRouteNames = traverseTreeValues(coreRoutes, (route) => route.name);
 
 /** 有权限校验的路由列表，包含动态路由和静态路由 */
 const accessRoutes = [...dynamicRoutes, ...staticRoutes];
-const componentKeys: string[] = Object.keys(
+const coreComponentKeys: string[] = Object.keys(
   import.meta.glob('../../views/**/*.vue'),
 )
   .filter((item) => !item.includes('/modules/'))
@@ -42,5 +49,12 @@ const componentKeys: string[] = Object.keys(
     const path = v.replace('../../views/', '/');
     return path.endsWith('.vue') ? path.slice(0, -4) : path;
   });
+
+const componentKeys: string[] = mergeFlexbootComponentKeys(
+  coreComponentKeys,
+  enabledFlexbootModules,
+);
+
+setFlexbootComponentKeys(componentKeys);
 
 export { accessRoutes, componentKeys, coreRouteNames, routes };

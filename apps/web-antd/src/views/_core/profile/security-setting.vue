@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import type { UserMfaTotpSetupResult } from '#/api/system/user';
+import type { UserMfaTotpSetupResult } from '@flexboot4/admin-web';
 
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
 
 import { useUserStore } from '@vben/stores';
 
+import {
+  bindSecurityEmailApi,
+  bindSecurityPhoneApi,
+  confirmMfaTotpApi,
+  disableMfaTotpApi,
+  sendSecurityEmailCodeApi,
+  sendSecurityPhoneCodeApi,
+  setupMfaTotpApi,
+} from '@flexboot4/admin-web';
 import { useQRCode } from '@vueuse/integrations/useQRCode';
 import {
   Alert,
@@ -19,15 +28,6 @@ import {
   Tag,
 } from 'ant-design-vue';
 
-import {
-  bindSecurityEmailApi,
-  bindSecurityPhoneApi,
-  confirmMfaTotpApi,
-  disableMfaTotpApi,
-  sendSecurityEmailCodeApi,
-  sendSecurityPhoneCodeApi,
-  setupMfaTotpApi,
-} from '#/api/system/user';
 import { useAuthStore } from '#/store';
 
 const userStore = useUserStore();

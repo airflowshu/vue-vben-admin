@@ -7,9 +7,9 @@ import { computed, ref } from 'vue';
 
 import { ProfilePasswordSetting, z } from '@vben/common-ui';
 
+import { updateCurrentUserPasswordApi } from '@flexboot4/admin-web';
 import { message } from 'ant-design-vue';
 
-import { updateCurrentUserPasswordApi } from '#/api/system/user';
 import { useAuthStore } from '#/store';
 
 const authStore = useAuthStore();

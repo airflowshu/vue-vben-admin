@@ -8,9 +8,16 @@ import { initStores } from '@vben/stores';
 import '@vben/styles';
 import '@vben/styles/antd';
 
+import {
+  installFlexbootModules,
+  setFlexbootBaseRequestClient,
+  setFlexbootRequestClient,
+} from '@flexboot4/web-kit';
 import { useTitle } from '@vueuse/core';
 
+import { baseRequestClient, requestClient } from '#/api/request';
 import { $t, setupI18n } from '#/locales';
+import { enabledFlexbootModules } from '#/modules/enabled';
 
 import { initComponentAdapter } from './adapter/component';
 import { initSetupVbenForm } from './adapter/form';
@@ -43,6 +50,9 @@ async function loadLucideIcons() {
 }
 
 async function bootstrap(namespace: string) {
+  setFlexbootRequestClient(requestClient);
+  setFlexbootBaseRequestClient(baseRequestClient);
+
   // 预加载图标集合，解决图标不显示问题
   await Promise.all([loadCarbonIcons(), loadMdiIcons(), loadLucideIcons()]);
 
@@ -62,6 +72,8 @@ async function bootstrap(namespace: string) {
   // });
 
   const app = createApp(App);
+
+  await installFlexbootModules(app, enabledFlexbootModules);
 
   // 注册v-loading指令
   registerLoadingDirective(app, {

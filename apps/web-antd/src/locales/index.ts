@@ -13,9 +13,12 @@ import {
 } from '@vben/locales';
 import { preferences } from '@vben/preferences';
 
+import { loadFlexbootModuleMessages } from '@flexboot4/web-kit';
 import antdEnLocale from 'ant-design-vue/es/locale/en_US';
 import antdDefaultLocale from 'ant-design-vue/es/locale/zh_CN';
 import dayjs from 'dayjs';
+
+import { enabledFlexbootModules } from '#/modules/enabled';
 
 const antdLocale = ref<Locale>(antdDefaultLocale);
 
@@ -31,11 +34,15 @@ const localesMap = loadLocalesMapFromDir(
  * @param lang
  */
 async function loadMessages(lang: SupportedLanguagesType) {
-  const [appLocaleMessages] = await Promise.all([
+  const [appLocaleMessages, moduleLocaleMessages] = await Promise.all([
     localesMap[lang]?.(),
+    loadFlexbootModuleMessages(enabledFlexbootModules, lang),
     loadThirdPartyMessage(lang),
   ]);
-  return appLocaleMessages?.default;
+  return {
+    ...appLocaleMessages?.default,
+    ...moduleLocaleMessages,
+  };
 }
 
 /**

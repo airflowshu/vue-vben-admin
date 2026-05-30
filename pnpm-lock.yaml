@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@ant-design/icons-vue':
+      specifier: ^7.0.1
+      version: 7.0.1
     '@changesets/changelog-github':
       specifier: ^0.7.0
       version: 0.7.0
@@ -30,6 +33,15 @@ catalogs:
     '@eslint/js':
       specifier: ^10.0.1
       version: 10.0.1
+    '@iconify-json/carbon':
+      specifier: ^1.2.22
+      version: 1.2.22
+    '@iconify-json/lucide':
+      specifier: ^1.2.94
+      version: 1.2.109
+    '@iconify-json/mdi':
+      specifier: ^1.2.3
+      version: 1.2.3
     '@iconify/json':
       specifier: ^2.2.476
       version: 2.2.476
@@ -309,6 +321,9 @@ catalogs:
     medium-zoom:
       specifier: ^1.1.0
       version: 1.1.0
+    monaco-editor:
+      specifier: ^0.55.1
+      version: 0.55.1
     nitropack:
       specifier: ^2.13.4
       version: 2.13.4
@@ -517,13 +532,13 @@ importers:
         specifier: 'catalog:'
         version: 2.31.0(@types/node@25.9.1)
       '@iconify-json/carbon':
-        specifier: ^1.2.22
+        specifier: 'catalog:'
         version: 1.2.22
       '@iconify-json/lucide':
-        specifier: ^1.2.94
+        specifier: 'catalog:'
         version: 1.2.109
       '@iconify-json/mdi':
-        specifier: ^1.2.3
+        specifier: 'catalog:'
         version: 1.2.3
       '@playwright/test':
         specifier: 'catalog:'
@@ -628,8 +643,26 @@ importers:
   apps/web-antd:
     dependencies:
       '@ant-design/icons-vue':
-        specifier: ^7.0.1
+        specifier: 'catalog:'
         version: 7.0.1(vue@3.5.34(typescript@6.0.3))
+      '@flexboot4/admin-web':
+        specifier: workspace:*
+        version: link:../../packages/business/admin-web
+      '@flexboot4/cms-web':
+        specifier: workspace:*
+        version: link:../../packages/business/cms-web
+      '@flexboot4/kb-web':
+        specifier: workspace:*
+        version: link:../../packages/business/kb-web
+      '@flexboot4/media-web':
+        specifier: workspace:*
+        version: link:../../packages/business/media-web
+      '@flexboot4/sms4j-web':
+        specifier: workspace:*
+        version: link:../../packages/business/sms4j-web
+      '@flexboot4/web-kit':
+        specifier: workspace:*
+        version: link:../../packages/business/web-kit
       '@vben-core/menu-ui':
         specifier: workspace:*
         version: link:../../packages/@core/ui-kit/menu-ui
@@ -688,7 +721,7 @@ importers:
         specifier: 'catalog:'
         version: 1.11.20
       monaco-editor:
-        specifier: ^0.55.1
+        specifier: 'catalog:'
         version: 0.55.1
       pinia:
         specifier: ^3.0.4
@@ -1336,6 +1369,258 @@ importers:
       unplugin-vue:
         specifier: 'catalog:'
         version: 7.2.0(@types/node@25.9.1)(esbuild@0.28.0)(jiti@2.7.0)(less@4.6.4)(sass-embedded@1.99.0)(sass@1.99.0)(terser@5.47.1)(vue@3.5.34(typescript@6.0.3))(yaml@2.9.0)
+
+  packages/business/admin-web:
+    dependencies:
+      '@ant-design/icons-vue':
+        specifier: 'catalog:'
+        version: 7.0.1(vue@3.5.34(typescript@6.0.3))
+      '@flexboot4/web-kit':
+        specifier: workspace:*
+        version: link:../web-kit
+      '@vben-core/menu-ui':
+        specifier: workspace:*
+        version: link:../../@core/ui-kit/menu-ui
+      '@vben/access':
+        specifier: workspace:*
+        version: link:../../effects/access
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../effects/common-ui
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../../icons
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../../locales
+      '@vben/plugins':
+        specifier: workspace:*
+        version: link:../../effects/plugins
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../../types
+      '@vben/utils':
+        specifier: workspace:*
+        version: link:../../utils
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 14.3.0(vue@3.5.34(typescript@6.0.3))
+      ant-design-vue:
+        specifier: 'catalog:'
+        version: 4.2.6(vue@3.5.34(typescript@6.0.3))
+      dayjs:
+        specifier: 'catalog:'
+        version: 1.11.20
+      qrcode:
+        specifier: 'catalog:'
+        version: 1.5.4
+      vue:
+        specifier: ^3.5.34
+        version: 3.5.34(typescript@6.0.3)
+    devDependencies:
+      '@vben/tsconfig':
+        specifier: workspace:*
+        version: link:../../../internal/tsconfig
+
+  packages/business/cms-web:
+    dependencies:
+      '@ant-design/icons-vue':
+        specifier: 'catalog:'
+        version: 7.0.1(vue@3.5.34(typescript@6.0.3))
+      '@flexboot4/admin-web':
+        specifier: workspace:*
+        version: link:../admin-web
+      '@flexboot4/web-kit':
+        specifier: workspace:*
+        version: link:../web-kit
+      '@vben/access':
+        specifier: workspace:*
+        version: link:../../effects/access
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../effects/common-ui
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../../icons
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../../locales
+      '@vben/stores':
+        specifier: workspace:*
+        version: link:../../stores
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../../types
+      '@vben/utils':
+        specifier: workspace:*
+        version: link:../../utils
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 14.3.0(vue@3.5.34(typescript@6.0.3))
+      ant-design-vue:
+        specifier: 'catalog:'
+        version: 4.2.6(vue@3.5.34(typescript@6.0.3))
+      dayjs:
+        specifier: 'catalog:'
+        version: 1.11.20
+      monaco-editor:
+        specifier: 'catalog:'
+        version: 0.55.1
+      vue:
+        specifier: ^3.5.34
+        version: 3.5.34(typescript@6.0.3)
+      vue-router:
+        specifier: 'catalog:'
+        version: 5.0.7(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.34(typescript@6.0.3)))(vue@3.5.34(typescript@6.0.3))
+    devDependencies:
+      '@vben/tsconfig':
+        specifier: workspace:*
+        version: link:../../../internal/tsconfig
+
+  packages/business/kb-web:
+    dependencies:
+      '@ant-design/icons-vue':
+        specifier: 'catalog:'
+        version: 7.0.1(vue@3.5.34(typescript@6.0.3))
+      '@flexboot4/admin-web':
+        specifier: workspace:*
+        version: link:../admin-web
+      '@flexboot4/web-kit':
+        specifier: workspace:*
+        version: link:../web-kit
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../effects/common-ui
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../../icons
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../../locales
+      '@vben/stores':
+        specifier: workspace:*
+        version: link:../../stores
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../../types
+      '@vben/utils':
+        specifier: workspace:*
+        version: link:../../utils
+      ant-design-vue:
+        specifier: 'catalog:'
+        version: 4.2.6(vue@3.5.34(typescript@6.0.3))
+      dayjs:
+        specifier: 'catalog:'
+        version: 1.11.20
+      vue:
+        specifier: ^3.5.34
+        version: 3.5.34(typescript@6.0.3)
+    devDependencies:
+      '@vben/tsconfig':
+        specifier: workspace:*
+        version: link:../../../internal/tsconfig
+
+  packages/business/media-web:
+    dependencies:
+      '@ant-design/icons-vue':
+        specifier: 'catalog:'
+        version: 7.0.1(vue@3.5.34(typescript@6.0.3))
+      '@flexboot4/admin-web':
+        specifier: workspace:*
+        version: link:../admin-web
+      '@flexboot4/web-kit':
+        specifier: workspace:*
+        version: link:../web-kit
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../effects/common-ui
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../../locales
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../../types
+      '@vben/utils':
+        specifier: workspace:*
+        version: link:../../utils
+      ant-design-vue:
+        specifier: 'catalog:'
+        version: 4.2.6(vue@3.5.34(typescript@6.0.3))
+      dayjs:
+        specifier: 'catalog:'
+        version: 1.11.20
+      vue:
+        specifier: ^3.5.34
+        version: 3.5.34(typescript@6.0.3)
+    devDependencies:
+      '@vben/tsconfig':
+        specifier: workspace:*
+        version: link:../../../internal/tsconfig
+
+  packages/business/sms4j-web:
+    dependencies:
+      '@ant-design/icons-vue':
+        specifier: 'catalog:'
+        version: 7.0.1(vue@3.5.34(typescript@6.0.3))
+      '@flexboot4/web-kit':
+        specifier: workspace:*
+        version: link:../web-kit
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../effects/common-ui
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../../locales
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../../types
+      ant-design-vue:
+        specifier: 'catalog:'
+        version: 4.2.6(vue@3.5.34(typescript@6.0.3))
+      vue:
+        specifier: ^3.5.34
+        version: 3.5.34(typescript@6.0.3)
+    devDependencies:
+      '@vben/tsconfig':
+        specifier: workspace:*
+        version: link:../../../internal/tsconfig
+
+  packages/business/web-kit:
+    dependencies:
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../effects/common-ui
+      '@vben/hooks':
+        specifier: workspace:*
+        version: link:../../effects/hooks
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../../icons
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../../locales
+      '@vben/plugins':
+        specifier: workspace:*
+        version: link:../../effects/plugins
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../../types
+      '@vben/utils':
+        specifier: workspace:*
+        version: link:../../utils
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 14.3.0(vue@3.5.34(typescript@6.0.3))
+      ant-design-vue:
+        specifier: 'catalog:'
+        version: 4.2.6(vue@3.5.34(typescript@6.0.3))
+      vue:
+        specifier: ^3.5.34
+        version: 3.5.34(typescript@6.0.3)
+    devDependencies:
+      '@vben/tsconfig':
+        specifier: workspace:*
+        version: link:../../../internal/tsconfig
 
   packages/constants:
     dependencies:
