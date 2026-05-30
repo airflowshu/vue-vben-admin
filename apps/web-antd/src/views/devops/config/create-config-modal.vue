@@ -1,13 +1,27 @@
 <script lang="ts" setup>
+import type { PropType } from 'vue';
+
 import type { VbenFormProps } from '#/adapter/form';
 
-import { ref } from 'vue';
+import { computed, defineComponent, h, ref } from 'vue';
 
 import { useVbenDrawer, useVbenForm, z } from '@vben/common-ui';
 
-import { message } from 'ant-design-vue';
+import { Button, message, Select, Space } from 'ant-design-vue';
 
 import { createConfig } from '#/api/devops/sysconfig';
+
+import {
+  CONFIG_TYPE_OPTIONS,
+  formatStructuredConfigValue,
+  getConfigValueComponent,
+  getConfigValueComponentProps,
+  getConfigValueInvalidMessage,
+  getConfigValueRules,
+  isStructuredConfigValueType,
+  normalizeConfigValueType,
+  validateConfigValue,
+} from './config-value';
 
 interface Emits {
   (e: 'success'): void;
@@ -17,104 +31,78 @@ const emit = defineEmits<Emits>();
 
 const loading = ref(false);
 const currentConfigType = ref<string>('STRING');
-
-// 配置类型选项
-const typeOptions = [
-  { value: 'STRING', label: '字符串' },
-  { value: 'NUMBER', label: '数字' },
-  { value: 'BOOLEAN', label: '布尔值' },
-  { value: 'JSON', label: 'JSON' },
-  { value: 'ARRAY', label: '数组' },
-];
-
-// 根据配置类型获取校验规则
-function getValueRules(type: string) {
-  switch (type) {
-    case 'ARRAY': {
-      return z
-        .string()
-        .min(1, '请输入数组')
-        .refine(
-          (val) => {
-            try {
-              const parsed = JSON.parse(val);
-              return Array.isArray(parsed);
-            } catch {
-              return false;
-            }
-          },
-          { message: '请输入有效的JSON数组格式' },
-        );
-    }
-    case 'BOOLEAN': {
-      return z
-        .string()
-        .min(1, '请输入布尔值')
-        .regex(/^(true|false|0|1)$/i, '请输入 true、false、0 或 1');
-    }
-    case 'JSON': {
-      return z
-        .string()
-        .min(1, '请输入JSON')
-        .refine(
-          (val) => {
-            try {
-              JSON.parse(val);
-              return true;
-            } catch {
-              return false;
-            }
-          },
-          { message: '请输入有效的JSON格式' },
-        );
-    }
-    case 'NUMBER': {
-      return z
-        .string()
-        .min(1, '请输入数字')
-        .regex(/^-?\d+(\.\d+)?$/, '请输入有效的数字');
-    }
-    default: {
-      return z.string().min(1, '请输入配置值');
-    }
-  }
-}
-
-// 根据配置类型获取 placeholder
-function getValuePlaceholder(type: string) {
-  switch (type) {
-    case 'ARRAY': {
-      return '请输入JSON数组格式，如：["a", "b", "c"]';
-    }
-    case 'BOOLEAN': {
-      return '请输入 true、false、0 或 1';
-    }
-    case 'JSON': {
-      return '请输入JSON格式，如：{"key": "value"}';
-    }
-    case 'NUMBER': {
-      return '请输入数字，如：100、-5.5';
-    }
-    default: {
-      return '请输入配置值';
-    }
-  }
-}
+const showStructuredValueTools = computed(() =>
+  isStructuredConfigValueType(currentConfigType.value),
+);
 
 // 根据配置类型更新配置值字段的校验规则
 function updateValueRules(type: string) {
-  currentConfigType.value = type;
-  const rules = getValueRules(type);
+  const normalizedType = normalizeConfigValueType(type);
+  currentConfigType.value = normalizedType;
   formApi.updateSchema([
     {
+      component: getConfigValueComponent(normalizedType),
       fieldName: 'configValue',
-      rules,
-      componentProps: {
-        placeholder: getValuePlaceholder(type),
-      },
+      rules: getConfigValueRules(normalizedType),
+      componentProps: getConfigValueComponentProps(normalizedType),
     },
   ]);
 }
+
+const ConfigTypeSelect = defineComponent({
+  name: 'ConfigTypeSelect',
+  props: {
+    disabled: Boolean,
+    options: {
+      type: Array as PropType<Array<{ label: string; value: string }>>,
+      default: () => CONFIG_TYPE_OPTIONS,
+    },
+    placeholder: {
+      type: String,
+      default: undefined,
+    },
+    value: {
+      type: String,
+      default: undefined,
+    },
+  },
+  emits: ['change', 'update:value'],
+  setup(props, { emit }) {
+    return () =>
+      h('div', { class: 'flex w-full items-center gap-2' }, [
+        h(Select as any, {
+          class: 'min-w-0 flex-1',
+          disabled: props.disabled,
+          options: props.options,
+          placeholder: props.placeholder,
+          value: props.value,
+          onChange: (value: string) => emit('change', value),
+          'onUpdate:value': (value: string) => emit('update:value', value),
+        }),
+        showStructuredValueTools.value
+          ? h(Space, { size: 6 }, () =>
+              [
+                ['format', '格式化'],
+                ['compact', '压缩'],
+                ['check', '校验'],
+              ].map(([action, label]) =>
+                h(
+                  Button,
+                  {
+                    size: 'small',
+                    onClick: () =>
+                      handleStructuredValueAction(
+                        action as 'check' | 'compact' | 'format',
+                      ),
+                  },
+                  () => label,
+                ),
+              ),
+            )
+          : null,
+      ]);
+  },
+});
 
 const formOptions: VbenFormProps = {
   collapsed: false,
@@ -130,13 +118,14 @@ const formOptions: VbenFormProps = {
       },
     },
     {
-      component: 'Select',
+      component: ConfigTypeSelect,
       fieldName: 'configType',
       label: '配置类型',
+      modelPropName: 'value',
       rules: z.string().min(1, '请选择配置类型'),
       componentProps: {
         placeholder: '请选择配置类型',
-        options: typeOptions,
+        options: CONFIG_TYPE_OPTIONS,
         onChange: (value: string) => updateValueRules(value),
       },
     },
@@ -183,40 +172,29 @@ const formOptions: VbenFormProps = {
 
 const [Form, formApi] = useVbenForm(formOptions);
 
-// 手动校验配置值格式
-async function validateConfigValue(
-  value: string,
-  type: string,
-): Promise<boolean> {
-  if (!value) return false;
+async function handleStructuredValueAction(
+  action: 'check' | 'compact' | 'format',
+) {
+  const values = await formApi.getValues();
+  const value = String(values.configValue ?? '');
+  const result = formatStructuredConfigValue(
+    value,
+    currentConfigType.value,
+    action === 'compact',
+  );
 
-  switch (type) {
-    case 'BOOLEAN': {
-      return /^(?:true|false|0|1)$/i.test(value);
-    }
-    case 'NUMBER': {
-      return /^-?\d+(?:\.\d+)?$/.test(value);
-    }
-    case 'JSON': {
-      try {
-        JSON.parse(value);
-        return true;
-      } catch {
-        return false;
-      }
-    }
-    case 'ARRAY': {
-      try {
-        const parsed = JSON.parse(value);
-        return Array.isArray(parsed);
-      } catch {
-        return false;
-      }
-    }
-    default: {
-      return true;
-    }
+  if (!result.success) {
+    message.error(result.message);
+    return;
   }
+
+  if (action === 'check') {
+    message.success('格式正确');
+    return;
+  }
+
+  await formApi.setFieldValue('configValue', result.value);
+  message.success(action === 'compact' ? '已压缩' : '已格式化');
 }
 
 const [Drawer, drawerApi] = useVbenDrawer({
@@ -229,14 +207,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const data = await formApi.getValues();
 
       // 手动校验配置值格式
-      const isValid = await validateConfigValue(
-        data.configValue,
-        data.configType,
-      );
+      const isValid = validateConfigValue(data.configValue, data.configType);
       if (!isValid) {
-        message.error(
-          `配置值格式不正确，请检查是否为有效的 ${data.configType} 格式`,
-        );
+        message.error(getConfigValueInvalidMessage(data.configType));
         return;
       }
 
@@ -256,6 +229,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (open) {
       await formApi.resetForm();
       currentConfigType.value = 'STRING';
+      updateValueRules('STRING');
       // 重置后需要重新设置默认值
       await formApi.setFieldValue('status', 1);
     }

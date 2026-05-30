@@ -167,7 +167,9 @@ try {
   return response.data;
 } catch (error) {
   console.error('Failed to fetch data:', error);
-  throw new Error(`Data fetch failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  throw new Error(
+    `Data fetch failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+  );
 }
 
 // ❌ Bad - Empty catch blocks
@@ -224,11 +226,11 @@ export const useExampleStore = defineStore('example', {
     data: [],
     loading: false,
   }),
-  
+
   getters: {
-    filteredData: (state) => state.data.filter(item => item.active),
+    filteredData: (state) => state.data.filter((item) => item.active),
   },
-  
+
   actions: {
     async fetchData() {
       this.loading = true;
@@ -251,7 +253,9 @@ export const useExampleStore = defineStore('example', {
 import { request } from '@vben/request';
 
 // ✅ Good - Use request client
-export const getUserList = async (params: UserListParams): Promise<UserListResponse> => {
+export const getUserList = async (
+  params: UserListParams,
+): Promise<UserListResponse> => {
   return request.get('/api/users', { params });
 };
 
@@ -259,7 +263,10 @@ export const createUser = async (userData: CreateUserData): Promise<User> => {
   return request.post('/api/users', userData);
 };
 
-export const updateUser = async (id: string, userData: UpdateUserData): Promise<User> => {
+export const updateUser = async (
+  id: string,
+  userData: UpdateUserData,
+): Promise<User> => {
   return request.put(`/api/users/${id}`, userData);
 };
 ```
@@ -318,15 +325,15 @@ describe('UserProfile', () => {
         user: { name: 'John Doe', email: 'john@example.com' },
       },
     });
-    
+
     expect(wrapper.find('.user-name').text()).toBe('John Doe');
   });
 
   it('emits update event when form is submitted', async () => {
     const wrapper = mount(UserProfile);
-    
+
     await wrapper.find('form').trigger('submit');
-    
+
     expect(wrapper.emitted('update')).toBeTruthy();
   });
 });
@@ -335,10 +342,12 @@ describe('UserProfile', () => {
 ## Important Rules
 
 ### DO NOT MODIFY
+
 - **Never modify code in `internal/` directory**
 - **Never modify code in `packages/` directory** (unless working on packages)
 
 ### MUST FOLLOW
+
 - **Use Vue 3 Composition API** consistently
 - **TypeScript strict mode** - no type suppression
 - **Import aliases**: Use `#/` for app-level, `@vben/` for package-level
@@ -347,16 +356,20 @@ describe('UserProfile', () => {
 - **State management**: Use Pinia stores for global state
 
 ### FORMATTING
+
 - **Date formatting**: Table time columns should display as `yyyy-MM-dd HH:mm:ss`
 - **API docs**: Reference `docs/api-flexboot4-1.yaml` and `docs/api-1.yaml`
 
 ### COMMIT CONVENTION
+
 Follow Angular convention: `type(scope): subject`
+
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `workflow`, `build`, `ci`, `chore`, `types`, `wip`
 - Example: `feat(form): add cascader component`
 - Use `pnpm commit` for interactive commits
 
 ### UI FRAMEWORK ADAPTERS
+
 - Components must be registered in `apps/*/src/adapter/component/index.ts`
 - Use `#/adapter/form` for form components
 - Framework-specific adapters handle UI differences

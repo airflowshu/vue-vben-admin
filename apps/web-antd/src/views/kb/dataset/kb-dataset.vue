@@ -438,14 +438,32 @@ function handleSearch() {
 }
 
 // 清空搜索
-// 高亮显示匹配文本
-function highlightText(text: string): string {
-  if (!searchKeyword.value.trim() || !text) {
-    return text;
-  }
+function getHighlightedTextParts(text: string) {
   const keyword = searchKeyword.value.trim();
-  const regex = new RegExp(`(${keyword})`, 'gi');
-  return text.replace(regex, '<span class="search-highlight">$1</span>');
+  if (!keyword || !text) {
+    return [{ highlight: false, text }];
+  }
+
+  const lowerText = text.toLowerCase();
+  const lowerKeyword = keyword.toLowerCase();
+  const parts: Array<{ highlight: boolean; text: string }> = [];
+  let cursor = 0;
+  let matchIndex = lowerText.indexOf(lowerKeyword);
+
+  while (matchIndex >= 0) {
+    if (matchIndex > cursor) {
+      parts.push({ highlight: false, text: text.slice(cursor, matchIndex) });
+    }
+    const matchEnd = matchIndex + keyword.length;
+    parts.push({ highlight: true, text: text.slice(matchIndex, matchEnd) });
+    cursor = matchEnd;
+    matchIndex = lowerText.indexOf(lowerKeyword, cursor);
+  }
+
+  if (cursor < text.length) {
+    parts.push({ highlight: false, text: text.slice(cursor) });
+  }
+  return parts;
 }
 </script>
 
@@ -617,10 +635,17 @@ function highlightText(text: string): string {
                     record.type === 'FOLDER' ? 'folder-color' : 'file-color',
                   ]"
                 />
-                <span
-                  class="name-text"
-                  v-html="highlightText(getFileName(record))"
-                ></span>
+                <span class="name-text">
+                  <span
+                    v-for="(part, index) in getHighlightedTextParts(
+                      getFileName(record),
+                    )"
+                    :key="`${part.text}-${index}`"
+                    :class="{ 'search-highlight': part.highlight }"
+                  >
+                    {{ part.text }}
+                  </span>
+                </span>
               </div>
             </template>
 

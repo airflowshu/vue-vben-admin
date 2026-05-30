@@ -3,6 +3,11 @@ import { computed } from 'vue';
 
 import { JsonViewer, useVbenDrawer } from '@vben/common-ui';
 
+import {
+  DesktopOutlined,
+  MobileOutlined,
+  TabletOutlined,
+} from '@ant-design/icons-vue';
 import { Card, Empty } from 'ant-design-vue';
 
 interface OperLogDetail {
@@ -123,26 +128,16 @@ const terminalType = computed(() => {
   return 'pc';
 });
 
-// PC图标SVG
-const pcIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>`;
-
-// 平板图标SVG
-const padIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" /></svg>`;
-
-// 手机图标SVG
-const mobileIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" /></svg>`;
-
-// 根据类型获取图标
-const terminalIconSvg = computed(() => {
+const terminalIconComponent = computed(() => {
   switch (terminalType.value) {
     case 'mobile': {
-      return mobileIconSvg;
+      return MobileOutlined;
     }
     case 'pad': {
-      return padIconSvg;
+      return TabletOutlined;
     }
     default: {
-      return pcIconSvg;
+      return DesktopOutlined;
     }
   }
 });
@@ -195,11 +190,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
       <Card v-if="terminalValue" title="终端信息" size="small">
         <div class="terminal-card">
           <div class="terminal-header">
-            <div
-              class="terminal-icon"
-              :class="`icon-${terminalType}`"
-              v-html="terminalIconSvg"
-            ></div>
+            <div class="terminal-icon" :class="`icon-${terminalType}`">
+              <component :is="terminalIconComponent" />
+            </div>
             <div class="terminal-title">
               <span class="device-name">
                 {{ terminalValue.agentName }}

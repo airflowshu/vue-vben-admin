@@ -12,6 +12,7 @@ import {
   CheckCircleOutlined,
   ClockCircleOutlined,
   DeleteOutlined,
+  DeploymentUnitOutlined,
   EditOutlined,
   FireOutlined,
   InfoCircleOutlined,
@@ -23,6 +24,7 @@ import {
 import {
   Button,
   Drawer,
+  Empty,
   Input,
   message,
   Popconfirm,
@@ -45,7 +47,7 @@ import LogDrawer from './log-drawer.vue';
 
 const SelectOption = Select.Option;
 
-const { Title, Paragraph, Text } = Typography;
+const { Text } = Typography;
 
 // 抽屉控制
 const isDrawerVisible = ref(false);
@@ -117,6 +119,34 @@ const displayLogs = computed(() => {
   return [...timelineLogs.value].toSorted(
     (a, b) => getTimeValue(b.releaseDate) - getTimeValue(a.releaseDate),
   );
+});
+
+const latestLog = computed(() => displayLogs.value[0]);
+
+const summaryStats = computed(() => {
+  const logs = timelineLogs.value;
+  return [
+    {
+      label: '已发布版本',
+      suffix: '个',
+      value: logs.length,
+    },
+    {
+      label: '重大更新',
+      suffix: '次',
+      value: logs.filter((item) => item.type === 'major').length,
+    },
+    {
+      label: '功能优化',
+      suffix: '次',
+      value: logs.filter((item) => item.type === 'minor').length,
+    },
+    {
+      label: '问题修复',
+      suffix: '次',
+      value: logs.filter((item) => item.type === 'patch').length,
+    },
+  ];
 });
 
 // 获取类型对应的颜色
@@ -276,38 +306,73 @@ onMounted(() => {
 
 <template>
   <div class="version-log-page">
-    <!-- 背景特效 -->
-    <div class="bg-effects">
-      <div class="gradient-orb orb-1"></div>
-      <div class="gradient-orb orb-2"></div>
-      <div class="grid-overlay"></div>
-    </div>
-
-    <!-- 头部区域 -->
-    <div class="header-section">
-      <div class="header-content">
-        <div class="header-top">
-          <div class="title-wrapper">
-            <RocketOutlined class="title-icon" />
-            <Title :level="1" class="main-title">系统版本日志</Title>
+    <div class="version-log-shell">
+      <section class="page-hero">
+        <div class="hero-main">
+          <div class="hero-icon">
+            <DeploymentUnitOutlined />
           </div>
-          <Button type="primary" size="large" @click="openDrawer">
+          <div class="hero-copy">
+            <p class="eyebrow">Release Notes</p>
+            <h1>系统版本日志</h1>
+            <p>
+              汇总系统版本迭代、功能优化与问题修复，方便团队快速回看发布节奏。
+            </p>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <Button type="primary" @click="openDrawer">
             <template #icon>
               <EditOutlined />
             </template>
             管理版本日志
           </Button>
         </div>
-        <Paragraph class="subtitle">
-          记录系统每一次迭代与进化，持续为您提供更优质的服务体验
-        </Paragraph>
-      </div>
-    </div>
+      </section>
 
-    <!-- 时间线区域 -->
-    <div class="timeline-section">
-      <div class="timeline-container">
-        <Timeline mode="left">
+      <section class="summary-grid">
+        <div
+          v-for="stat in summaryStats"
+          :key="stat.label"
+          class="summary-card"
+        >
+          <span class="summary-label">{{ stat.label }}</span>
+          <strong>
+            {{ stat.value }}
+            <span>{{ stat.suffix }}</span>
+          </strong>
+        </div>
+      </section>
+
+      <section v-if="latestLog" class="latest-panel">
+        <div class="latest-meta">
+          <Tag color="blue">最新发布</Tag>
+          <span>{{ formatTime(latestLog.releaseDate) }}</span>
+        </div>
+        <div class="latest-content">
+          <div>
+            <div class="latest-version">{{ latestLog.versionNo }}</div>
+            <h2>{{ latestLog.title }}</h2>
+            <p>{{ latestLog.description || '暂无版本描述' }}</p>
+          </div>
+          <Tag :color="getTypeColor(latestLog.type || '')" class="latest-type">
+            <component :is="getTypeIcon(latestLog.type || '')" />
+            {{ latestLog.typeStr || getTypeLabel(latestLog.type || '') }}
+          </Tag>
+        </div>
+      </section>
+
+      <section class="timeline-section">
+        <div class="section-heading">
+          <div>
+            <h2>发布记录</h2>
+            <p>按发布日期倒序展示已发布版本</p>
+          </div>
+        </div>
+
+        <Empty v-if="displayLogs.length === 0" description="暂无版本日志" />
+
+        <Timeline v-else mode="left" class="release-timeline">
           <TimelineItem
             v-for="(log, index) in displayLogs"
             :key="log.id"
@@ -319,67 +384,61 @@ onMounted(() => {
                 : undefined
             "
           >
-            <div class="version-card">
-              <!-- 卡片头部 -->
-              <div class="card-header">
+            <article class="version-card">
+              <header class="card-header">
                 <div class="version-info">
                   <span class="version-number">{{ log.versionNo }}</span>
                   <Tag :color="getTypeColor(log.type || '')">
                     {{ log.typeStr || getTypeLabel(log.type || '') }}
                   </Tag>
-                  <Tag v-if="index === 0" color="magenta" class="new-tag">
-                    <FireOutlined /> 最新
-                  </Tag>
+                  <Tag v-if="index === 0" color="blue">最新</Tag>
                 </div>
                 <div class="version-date">
                   <ClockCircleOutlined />
                   {{ formatTime(log.releaseDate) }}
                 </div>
-              </div>
+              </header>
 
-              <!-- 卡片内容 -->
               <div class="card-body">
-                <h3 class="card-title">{{ log.title }}</h3>
-                <p class="card-desc">{{ log.description }}</p>
+                <h3>{{ log.title }}</h3>
+                <p class="card-desc">{{ log.description || '暂无版本描述' }}</p>
 
-                <!-- 新增功能 -->
-                <div
-                  v-if="normalizeList(log.features).length > 0"
-                  class="features-section"
-                >
-                  <h4 class="section-title"><RocketOutlined /> 新增功能</h4>
-                  <ul class="item-list">
-                    <li
-                      v-for="(feature, idx) in normalizeList(log.features)"
-                      :key="idx"
-                    >
-                      <span class="bullet">▸</span>
-                      {{ feature }}
-                    </li>
-                  </ul>
-                </div>
+                <div class="change-grid">
+                  <div
+                    v-if="normalizeList(log.features).length > 0"
+                    class="change-block"
+                  >
+                    <h4><RocketOutlined /> 新增功能</h4>
+                    <ul>
+                      <li
+                        v-for="(feature, idx) in normalizeList(log.features)"
+                        :key="idx"
+                      >
+                        {{ feature }}
+                      </li>
+                    </ul>
+                  </div>
 
-                <!-- 问题修复 -->
-                <div
-                  v-if="normalizeList(log.fixes).length > 0"
-                  class="fixes-section"
-                >
-                  <h4 class="section-title fix"><FireOutlined /> 问题修复</h4>
-                  <ul class="item-list">
-                    <li
-                      v-for="(fix, idx) in normalizeList(log.fixes)"
-                      :key="idx"
-                    >
-                      <span class="bullet fix-bullet">✓</span>
-                      {{ fix }}
-                    </li>
-                  </ul>
+                  <div
+                    v-if="normalizeList(log.fixes).length > 0"
+                    class="change-block fix"
+                  >
+                    <h4><CheckCircleOutlined /> 问题修复</h4>
+                    <ul>
+                      <li
+                        v-for="(fix, idx) in normalizeList(log.fixes)"
+                        :key="idx"
+                      >
+                        {{ fix }}
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
+            </article>
           </TimelineItem>
         </Timeline>
-      </div>
+      </section>
     </div>
 
     <!-- 管理抽屉 -->
@@ -392,36 +451,37 @@ onMounted(() => {
     >
       <!-- 工具栏 -->
       <div class="drawer-toolbar">
-        <Input
-          v-model:value="searchText"
-          placeholder="搜索版本号或标题..."
-          class="search-input"
-          allow-clear
-          @press-enter="handleSearch"
-          @change="handleSearch"
-        >
-          <template #prefix>
-            <SearchOutlined />
-          </template>
-        </Input>
-        <Select
-          v-model:value="filterType"
-          placeholder="筛选类型"
-          class="type-select"
-          allow-clear
-          style="width: 140px"
-          @change="handleSearch"
-        >
-          <SelectOption value="major">
-            <Tag color="red">重大更新</Tag>
-          </SelectOption>
-          <SelectOption value="minor">
-            <Tag color="orange">功能优化</Tag>
-          </SelectOption>
-          <SelectOption value="patch">
-            <Tag color="green">问题修复</Tag>
-          </SelectOption>
-        </Select>
+        <div class="toolbar-filters">
+          <Input
+            v-model:value="searchText"
+            placeholder="搜索版本号或标题"
+            class="search-input"
+            allow-clear
+            @press-enter="handleSearch"
+            @change="handleSearch"
+          >
+            <template #prefix>
+              <SearchOutlined />
+            </template>
+          </Input>
+          <Select
+            v-model:value="filterType"
+            placeholder="筛选类型"
+            class="type-select"
+            allow-clear
+            @change="handleSearch"
+          >
+            <SelectOption value="major">
+              <Tag color="red">重大更新</Tag>
+            </SelectOption>
+            <SelectOption value="minor">
+              <Tag color="orange">功能优化</Tag>
+            </SelectOption>
+            <SelectOption value="patch">
+              <Tag color="green">问题修复</Tag>
+            </SelectOption>
+          </Select>
+        </div>
         <Button type="primary" @click="openAddModal">
           <template #icon>
             <PlusOutlined />
@@ -438,6 +498,7 @@ onMounted(() => {
         :loading="loading"
         :scroll="{ x: 800 }"
         row-key="id"
+        class="version-table"
         @change="handleTableChange"
       >
         <!-- 类型列 -->
@@ -507,237 +568,269 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-@keyframes float {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-
-  50% {
-    transform: translate(40px, 40px);
-  }
-}
-
-@keyframes fire-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 25px rgb(245 34 45 / 70%);
-    transform: scale(1);
-  }
-
-  50% {
-    box-shadow: 0 0 40px rgb(245 34 45 / 90%);
-    transform: scale(1.1);
-  }
-}
-
-@keyframes glow {
-  0%,
-  100% {
-    box-shadow: 0 0 5px rgb(233 30 99 / 50%);
-  }
-
-  50% {
-    box-shadow: 0 0 20px rgb(233 30 99 / 80%);
-  }
-}
-
-// 响应式
-@media (max-width: 768px) {
-  .version-log-page {
-    padding: 24px 16px;
-  }
-
-  .header-content {
-    .header-top {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .title-wrapper {
-      justify-content: center;
-    }
-
-    .subtitle {
-      padding-left: 0;
-      text-align: center;
-    }
-  }
-
-  .main-title {
-    font-size: 28px !important;
-  }
-
-  .title-icon {
-    font-size: 36px !important;
-  }
-
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .drawer-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-input,
-  .type-select {
-    width: 100% !important;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-}
-
 .version-log-page {
-  position: relative;
+  --version-accent: hsl(var(--accent, 210 40% 96%));
+  --version-bg: hsl(var(--background, 210 20% 98%));
+  --version-bg-deep: hsl(var(--background-deep, 210 20% 96%));
+  --version-border: hsl(var(--border, 214 32% 91%));
+  --version-card: hsl(var(--card, 0 0% 100%));
+  --version-foreground: hsl(var(--foreground, 222 47% 11%));
+  --version-muted: hsl(var(--muted-foreground, 215 16% 47%));
+  --version-popover: hsl(var(--popover, 0 0% 100%));
+  --version-primary: hsl(var(--primary, 212 100% 50%));
+  --version-primary-soft: hsl(var(--primary, 212 100% 50%) / 10%);
+  --version-success: hsl(var(--success, 142 71% 45%));
+
   min-height: 100vh;
-  padding: 40px 24px;
-  overflow: hidden;
+  padding: 24px;
+  overflow: visible;
+  background: var(--version-bg-deep);
+  background-image:
+    linear-gradient(
+      180deg,
+      hsl(var(--card, 0 0% 100%) / 72%) 0%,
+      transparent 220px
+    ),
+    linear-gradient(
+      90deg,
+      hsl(var(--primary, 212 100% 50%) / 5%) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      180deg,
+      hsl(var(--primary, 212 100% 50%) / 5%) 1px,
+      transparent 1px
+    );
+  background-size:
+    auto,
+    48px 48px,
+    48px 48px;
 }
 
-// 背景特效
-.bg-effects {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-
-  .gradient-orb {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.3;
-    filter: blur(100px);
-  }
-
-  .orb-1 {
-    top: -150px;
-    left: -150px;
-    width: 500px;
-    height: 500px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    animation: float 10s ease-in-out infinite;
-  }
-
-  .orb-2 {
-    right: -100px;
-    bottom: -100px;
-    width: 400px;
-    height: 400px;
-    background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
-    animation: float 12s ease-in-out infinite reverse;
-  }
-
-  .grid-overlay {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgb(255 255 255 / 2%) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 2%) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
-  }
+:global(.version-drawer) {
+  --version-accent: hsl(var(--accent, 210 40% 96%));
+  --version-border: hsl(var(--border, 214 32% 91%));
+  --version-foreground: hsl(var(--foreground, 222 47% 11%));
+  --version-popover: hsl(var(--popover, 0 0% 100%));
+  --version-primary: hsl(var(--primary, 212 100% 50%));
 }
 
-// 头部区域
-.header-section {
-  position: relative;
-  z-index: 1;
-  max-width: 1000px;
-  padding: 0 16px;
-  margin: 0 auto 48px;
-}
-
-.header-content {
-  @keyframes pulse-glow {
-    0%,
-    100% {
-      filter: drop-shadow(0 0 20px rgb(14 165 233 / 60%));
-      transform: scale(1);
-    }
-
-    50% {
-      filter: drop-shadow(0 0 40px rgb(14 165 233 / 90%));
-      transform: scale(1.05);
-    }
-  }
-
-  .header-top {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-
-  .title-wrapper {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-  }
-
-  .title-icon {
-    font-size: 48px;
-    color: #0ea5e9;
-    filter: drop-shadow(0 0 20px rgb(14 165 233 / 60%));
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  .main-title {
-    margin: 0 !important;
-    font-size: 40px !important;
-    font-weight: 700;
-    letter-spacing: 2px;
-    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .subtitle {
-    padding-left: 64px;
-    margin: 0 !important;
-    font-size: 16px;
-    color: rgb(255 255 255 / 60%);
-  }
-}
-
-// 时间线区域
-.timeline-section {
-  position: relative;
-  z-index: 1;
-  max-width: 1000px;
-  padding: 0 16px;
+.version-log-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1160px;
   margin: 0 auto;
 }
 
-.timeline-container {
+.page-hero,
+.latest-panel,
+.summary-card {
+  background: var(--version-card);
+  border: 1px solid var(--version-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 4%);
+}
+
+.page-hero {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, var(--version-primary-soft) 0%, transparent 42%),
+    var(--version-card);
+}
+
+.hero-main {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  min-width: 0;
+}
+
+.hero-icon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  font-size: 26px;
+  color: var(--version-primary);
+  background: var(--version-primary-soft);
+  border: 1px solid hsl(var(--primary, 212 100% 50%) / 16%);
+  border-radius: 8px;
+}
+
+.hero-copy {
+  min-width: 0;
+
+  .eyebrow {
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--version-primary);
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--version-foreground);
+  }
+
+  p:last-child {
+    max-width: 640px;
+    margin: 8px 0 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--version-muted);
+  }
+}
+
+.hero-actions {
+  flex: 0 0 auto;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.summary-card {
+  position: relative;
+  padding: 16px 18px;
+  overflow: hidden;
+
+  &::after {
+    position: absolute;
+    right: 16px;
+    bottom: 14px;
+    width: 36px;
+    height: 4px;
+    pointer-events: none;
+    content: '';
+    background: hsl(var(--primary, 212 100% 50%) / 14%);
+    border-radius: 999px;
+  }
+}
+
+.summary-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--version-muted);
+}
+
+.summary-card strong {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--version-foreground);
+
+  span {
+    margin-left: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--version-muted);
+  }
+}
+
+.latest-panel {
+  padding: 20px 24px;
+  border-left: 4px solid var(--version-primary);
+}
+
+.latest-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--version-muted);
+}
+
+.latest-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.latest-version {
+  margin-bottom: 6px;
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--version-primary);
+}
+
+.latest-content h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--version-foreground);
+}
+
+.latest-content p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--version-muted);
+}
+
+.latest-type,
+.type-tag {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.timeline-section {
+  max-width: none;
+  padding: 6px 2px 8px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--version-foreground);
+  }
+
+  p {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--version-muted);
+  }
+}
+
+.release-timeline {
   :deep(.ant-timeline-item-tail) {
-    background: linear-gradient(
-      180deg,
-      rgb(14 165 233 / 60%) 0%,
-      rgb(102 126 234 / 60%) 100%
-    );
-    border-left: 2px solid;
-    border-image: linear-gradient(
-        180deg,
-        rgb(14 165 233 / 100%) 0%,
-        rgb(102 126 234 / 100%) 100%
-      )
-      1;
+    background: none;
+    border-inline-start-color: #dbe4f0;
+    border-left-color: #dbe4f0;
+    border-image: none;
   }
 
   :deep(.ant-timeline-item-head) {
-    width: 18px;
-    height: 18px;
-    background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
-    border: 3px solid rgb(255 255 255 / 30%);
-    box-shadow: 0 0 20px rgb(14 165 233 / 80%);
+    width: 12px;
+    height: 12px;
+    background: var(--version-card);
+    border-color: var(--version-primary);
+    box-shadow: none;
   }
 }
 
@@ -745,33 +838,35 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, #f5222d 0%, #fa8c16 100%);
+  width: 24px;
+  height: 24px;
+  color: #fff;
+  background: var(--version-primary);
+  border: 3px solid hsl(var(--primary, 212 100% 50%) / 18%);
   border-radius: 50%;
-  box-shadow: 0 0 25px rgb(245 34 45 / 70%);
-  animation: fire-pulse 2s ease-in-out infinite;
+  box-shadow: none;
+  animation: none;
 
   .dot-icon {
-    font-size: 14px;
-    color: #fff;
+    font-size: 12px;
   }
 }
 
 .version-card {
   overflow: hidden;
-  background: rgb(255 255 255 / 4%);
-  border: 1px solid rgb(255 255 255 / 10%);
-  border-radius: 20px;
-  backdrop-filter: blur(30px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--version-card);
+  border: 1px solid var(--version-border);
+  border-radius: 8px;
+  box-shadow: none;
+  backdrop-filter: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
-    border-color: rgb(14 165 233 / 50%);
-    box-shadow:
-      0 25px 50px rgb(0 0 0 / 40%),
-      0 0 40px rgb(14 165 233 / 15%);
-    transform: translateY(-6px);
+    border-color: hsl(var(--primary, 212 100% 50%) / 35%);
+    box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+    transform: none;
   }
 }
 
@@ -781,363 +876,261 @@ onMounted(() => {
   gap: 12px;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px;
-  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  padding: 16px 18px;
+  background: hsl(var(--accent, 210 40% 96%) / 55%);
+  border-bottom: 1px solid var(--version-border);
 }
 
 .version-info {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
+  min-width: 0;
 }
 
 .version-number {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 26px;
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  font-size: 18px;
   font-weight: 700;
-  background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.new-tag {
-  animation: glow 2s ease-in-out infinite;
-
-  :deep(.anticon) {
-    margin-right: 4px;
-  }
+  color: var(--version-primary);
+  background: none;
+  -webkit-text-fill-color: var(--version-primary);
 }
 
 .version-date {
-  display: flex;
+  display: inline-flex;
+  flex: 0 0 auto;
   gap: 6px;
   align-items: center;
-  font-size: 14px;
-  color: rgb(255 255 255 / 50%);
-
-  :deep(.anticon) {
-    font-size: 14px;
-  }
+  font-size: 13px;
+  color: var(--version-muted);
 }
 
 .card-body {
-  padding: 24px;
-}
+  padding: 18px;
 
-.card-title {
-  margin: 0 0 10px;
-  font-size: 22px;
-  font-weight: 600;
-  color: #fff;
+  h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--version-foreground);
+  }
 }
 
 .card-desc {
-  margin: 0 0 24px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: rgb(255 255 255 / 60%);
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--version-muted);
 }
 
-.section-title {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin: 0 0 14px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #0ea5e9;
+.change-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.change-block {
+  padding: 14px;
+  background: hsl(var(--primary, 212 100% 50%) / 6%);
+  border: 1px solid hsl(var(--primary, 212 100% 50%) / 12%);
+  border-radius: 8px;
 
   &.fix {
-    color: #52c41a;
+    background: hsl(var(--success, 142 71% 45%) / 7%);
+    border-color: hsl(var(--success, 142 71% 45%) / 14%);
   }
 
-  :deep(.anticon) {
-    font-size: 16px;
+  h4 {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--version-primary);
+  }
+
+  &.fix h4 {
+    color: var(--version-success);
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    padding-left: 16px;
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--version-foreground);
+
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--version-primary);
+      content: '•';
+    }
+  }
+
+  &.fix li::before {
+    color: var(--version-success);
   }
 }
 
-.features-section,
-.fixes-section {
-  margin-top: 20px;
-}
-
-.item-list {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.item-list li {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  padding: 8px 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: rgb(255 255 255 / 80%);
-}
-
-.bullet {
-  padding-top: 3px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #0ea5e9;
-}
-
-.fix-bullet {
-  color: #52c41a;
-}
-
-// 抽屉工具栏
 .drawer-toolbar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid rgb(255 255 255 / 10%);
+  justify-content: space-between;
+  padding: 14px;
+  margin-bottom: 16px;
+  background: hsl(var(--popover, 0 0% 100%));
+  border: 1px solid hsl(var(--border, 214 32% 91%));
+  border-radius: 8px;
+}
+
+.toolbar-filters {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-width: 0;
 }
 
 .search-input {
-  width: 280px;
+  flex: 1 1 260px;
+  min-width: 220px;
 }
 
 .type-select {
-  flex-shrink: 0;
+  width: 140px;
 }
 
-.type-tag {
-  display: inline-flex;
-  gap: 4px;
-  align-items: center;
-}
+.version-table {
+  :deep(.ant-table) {
+    overflow: hidden;
+    background: hsl(var(--popover, 0 0% 100%));
+    border: 1px solid hsl(var(--border, 214 32% 91%));
+    border-radius: 8px;
+  }
 
-.normal-text {
-  color: rgb(255 255 255 / 30%);
-}
+  :deep(.ant-table-thead > tr > th) {
+    font-weight: 600;
+    color: hsl(var(--foreground, 222 47% 11%));
+    background: hsl(var(--accent, 210 40% 96%) / 65%);
+  }
 
-.action-buttons {
-  display: flex;
-  gap: 8px;
+  :deep(.ant-table-tbody > tr > td) {
+    background: hsl(var(--popover, 0 0% 100%));
+    border-bottom-color: hsl(var(--border, 214 32% 91%));
+  }
 }
 
 .action-btn {
-  height: auto;
-  padding: 0;
-  font-size: 13px;
-
   &.edit {
-    color: #0ea5e9;
+    color: hsl(var(--primary, 212 100% 50%));
 
     &:hover {
-      color: #06b6d4;
-    }
-  }
-
-  &.delete {
-    &:hover {
-      color: #ff4d4f;
+      color: #4096ff;
     }
   }
 }
-</style>
 
-<style lang="scss">
-// ============================================
-// 白色主题适配 (全局样式覆盖)
-// ============================================
-html:not(.dark),
-html[data-theme='light'],
-.light-theme,
-body.light {
+:global(.version-drawer .drawer-toolbar) {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  margin-bottom: 16px;
+  background: hsl(var(--popover, 0 0% 100%));
+  border: 1px solid hsl(var(--border, 214 32% 91%));
+  border-radius: 8px;
+}
+
+:global(.version-drawer .toolbar-filters) {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-width: 0;
+}
+
+:global(.version-drawer .search-input) {
+  flex: 1 1 260px;
+  min-width: 220px;
+}
+
+:global(.version-drawer .type-select) {
+  width: 140px;
+}
+
+:global(.version-drawer .version-table .ant-table) {
+  overflow: hidden;
+  background: hsl(var(--popover, 0 0% 100%));
+  border: 1px solid hsl(var(--border, 214 32% 91%));
+  border-radius: 8px;
+}
+
+:global(.version-drawer .version-table .ant-table-thead > tr > th) {
+  font-weight: 600;
+  color: hsl(var(--foreground, 222 47% 11%));
+  background: hsl(var(--accent, 210 40% 96%) / 65%);
+}
+
+:global(.version-drawer .version-table .ant-table-tbody > tr > td) {
+  background: hsl(var(--popover, 0 0% 100%));
+  border-bottom-color: hsl(var(--border, 214 32% 91%));
+}
+
+:global(.version-drawer .action-btn.edit) {
+  color: hsl(var(--primary, 212 100% 50%));
+}
+
+@media (max-width: 900px) {
+  .summary-grid,
+  .change-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
   .version-log-page {
-    background-color: #f0f2f5;
+    padding: 12px;
+  }
 
-    .bg-effects {
-      opacity: 0;
-    }
+  .page-hero,
+  .latest-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .header-content {
-      .header-top .ant-btn-primary {
-        background: #1677ff;
-        border-color: #1677ff;
-        box-shadow: 0 2px 0 rgb(5 145 255 / 10%);
+  .hero-main {
+    align-items: flex-start;
+  }
 
-        &:hover {
-          background: #4096ff;
-          border-color: #4096ff;
-        }
-      }
-    }
+  .summary-grid,
+  .change-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .title-icon {
-      color: #1677ff;
-      filter: none;
-      animation: none;
-    }
+  .drawer-toolbar,
+  .toolbar-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .main-title {
-      color: #1f1f1f;
-      text-shadow: none;
-      background: none;
-      -webkit-text-fill-color: #1f1f1f;
-    }
-
-    .subtitle {
-      font-weight: 500;
-      color: #4b5563;
-    }
-
-    .timeline-container {
-      .ant-timeline-item-tail {
-        background: #e5e7eb;
-        border-left: 2px solid #e5e7eb;
-        border-image: none;
-      }
-
-      .ant-timeline-item-head {
-        background: #fff;
-        border: 3px solid #1677ff;
-        box-shadow: 0 0 0 4px rgb(22 119 255 / 20%);
-      }
-    }
-
-    .custom-dot {
-      background: #fff;
-      border: 2px solid #ff4d4f;
-      box-shadow: 0 0 0 4px rgb(255 77 79 / 20%);
-      animation: none;
-
-      .dot-icon {
-        color: #ff4d4f;
-      }
-    }
-
-    .version-card {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
-
-      &:hover {
-        border-color: #1677ff;
-        box-shadow:
-          0 10px 15px -3px rgb(0 0 0 / 10%),
-          0 4px 6px -2px rgb(0 0 0 / 5%);
-        transform: translateY(-2px);
-      }
-    }
-
-    .card-header {
-      background: #fafafa;
-      border-bottom: 1px solid #f3f4f6;
-    }
-
-    .version-number {
-      color: #1677ff;
-      background: none;
-      -webkit-text-fill-color: #1677ff;
-    }
-
-    .version-date {
-      color: #6b7280;
-
-      .anticon {
-        color: #9ca3af;
-      }
-    }
-
-    .card-title {
-      font-weight: 700;
-      color: #111827;
-    }
-
-    .card-desc {
-      color: #4b5563;
-    }
-
-    .section-title {
-      color: #1677ff;
-
-      &.fix {
-        color: #52c41a;
-      }
-    }
-
-    .item-list li {
-      color: #374151;
-    }
-
-    .bullet {
-      color: #1677ff;
-    }
-
-    .fix-bullet {
-      color: #52c41a;
-    }
-
-    // 抽屉内表格
-    .drawer-toolbar {
-      border-bottom-color: #f0f0f0;
-    }
-
-    .search-input {
-      .ant-input {
-        color: #333;
-        background: #fff;
-
-        &::placeholder {
-          color: #999;
-        }
-      }
-
-      .ant-input-prefix {
-        color: #999;
-      }
-    }
-
-    .type-select {
-      .ant-select-selector {
-        background: #fff !important;
-        border-color: #d9d9d9 !important;
-      }
-    }
-
-    .version-table {
-      .ant-table-thead > tr > th {
-        color: #333;
-        background: #fafafa !important;
-        border-bottom-color: #f0f0f0;
-      }
-
-      .ant-table-tbody > tr > td {
-        color: #333;
-        border-bottom-color: #f5f5f5;
-      }
-
-      .ant-table-tbody > tr:hover > td {
-        background: #f0f7ff !important;
-      }
-    }
-
-    .title-text {
-      color: #1a1a1a;
-    }
-
-    .normal-text {
-      color: #999;
-    }
-
-    .action-btn {
-      &.edit {
-        color: #1677ff;
-
-        &:hover {
-          color: #4096ff;
-        }
-      }
-    }
+  .search-input,
+  .type-select {
+    width: 100%;
   }
 }
 </style>
