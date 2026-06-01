@@ -8,6 +8,7 @@ export type LocaleLoaders = Record<string, LocaleLoader>;
 export interface FlexbootWebModule {
   componentKeys: string[];
   install?: (app: App) => Promise<void> | void;
+  localeNamespace?: false | string;
   locales?: LocaleLoaders;
   name: string;
   pages: ComponentRecordType;
@@ -159,13 +160,29 @@ async function loadFlexbootModuleMessages(
   modules: FlexbootWebModule[],
   lang: string,
 ) {
-  const messages = await Promise.all(
-    modules.map(async (module) => module.locales?.[lang]?.()),
+  const moduleMessages = await Promise.all(
+    modules.map(async (module) => {
+      const message = await module.locales?.[lang]?.();
+      return normalizeModuleLocaleMessages(module, message?.default ?? {});
+    }),
   );
-  return Object.assign(
-    {},
-    ...messages.map((message) => message?.default ?? {}),
-  ) as Record<string, any>;
+  return Object.assign({}, ...moduleMessages) as Record<string, any>;
+}
+
+function normalizeModuleLocaleMessages(
+  module: FlexbootWebModule,
+  messages: Record<string, any>,
+) {
+  const namespace = module.localeNamespace ?? module.name;
+  if (namespace === false) {
+    return messages;
+  }
+  if (Object.prototype.hasOwnProperty.call(messages, namespace)) {
+    return messages;
+  }
+  return {
+    [namespace]: messages,
+  };
 }
 
 async function installFlexbootModules(app: App, modules: FlexbootWebModule[]) {

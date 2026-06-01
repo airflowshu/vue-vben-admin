@@ -14,6 +14,8 @@ export interface SmsConfig {
   isDefault?: number;
   lastModifyBy?: string;
   lastModifyTime?: string;
+  lastTestMessage?: string;
+  lastTestTime?: string;
   remark?: string;
   sdkAppId?: string;
   signature?: string;
@@ -22,7 +24,21 @@ export interface SmsConfig {
   supplierType: string;
   supplierTypeStr?: string;
   templateId?: string;
+  testStatus?: 'FAILED' | 'PASSED' | 'UNTESTED' | string;
   weight?: number;
+}
+
+export interface SmsConfigTestRequest {
+  phone: string;
+  templateId?: string;
+  templateParams?: Record<string, string>;
+}
+
+export interface SmsConfigTestResult {
+  message: string;
+  success: boolean;
+  testedAt?: string;
+  testStatus: 'FAILED' | 'PASSED' | 'UNTESTED' | string;
 }
 
 /**
@@ -50,4 +66,14 @@ export function updateSmsConfig(id: string, data: Partial<SmsConfig>) {
  */
 export function createSmsConfig(data: Partial<SmsConfig>) {
   return useFlexbootRequestClient().post<boolean>('/admin/sms/config', data);
+}
+
+/**
+ * Send a real test message for a sms config.
+ */
+export function testSmsConfig(id: string, data: SmsConfigTestRequest) {
+  return useFlexbootRequestClient().post<SmsConfigTestResult>(
+    `/admin/sms/config/${id}/test`,
+    data,
+  );
 }

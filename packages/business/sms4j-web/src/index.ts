@@ -11,6 +11,7 @@ const pages: ComponentRecordType = import.meta.glob(
 
 const sms4jWeb = defineFlexbootWebModule({
   name: 'sms4j',
+  localeNamespace: 'sms',
   pages,
   componentKeys: componentKeysFromPages(pages),
   locales: {

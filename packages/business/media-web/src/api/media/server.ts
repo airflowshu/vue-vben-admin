@@ -1,6 +1,7 @@
 import type {
   MediaSearchRequest,
   MediaServer,
+  MediaServerHookInfo,
   MediaServerTestRequest,
   MediaServerTestResult,
 } from './types';
@@ -46,5 +47,17 @@ export function getMediaServerStreams(
   return useFlexbootRequestClient().get<Array<Record<string, any>>>(
     `/admin/media/server/${id}/streams`,
     { params: { app, stream } },
+  );
+}
+
+export function getMediaServerHookInfo(id: string) {
+  return useFlexbootRequestClient().get<MediaServerHookInfo>(
+    `/admin/media/server/${id}/hook-info`,
+  );
+}
+
+export function syncMediaServerHook(id: string) {
+  return useFlexbootRequestClient().post<boolean>(
+    `/admin/media/server/${id}/sync-hook`,
   );
 }

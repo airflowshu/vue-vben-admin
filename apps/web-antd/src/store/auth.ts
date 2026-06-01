@@ -28,6 +28,10 @@ interface MfaChallengeState {
   token: string;
 }
 
+interface LogoutOptions {
+  remote?: boolean;
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
   const userStore = useUserStore();
@@ -147,16 +151,14 @@ export const useAuthStore = defineStore('auth', () => {
     return userInfo;
   }
 
-  async function logout(redirect: boolean = true) {
-    try {
-      await logoutApi();
-    } catch {
-      // 不做任何处理
-    }
+  function clearAuthState() {
     resetAllStores();
     accessStore.setLoginExpired(false);
+  }
 
-    // 回登录页带上当前路由地址
+  async function clearAuthAndRedirect(redirect: boolean = true) {
+    clearAuthState();
+
     await router.replace({
       path: LOGIN_PATH,
       query: redirect
@@ -165,6 +167,19 @@ export const useAuthStore = defineStore('auth', () => {
           }
         : {},
     });
+  }
+
+  async function logout(redirect: boolean = true, options: LogoutOptions = {}) {
+    const { remote = true } = options;
+    if (remote) {
+      try {
+        await logoutApi();
+      } catch {
+        // 登录态过期时远程退出可能返回 401，本地退出仍然要继续完成。
+      }
+    }
+
+    await clearAuthAndRedirect(redirect);
   }
 
   async function fetchUserInfo() {
@@ -187,6 +202,8 @@ export const useAuthStore = defineStore('auth', () => {
     $reset,
     authLogin,
     authVerifyMfa,
+    clearAuthAndRedirect,
+    clearAuthState,
     clearMfaChallenge,
     fetchLoginOptions,
     fetchUserInfo,

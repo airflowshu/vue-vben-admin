@@ -20,8 +20,9 @@ export namespace AuthApi {
   }
 
   export interface RefreshTokenResult {
+    code: number;
     data: string;
-    status: number;
+    message?: string;
   }
 
   export interface LoginMethodOption {
@@ -83,6 +84,7 @@ export async function sendSmsCodeApi(phone: string) {
 export async function refreshTokenApi() {
   return baseRequestClient.post<AuthApi.RefreshTokenResult>(
     '/admin/auth/refresh',
+    undefined,
     {
       withCredentials: true,
     },

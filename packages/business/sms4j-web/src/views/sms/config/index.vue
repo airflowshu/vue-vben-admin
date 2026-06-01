@@ -22,6 +22,7 @@ import { message } from 'ant-design-vue';
 
 import { getSmsConfigList, updateSmsConfig } from '../../../api/sms';
 import CreateConfigModal from './components/create-config-modal.vue';
+import TestConfigModal from './components/test-config-modal.vue';
 import { SMS_SUPPLIER_PRESETS } from './constants';
 
 interface SmsConfigDraft {
@@ -56,8 +57,10 @@ const configs = ref<SmsConfig[]>([]);
 const loading = ref(false);
 const refreshing = ref(false);
 const showCreateModal = ref(false);
+const showTestModal = ref(false);
 const selectedSupplierType = ref('');
 const selectedConfig = ref<null | SmsConfig>(null);
+const selectedTestConfig = ref<null | SmsConfig>(null);
 const extParamsPlaceholder = '{"region":"cn-hangzhou"}';
 
 const draftMap = reactive<Record<string, SmsConfigDraft>>({});
@@ -129,8 +132,28 @@ async function openCreateModal(supplierType: string, config?: SmsConfig) {
   showCreateModal.value = true;
 }
 
+async function openTestModal(config: SmsConfig) {
+  selectedTestConfig.value = config;
+
+  if (showTestModal.value) {
+    return;
+  }
+
+  await nextTick();
+  showTestModal.value = true;
+}
+
 function isExpanded(id: string) {
   return expandedSet.has(id);
+}
+
+function getTestTooltip(config: SmsConfig) {
+  if (config.testStatus !== 'PASSED') {
+    return config.lastTestMessage || '尚未完成通过测试';
+  }
+  return config.lastTestTime
+    ? `最近通过：${config.lastTestTime}`
+    : '最近测试已通过';
 }
 
 function getSortScore(config?: SmsConfig) {
@@ -188,6 +211,12 @@ watch(showCreateModal, (open) => {
   if (!open) {
     selectedSupplierType.value = '';
     selectedConfig.value = null;
+  }
+});
+
+watch(showTestModal, (open) => {
+  if (!open) {
+    selectedTestConfig.value = null;
   }
 });
 
@@ -272,6 +301,10 @@ function handleCreateSuccess() {
   fetchConfigs(true);
 }
 
+function handleTestSuccess() {
+  fetchConfigs(true);
+}
+
 fetchConfigs();
 </script>
 
@@ -342,6 +375,12 @@ fetchConfigs();
                 >
                   默认
                 </span>
+                <a-tooltip
+                  v-if="card.config?.testStatus === 'PASSED'"
+                  :title="getTestTooltip(card.config)"
+                >
+                  <span class="status-chip is-test-passed">测试通过</span>
+                </a-tooltip>
               </div>
               <p class="brand-description">{{ card.description }}</p>
             </div>
@@ -364,6 +403,18 @@ fetchConfigs();
           >
             {{ card.config.status === 1 ? '已启用' : '未启用' }}
           </span>
+          <a-tooltip v-if="card.config" :title="getTestTooltip(card.config)">
+            <span
+              class="status-chip summary-status-tag"
+              :class="[
+                card.config.testStatus === 'PASSED'
+                  ? 'is-test-passed'
+                  : 'is-test-pending',
+              ]"
+            >
+              {{ card.config.testStatus === 'PASSED' ? '已测试' : '未测试' }}
+            </span>
+          </a-tooltip>
           <span v-else class="summary-pill summary-pill--ghost">待配置</span>
         </div>
 
@@ -436,6 +487,15 @@ fetchConfigs();
           </div>
 
           <div class="action-buttons">
+            <a-button
+              v-if="card.config"
+              type="default"
+              size="middle"
+              class="test-action-btn"
+              @click="openTestModal(card.config)"
+            >
+              测试
+            </a-button>
             <a-button
               type="default"
               size="middle"
@@ -580,6 +640,12 @@ fetchConfigs();
       :initial-config="selectedConfig"
       @success="handleCreateSuccess"
     />
+
+    <TestConfigModal
+      v-model:open="showTestModal"
+      :config="selectedTestConfig"
+      @success="handleTestSuccess"
+    />
   </Page>
 </template>
 
@@ -611,6 +677,9 @@ fetchConfigs();
   --sms-enabled-color: #389e0d;
   --sms-enabled-bg: #f6ffed;
   --sms-enabled-border: #b7eb8f;
+  --sms-test-color: #237804;
+  --sms-test-bg: #f6ffed;
+  --sms-test-border: #b7eb8f;
   --sms-config-btn-color: #1677ff;
   --sms-config-btn-bg: linear-gradient(180deg, #f7fbff 0%, #edf4ff 100%);
   --sms-config-btn-hover-color: #0958d9;
@@ -657,6 +726,9 @@ fetchConfigs();
   --sms-enabled-color: #95de64;
   --sms-enabled-bg: rgb(82 196 26 / 12%);
   --sms-enabled-border: rgb(82 196 26 / 28%);
+  --sms-test-color: #b7eb8f;
+  --sms-test-bg: rgb(82 196 26 / 12%);
+  --sms-test-border: rgb(82 196 26 / 28%);
   --sms-config-btn-color: #69b1ff;
   --sms-config-btn-bg: linear-gradient(
     180deg,
@@ -972,6 +1044,19 @@ fetchConfigs();
   border-color: var(--sms-pending-border);
 }
 
+.status-chip.is-test-passed,
+.summary-status-tag.is-test-passed {
+  color: var(--sms-test-color);
+  background: var(--sms-test-bg);
+  border-color: var(--sms-test-border);
+}
+
+.summary-status-tag.is-test-pending {
+  color: var(--sms-pending-color);
+  background: var(--sms-pending-bg);
+  border-color: var(--sms-pending-border);
+}
+
 .overview-shell,
 .empty-shell {
   display: flex;
@@ -1104,7 +1189,8 @@ fetchConfigs();
   align-items: center;
 }
 
-.config-action-btn {
+.config-action-btn,
+.test-action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1121,15 +1207,24 @@ fetchConfigs();
 }
 
 .config-action-btn:hover,
-.config-action-btn:focus {
+.config-action-btn:focus,
+.test-action-btn:hover,
+.test-action-btn:focus {
   color: var(--sms-config-btn-hover-color);
   background: var(--sms-config-btn-hover-bg);
   border-color: #69b1ff;
 }
 
-.config-action-btn:active {
+.config-action-btn:active,
+.test-action-btn:active {
   background: var(--sms-config-btn-active-bg);
   border-color: #4096ff;
+}
+
+.test-action-btn {
+  color: var(--sms-test-color);
+  background: var(--sms-test-bg);
+  border-color: var(--sms-test-border);
 }
 
 .card-form {

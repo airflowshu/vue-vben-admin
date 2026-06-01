@@ -11,30 +11,29 @@ const pages: ComponentRecordType = import.meta.glob(
 
 const adminWeb = defineFlexbootWebModule({
   name: 'admin',
+  localeNamespace: false,
   pages,
   componentKeys: componentKeysFromPages(pages),
   locales: {
     'en-US': async () => ({
-      default: Object.assign(
-        {},
-        await import('./locales/langs/en-US/devops.json').then(
+      default: {
+        devops: await import('./locales/langs/en-US/devops.json').then(
           (module) => module.default,
         ),
-        await import('./locales/langs/en-US/system.json').then(
+        system: await import('./locales/langs/en-US/system.json').then(
           (module) => module.default,
         ),
-      ),
+      },
     }),
     'zh-CN': async () => ({
-      default: Object.assign(
-        {},
-        await import('./locales/langs/zh-CN/devops.json').then(
+      default: {
+        devops: await import('./locales/langs/zh-CN/devops.json').then(
           (module) => module.default,
         ),
-        await import('./locales/langs/zh-CN/system.json').then(
+        system: await import('./locales/langs/zh-CN/system.json').then(
           (module) => module.default,
         ),
-      ),
+      },
     }),
   },
 });

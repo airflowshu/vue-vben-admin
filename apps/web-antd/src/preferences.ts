@@ -21,6 +21,14 @@ export const overridesPreferences = defineOverridesPreferences({
     name: import.meta.env.VITE_APP_TITLE,
     accessMode: 'mixed',
   },
+  logo: {
+    fit: 'contain',
+    source: '/logo/flexboot4-logo.svg',
+  },
+  copyright: {
+    companyName: 'Flexboot4',
+    companySiteLink: 'http://wangts.eu.org/flexboot4/',
+  },
 });
 
 export const preferencesExtension =

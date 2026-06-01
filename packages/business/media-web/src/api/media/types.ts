@@ -225,6 +225,17 @@ export interface MediaServerTestResult {
   version?: string;
 }
 
+export interface MediaServerHookInfo {
+  adminParams: string;
+  callbackBaseUrl: string;
+  onRtpServerTimeout: string;
+  onServerKeepalive: string;
+  onStreamChanged: string;
+  onStreamNoneReader: string;
+  serverId: string;
+  urls: Record<string, string>;
+}
+
 export interface MediaServerTestRequest {
   apiSecret?: string;
   baseUrl?: string;

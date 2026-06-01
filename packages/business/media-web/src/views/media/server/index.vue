@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import type { MediaServer } from '../../../api/media/types';
+import type {
+  MediaServer,
+  MediaServerHookInfo,
+} from '../../../api/media/types';
 
 import { onMounted, reactive, ref } from 'vue';
 
@@ -21,8 +24,10 @@ import {
 import {
   createMediaServer,
   deleteMediaServer,
+  getMediaServerHookInfo,
   getMediaServerList,
   getMediaServerStreams,
+  syncMediaServerHook,
   testMediaServer,
   updateMediaServer,
 } from '../../../api/media/server';
@@ -33,8 +38,10 @@ const loading = ref(false);
 const saving = ref(false);
 const open = ref(false);
 const streamOpen = ref(false);
+const hookOpen = ref(false);
 const rows = ref<MediaServer[]>([]);
 const streamRows = ref<Array<Record<string, any>>>([]);
+const hookInfo = ref<MediaServerHookInfo>();
 const formModel = reactive<MediaServer>({
   enabled: true,
   hookEnabled: true,
@@ -48,7 +55,7 @@ const columns = [
   { title: '状态', dataIndex: 'status' },
   { title: '默认 App', dataIndex: 'defaultStreamApp' },
   { title: '最近测试', dataIndex: 'lastTestTime' },
-  { title: '操作', key: 'action', width: 260 },
+  { title: '操作', key: 'action', width: 360 },
 ];
 
 const streamColumns = [
@@ -162,6 +169,29 @@ async function viewStreams(row: MediaServer) {
   }
 }
 
+async function viewHookInfo(row: MediaServer) {
+  if (!row.id) return;
+  try {
+    hookInfo.value = await getMediaServerHookInfo(row.id);
+    hookOpen.value = true;
+  } catch (error) {
+    console.error(error);
+    message.error('读取 Hook 配置失败');
+  }
+}
+
+async function syncHook(row: MediaServer) {
+  if (!row.id) return;
+  try {
+    await syncMediaServerHook(row.id);
+    message.success('Hook 配置已同步到 ZLM');
+    await loadRows();
+  } catch (error) {
+    console.error(error);
+    message.error('同步 Hook 配置失败');
+  }
+}
+
 onMounted(() => {
   loadRows();
 });
@@ -198,6 +228,8 @@ onMounted(() => {
               <Button size="small" @click="editRow(record)">编辑</Button>
               <Button size="small" @click="testRow(record)">测试</Button>
               <Button size="small" @click="viewStreams(record)">流列表</Button>
+              <Button size="small" @click="viewHookInfo(record)">Hook</Button>
+              <Button size="small" @click="syncHook(record)">同步 Hook</Button>
               <Popconfirm title="确认删除?" @confirm="removeRow(record)">
                 <Button size="small" danger>删除</Button>
               </Popconfirm>
@@ -272,6 +304,24 @@ onMounted(() => {
           row-key="stream"
         />
       </Modal>
+
+      <Modal
+        v-model:open="hookOpen"
+        title="ZLM Hook 配置"
+        width="860px"
+        footer=""
+      >
+        <div v-if="hookInfo" class="hook-info">
+          <div>
+            <strong>admin_params</strong>
+            <Input :value="hookInfo.adminParams" readonly />
+          </div>
+          <div v-for="(url, key) in hookInfo.urls" :key="key">
+            <strong>{{ key }}</strong>
+            <Input :value="url" readonly />
+          </div>
+        </div>
+      </Modal>
     </div>
   </Page>
 </template>
@@ -307,6 +357,16 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+.hook-info {
+  display: grid;
+  gap: 12px;
+}
+
+.hook-info strong {
+  display: block;
+  margin-bottom: 4px;
 }
 
 .drawer-form-label :deep(.ant-form-item-label) {
