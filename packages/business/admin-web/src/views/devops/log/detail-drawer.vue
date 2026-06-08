@@ -226,7 +226,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     align-items: center;
     padding-bottom: 12px;
     margin-bottom: 12px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid hsl(var(--border));
 
     .terminal-icon {
       display: flex;
@@ -258,12 +258,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
       .device-name {
         font-size: 16px;
         font-weight: 600;
-        color: #1f2937;
+        color: hsl(var(--foreground));
       }
 
       .device-brand {
         font-size: 13px;
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
       }
     }
   }
@@ -277,13 +277,13 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
       .label {
         font-size: 14px;
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
       }
 
       .value {
         font-size: 14px;
         font-weight: 500;
-        color: #1f2937;
+        color: hsl(var(--foreground));
       }
     }
   }

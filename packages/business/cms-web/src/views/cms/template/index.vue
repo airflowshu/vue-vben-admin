@@ -795,7 +795,7 @@ onBeforeRouteLeave(() => {
             </div>
           </div>
           <div class="flex flex-wrap gap-2">
-            <AccessControl :codes="['cms:template:edit']" type="code">
+            <AccessControl type="code" :codes="['cms:template:edit']">
               <Button
                 type="primary"
                 :disabled="!currentFile"
@@ -818,7 +818,7 @@ onBeforeRouteLeave(() => {
             <Button :disabled="!currentFile" @click="renderPreview">
               刷新预览
             </Button>
-            <AccessControl :codes="['cms:template:publish']" type="code">
+            <AccessControl type="code" :codes="['cms:template:publish']">
               <Button :loading="publishLoading" @click="handlePublish">
                 发布 ZIP
               </Button>

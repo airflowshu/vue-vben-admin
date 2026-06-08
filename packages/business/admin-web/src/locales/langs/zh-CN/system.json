@@ -65,7 +65,12 @@
     "setPermissions": "授权"
   },
   "dict": {
-    "title": "字典管理"
+    "item": "字典项",
+    "title": "字典管理",
+    "type": "字典类型"
+  },
+  "config": {
+    "title": "参数配置"
   },
   "user": {
     "title": "用户管理",
@@ -83,7 +88,21 @@
     "operation": "操作",
     "password": "密码",
     "avatar": "头像",
-    "role": "角色"
+    "role": "角色",
+    "createUser": "新增用户",
+    "editUser": "编辑用户",
+    "genderMale": "男",
+    "genderFemale": "女",
+    "selectGender": "请选择性别",
+    "selectDept": "请选择部门",
+    "validEmail": "请输入有效的邮箱地址",
+    "validPhone": "请输入有效的手机号",
+    "createSuccess": "创建成功",
+    "updateSuccess": "更新成功",
+    "sendResetLink": "发送重置密码邮件",
+    "resetPasswordTitle": "确认发送重置链接",
+    "resetPasswordConfirm": "是否向“{0}”发送一次性密码重置链接？",
+    "resetPasswordSent": "重置链接已发送"
   },
   "versionlog": {
     "title": "版本日志"

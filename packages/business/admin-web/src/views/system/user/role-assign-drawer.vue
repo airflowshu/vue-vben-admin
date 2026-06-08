@@ -15,6 +15,10 @@ const recordId = ref('');
 const recordName = ref('');
 const recordUsername = ref('');
 
+const SUPER_ROLE_ID = '1';
+const SUPER_ROLE_VALUE = 'super';
+const SUPER_USER_ID = '1';
+
 // 角色列表
 const roleListData = ref<any[]>([]);
 
@@ -22,10 +26,15 @@ const roleListData = ref<any[]>([]);
 const loadRoleList = async () => {
   try {
     const roles = await getRoleList({ pageNumber: 1, pageSize: 1000 });
-    roleListData.value = roles.map((role) => ({
-      label: role.roleName,
-      value: role.id,
-    }));
+    roleListData.value = roles
+      .filter(
+        (role) =>
+          role.id !== SUPER_ROLE_ID && role.roleValue !== SUPER_ROLE_VALUE,
+      )
+      .map((role) => ({
+        label: role.roleName,
+        value: role.id,
+      }));
   } catch (error) {
     console.error('Failed to load role list', error);
   }
@@ -65,6 +74,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const data = await formApi.getValues();
 
       const roleIds = data.roleIds || [];
+      if (recordId.value === SUPER_USER_ID || roleIds.includes(SUPER_ROLE_ID)) {
+        message.error('超级管理员角色不允许在此处分配');
+        return;
+      }
 
       await assignUserRole(recordId.value, roleIds);
       message.success('角色分配成功');
@@ -85,7 +98,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
       recordUsername.value = data?.username || '';
 
       // 设置已选中的角色
-      const currentRoleIds = data?.roles?.map((r: RoleRecord) => r.id) || [];
+      const currentRoleIds =
+        data?.roles
+          ?.map((r: RoleRecord) => r.id)
+          .filter((roleId: string) => roleId !== SUPER_ROLE_ID) || [];
       formApi.setValues({
         roleIds: currentRoleIds,
       });

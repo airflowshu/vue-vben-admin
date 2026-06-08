@@ -404,7 +404,7 @@ async function handleFileSelect(e: Event) {
             </Button>
           </div>
           <div class="flex items-center gap-2">
-            <AccessControl :codes="['sys:file:upload']" type="code">
+            <AccessControl type="code" :codes="['sys:file:upload']">
               <input
                 ref="fileInputRef"
                 type="file"
@@ -418,7 +418,7 @@ async function handleFileSelect(e: Event) {
                 上传文件
               </Button>
             </AccessControl>
-            <AccessControl :codes="['sys:file:delete']" type="code">
+            <AccessControl type="code" :codes="['sys:file:delete']">
               <Button danger @click="handleBatchDelete">
                 <template #icon>
                   <IconifyIcon icon="ant-design:delete-outlined" />
@@ -443,7 +443,7 @@ async function handleFileSelect(e: Event) {
             </template>
             <template #action="{ row }">
               <div class="flex items-center gap-2" @click.stop>
-                <AccessControl :codes="['sys:file:download']" type="code">
+                <AccessControl type="code" :codes="['sys:file:download']">
                   <Tooltip title="下载">
                     <Button
                       type="link"
@@ -460,7 +460,7 @@ async function handleFileSelect(e: Event) {
                     </Button>
                   </Tooltip>
                 </AccessControl>
-                <AccessControl :codes="['sys:file:delete']" type="code">
+                <AccessControl type="code" :codes="['sys:file:delete']">
                   <Tooltip title="删除">
                     <Button
                       type="link"

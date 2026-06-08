@@ -18,5 +18,8 @@
   },
   "monitor": {
     "title": "运行环境监控"
+  },
+  "versionlog": {
+    "title": "版本日志"
   }
 }

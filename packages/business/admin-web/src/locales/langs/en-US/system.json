@@ -64,7 +64,12 @@
     "setPermissions": "Permissions"
   },
   "dict": {
-    "title": "Dict Management"
+    "item": "Dict Items",
+    "title": "Dict Management",
+    "type": "Dict Types"
+  },
+  "config": {
+    "title": "Parameter Config"
   },
   "user": {
     "title": "User Management",
@@ -82,7 +87,21 @@
     "operation": "Operation",
     "password": "Password",
     "avatar": "Avatar",
-    "role": "Role"
+    "role": "Role",
+    "createUser": "Create User",
+    "editUser": "Edit User",
+    "genderMale": "Male",
+    "genderFemale": "Female",
+    "selectGender": "Please select gender",
+    "selectDept": "Please select department",
+    "validEmail": "Please enter a valid email address",
+    "validPhone": "Please enter a valid phone number",
+    "createSuccess": "Created successfully",
+    "updateSuccess": "Updated successfully",
+    "sendResetLink": "Send password reset email",
+    "resetPasswordTitle": "Confirm send reset link",
+    "resetPasswordConfirm": "Send a one-time password reset link to \"{0}\"?",
+    "resetPasswordSent": "Reset link sent"
   },
   "versionlog": {
     "title": "Version Log"

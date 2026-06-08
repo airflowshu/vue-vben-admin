@@ -276,10 +276,12 @@ const [Grid, gridApi] = useVbenVxeGrid<SysConfig>({
       </template>
 
       <template #action="{ row }">
-        <AccessControl :codes="['super']" type="role">
+        <AccessControl type="code" :codes="['sys:config:edit']">
           <Button type="link" size="small" @click.stop="() => handleEdit(row)">
             编辑
           </Button>
+        </AccessControl>
+        <AccessControl type="code" :codes="['sys:config:edit']">
           <Popconfirm
             title="确定要切换状态吗？"
             @confirm="handleStatusChange(row)"
@@ -301,6 +303,8 @@ const [Grid, gridApi] = useVbenVxeGrid<SysConfig>({
               {{ row.statusStr === '启用' ? '禁用' : '启用' }}
             </Tag>
           </Popconfirm>
+        </AccessControl>
+        <AccessControl type="code" :codes="['sys:config:delete']">
           <Button
             type="link"
             size="small"
@@ -313,7 +317,7 @@ const [Grid, gridApi] = useVbenVxeGrid<SysConfig>({
       </template>
 
       <template #toolbar-tools>
-        <AccessControl :codes="['super']" type="role">
+        <AccessControl type="code" :codes="['sys:config:add']">
           <Button type="primary" @click="createApi.open()"> 新增配置 </Button>
         </AccessControl>
       </template>

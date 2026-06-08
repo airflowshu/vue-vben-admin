@@ -4,6 +4,7 @@ import type { VxeGridProps } from '@flexboot4/web-kit/adapter/vxe-table';
 
 import type { DictType } from '../../../api/system/dict';
 
+import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '@flexboot4/web-kit/adapter/vxe-table';
@@ -81,7 +82,6 @@ const gridOptions: VxeGridProps<DictType> = {
     refresh: true,
     resizable: true,
     zoom: true,
-    slots: { buttons: 'toolbar-buttons' },
   },
 };
 
@@ -129,7 +129,9 @@ function handleSuccess() {
   <Page auto-content-height>
     <Grid table-title="字典管理">
       <template #toolbar-tools>
-        <Button type="primary" @click="handleAdd">新增字典</Button>
+        <AccessControl type="code" :codes="['sys:dict:type:add']">
+          <Button type="primary" @click="handleAdd">新增字典</Button>
+        </AccessControl>
       </template>
 
       <template #status="{ row }">
@@ -138,13 +140,21 @@ function handleSuccess() {
       </template>
 
       <template #action="{ row }">
-        <Button size="small" type="link" @click="handleEdit(row)">编辑</Button>
-        <Button size="small" type="link" @click="handleManageItems(row)">
-          字典项
-        </Button>
-        <Button danger size="small" type="link" @click="handleDelete(row)">
-          删除
-        </Button>
+        <AccessControl type="code" :codes="['sys:dict:type:edit']">
+          <Button size="small" type="link" @click="handleEdit(row)">
+            编辑
+          </Button>
+        </AccessControl>
+        <AccessControl type="code" :codes="['sys:dict:item:list']">
+          <Button size="small" type="link" @click="handleManageItems(row)">
+            字典项
+          </Button>
+        </AccessControl>
+        <AccessControl type="code" :codes="['sys:dict:type:delete']">
+          <Button danger size="small" type="link" @click="handleDelete(row)">
+            删除
+          </Button>
+        </AccessControl>
       </template>
     </Grid>
     <TypeDrawer @success="handleSuccess" />

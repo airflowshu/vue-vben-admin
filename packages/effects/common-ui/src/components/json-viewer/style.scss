@@ -47,6 +47,11 @@
     }
   }
 
+  .vjs-tree-node:hover {
+    color: hsl(var(--accent-foreground));
+    background-color: hsl(var(--accent));
+  }
+
   .vjs-carets {
     cursor: pointer;
 
@@ -87,5 +92,73 @@
 
   .vjs-tree-node:hover .vben-json-copy-btn {
     opacity: 1;
+  }
+}
+
+.dark {
+  .vben-json-viewer {
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+
+    &.boxed {
+      border-color: hsl(var(--border));
+    }
+
+    .vjs-tree-node {
+      color: hsl(var(--foreground));
+
+      &.is-highlight {
+        background-color: hsl(var(--accent-hover));
+      }
+
+      .vjs-tree-node-actions {
+        background-color: hsl(var(--accent-hover));
+      }
+    }
+
+    .vjs-tree-node:hover {
+      color: hsl(var(--accent-foreground));
+      background-color: hsl(var(--accent-hover));
+
+      .vjs-tree-node-actions {
+        background-color: hsl(var(--accent-hover));
+      }
+    }
+
+    .vjs-key,
+    .vjs-tree-brackets {
+      color: hsl(var(--foreground));
+    }
+
+    .vjs-value-null,
+    .vjs-value-undefined,
+    .vjs-comment {
+      color: hsl(var(--muted-foreground));
+    }
+
+    .vjs-value-boolean {
+      color: hsl(var(--warning));
+    }
+
+    .vjs-value-number {
+      color: hsl(199deg 89% 72%);
+    }
+
+    .vjs-value-string {
+      color: hsl(142deg 71% 70%);
+    }
+
+    .vjs-carets:hover {
+      color: hsl(var(--primary-foreground));
+    }
+
+    .vben-json-copy-btn {
+      color: hsl(var(--foreground));
+      background-color: hsl(var(--secondary));
+
+      &:hover {
+        background-color: hsl(var(--accent-darker));
+      }
+    }
   }
 }

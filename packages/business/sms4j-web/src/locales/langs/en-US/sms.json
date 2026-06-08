@@ -1,6 +1,7 @@
 {
   "title": "SMS Management",
   "config": {
-    "title": "SMS Provider Config"
+    "title": "SMS Provider Config",
+    "test": "Test"
   }
 }

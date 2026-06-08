@@ -1,3 +1,20 @@
 {
-  "title": "Knowledge Base"
+  "title": "Knowledge Base",
+  "manage": {
+    "title": "Knowledge Base Management"
+  },
+  "member": {
+    "list": "Knowledge Base Member List",
+    "add": "Add Knowledge Base Member",
+    "delete": "Remove Knowledge Base Member"
+  },
+  "index": {
+    "run": "Knowledge Base Index"
+  },
+  "file": {
+    "list": "Knowledge Base File List",
+    "add": "Add Knowledge Base File",
+    "edit": "Edit Knowledge Base File",
+    "delete": "Delete Knowledge Base File"
+  }
 }

@@ -1,7 +1,7 @@
 {
-  "title": "devOps",
+  "title": "DevOps",
   "log": {
-    "title": "operationLog"
+    "title": "Operation Log"
   },
   "aikey": {
     "title": "aiAPI Key Management"
@@ -11,12 +11,15 @@
     "chat": "aiChat"
   },
   "file": {
-    "title": "fileManagement"
+    "title": "File Management"
   },
   "config": {
     "title": "System Config"
   },
   "monitor": {
     "title": "Runtime Monitor"
+  },
+  "versionlog": {
+    "title": "Version Log"
   }
 }

@@ -25,9 +25,8 @@ const profileBaseSettingRef = ref();
 
 // 从 store 中获取用户角色
 const userRoles = computed(() => {
-  const roles = userStore.userInfo?.roles || [];
   // 将角色数组转换为 options 格式
-  return roles.map((role: string) => ({
+  return userStore.userRoles.map((role) => ({
     label: role,
     value: role,
   }));

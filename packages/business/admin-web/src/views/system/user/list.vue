@@ -54,6 +54,8 @@ const [RoleDrawer, roleDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 });
 
+const SUPER_USER_ID = '1';
+
 // 当前选中的部门ID
 const selectedDeptId = ref<null | string>(null);
 // 搜索关键词
@@ -245,9 +247,6 @@ const gridOptions: VxeGridProps<UserRecord> = {
     export: true,
     refresh: true,
     zoom: true,
-    slots: {
-      buttons: 'toolbar-buttons',
-    },
   },
   exportConfig: {
     remote: true,
@@ -317,7 +316,14 @@ function handleEdit(row: UserRecord) {
   drawerApi.open();
 }
 
+function isSuperUser(row: UserRecord) {
+  return row.id === SUPER_USER_ID;
+}
+
 function handleAssignRole(row: UserRecord) {
+  if (isSuperUser(row)) {
+    return;
+  }
   roleDrawerApi.setData(row);
   roleDrawerApi.open();
 }
@@ -483,12 +489,11 @@ loadDeptTree();
           class="h-full rounded-[var(--radius)] border border-border bg-card p-4"
         >
           <Grid>
-            <template #toolbar-buttons>
-              <!--      type声明code为权限码控制，type声明为role为角色控制        -->
-              <AccessControl :codes="['sys:user:add']" type="code">
+            <template #toolbar-tools>
+              <AccessControl type="code" :codes="['sys:user:add']">
                 <Button type="primary" @click="handleAdd">新增用户</Button>
               </AccessControl>
-              <AccessControl :codes="['sys:user:delete']" type="code">
+              <AccessControl type="code" :codes="['sys:user:delete']">
                 <Button danger class="ml-2" @click="handleBatchDelete">
                   批量删除
                 </Button>
@@ -511,13 +516,21 @@ loadDeptTree();
             </template>
 
             <template #action="{ row }">
-              <AccessControl :codes="['super', 'admin']" type="role">
+              <AccessControl type="code" :codes="['sys:user:edit']">
                 <Button size="small" type="link" @click="handleEdit(row)">
                   编辑
                 </Button>
+              </AccessControl>
+              <AccessControl
+                v-if="!isSuperUser(row)"
+                type="code"
+                :codes="['sys:user:edit']"
+              >
                 <Button size="small" type="link" @click="handleAssignRole(row)">
                   关联角色
                 </Button>
+              </AccessControl>
+              <AccessControl type="code" :codes="['sys:user:delete']">
                 <Button
                   danger
                   size="small"

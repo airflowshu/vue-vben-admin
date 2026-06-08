@@ -7,7 +7,15 @@ type SelectOption = BasicOption;
 
 type TabOption = BasicOption;
 
+type BasicUserRole =
+  | string
+  | {
+      roleValue?: string;
+      value?: string;
+    };
+
 interface BasicUserInfo {
+  [key: string]: any;
   /**
    * 头像
    */
@@ -19,7 +27,7 @@ interface BasicUserInfo {
   /**
    * 用户角色
    */
-  roles?: string[];
+  roles?: BasicUserRole[];
   /**
    * 用户id
    */
@@ -38,4 +46,11 @@ type ClassType =
   | string
   | undefined;
 
-export type { BasicOption, BasicUserInfo, ClassType, SelectOption, TabOption };
+export type {
+  BasicOption,
+  BasicUserInfo,
+  BasicUserRole,
+  ClassType,
+  SelectOption,
+  TabOption,
+};

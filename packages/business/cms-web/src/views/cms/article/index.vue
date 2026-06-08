@@ -326,7 +326,7 @@ function statusLabel(status?: CmsArticleStatus) {
         >
           提交审核
         </Button>
-        <AccessControl :codes="['cms:article:review']" type="code">
+        <AccessControl type="code" :codes="['cms:article:review']">
           <Button type="link" size="small" @click="openReview('approve', row)">
             通过
           </Button>

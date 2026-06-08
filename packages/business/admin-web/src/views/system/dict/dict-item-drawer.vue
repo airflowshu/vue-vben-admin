@@ -5,6 +5,7 @@ import type { DictItem } from '../../../api/system/dict';
 
 import { ref } from 'vue';
 
+import { AccessControl } from '@vben/access';
 import { useVbenDrawer } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '@flexboot4/web-kit/adapter/vxe-table';
@@ -130,7 +131,9 @@ function handleItemSuccess() {
     <div class="flex h-full flex-col">
       <Grid>
         <template #toolbar-tools>
-          <Button type="primary" @click="handleAdd">新增字典项</Button>
+          <AccessControl type="code" :codes="['sys:dict:item:add']">
+            <Button type="primary" @click="handleAdd">新增字典项</Button>
+          </AccessControl>
         </template>
 
         <template #status="{ row }">
@@ -139,12 +142,16 @@ function handleItemSuccess() {
         </template>
 
         <template #action="{ row }">
-          <Button type="link" size="small" @click="handleEdit(row)">
-            编辑
-          </Button>
-          <Button type="link" danger size="small" @click="handleDelete(row)">
-            删除
-          </Button>
+          <AccessControl type="code" :codes="['sys:dict:item:edit']">
+            <Button type="link" size="small" @click="handleEdit(row)">
+              编辑
+            </Button>
+          </AccessControl>
+          <AccessControl type="code" :codes="['sys:dict:item:delete']">
+            <Button type="link" danger size="small" @click="handleDelete(row)">
+              删除
+            </Button>
+          </AccessControl>
         </template>
       </Grid>
       <ItemDrawer @success="handleItemSuccess" />

@@ -166,9 +166,6 @@ const gridOptions: VxeGridProps<RoleRecord> = {
     refresh: true,
     resizable: true,
     zoom: true,
-    slots: {
-      buttons: 'toolbar-buttons',
-    },
   },
   stripe: true,
 };
@@ -458,11 +455,11 @@ const [Drawer, drawerApi] = useVbenDrawer({
           <!-- 表格 -->
           <div class="flex-1 overflow-hidden">
             <div
-              class="h-full rounded-[var(--radius)] border border-border bg-card p-4"
+              class="system-role-table h-full rounded-[var(--radius)] border border-border bg-card p-4"
             >
               <Grid>
-                <template #toolbar-buttons>
-                  <AccessControl :codes="['super', 'admin']" type="role">
+                <template #toolbar-tools>
+                  <AccessControl type="code" :codes="['sys:role:add']">
                     <Button type="primary" @click="handleAdd">
                       <span class="i-ant-design:plus-outlined mr-1"></span>
                       新增角色
@@ -478,21 +475,25 @@ const [Drawer, drawerApi] = useVbenDrawer({
                 </template>
 
                 <template #action="slotProps">
-                  <Button
-                    size="small"
-                    type="link"
-                    @click="handleEdit(slotProps.row)"
-                  >
-                    编辑
-                  </Button>
-                  <Button
-                    size="small"
-                    type="link"
-                    danger
-                    @click="handleDelete(slotProps.row)"
-                  >
-                    删除
-                  </Button>
+                  <AccessControl type="code" :codes="['sys:role:edit']">
+                    <Button
+                      size="small"
+                      type="link"
+                      @click="handleEdit(slotProps.row)"
+                    >
+                      编辑
+                    </Button>
+                  </AccessControl>
+                  <AccessControl type="code" :codes="['sys:role:delete']">
+                    <Button
+                      size="small"
+                      type="link"
+                      danger
+                      @click="handleDelete(slotProps.row)"
+                    >
+                      删除
+                    </Button>
+                  </AccessControl>
                 </template>
               </Grid>
             </div>
@@ -521,14 +522,16 @@ const [Drawer, drawerApi] = useVbenDrawer({
           >
             {{ checkedMenuKeys.length > 0 ? '取消全选' : '全选' }}
           </Button>
-          <Button
-            type="primary"
-            :disabled="!selectedRole"
-            @click="handleSavePermissions"
-          >
-            <span class="i-ant-design:save-outlined mr-1"></span>
-            保存权限
-          </Button>
+          <AccessControl type="code" :codes="['sys:role:edit']">
+            <Button
+              type="primary"
+              :disabled="!selectedRole"
+              @click="handleSavePermissions"
+            >
+              <span class="i-ant-design:save-outlined mr-1"></span>
+              保存权限
+            </Button>
+          </AccessControl>
         </div>
       </div>
 
@@ -642,9 +645,19 @@ const [Drawer, drawerApi] = useVbenDrawer({
   padding-bottom: 2px;
 }
 
-:deep(
-  .vxe-table--body-wrapper .vxe-table--body .vxe-body--row.row-current-row
-) {
-  background-color: #ecfccb !important;
+.system-role-table :deep(.vxe-body--row.row-current-row),
+.system-role-table :deep(.vxe-body--row.row-current-row .vxe-body--column) {
+  color: hsl(var(--foreground)) !important;
+  background-color: hsl(var(--primary) / 10%) !important;
+}
+
+.system-role-table
+  :deep(.vxe-body--row.row-current-row:hover .vxe-body--column) {
+  background-color: hsl(var(--primary) / 14%) !important;
+}
+
+.system-role-table
+  :deep(.vxe-body--row.row-current-row .vxe-body--column:first-child) {
+  box-shadow: inset 3px 0 0 hsl(var(--primary) / 55%);
 }
 </style>

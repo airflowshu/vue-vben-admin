@@ -20,6 +20,7 @@
   },
   "cascade": {
     "title": "国标级联",
+    "bindings": "级联绑定列表",
     "bind": "级联绑定"
   }
 }
