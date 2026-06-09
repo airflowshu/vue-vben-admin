@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SmsConfig } from '@/api/sms';
+import type { SmsConfig } from '@flexboot4/sms4j-web/api/sms';
 import type { SearchRequest } from '@flexboot4/web-kit';
 
 import type { Component } from 'vue';
@@ -8,7 +8,6 @@ import { computed, nextTick, reactive, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { getSmsConfigList, updateSmsConfig } from '@/api/sms';
 import {
   ApiOutlined,
   CloudServerOutlined,
@@ -18,6 +17,10 @@ import {
   SafetyCertificateOutlined,
   ThunderboltOutlined,
 } from '@ant-design/icons-vue';
+import {
+  getSmsConfigList,
+  updateSmsConfig,
+} from '@flexboot4/sms4j-web/api/sms';
 import { message, Tag } from 'ant-design-vue';
 
 import CreateConfigModal from './components/create-config-modal.vue';

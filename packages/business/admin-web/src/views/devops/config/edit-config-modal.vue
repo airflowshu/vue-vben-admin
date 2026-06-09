@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysConfig } from '@/api/devops/sysconfig';
+import type { SysConfig } from '@flexboot4/admin-web/api/devops/sysconfig';
 import type { VbenFormProps } from '@flexboot4/web-kit/adapter/form';
 
 import type { PropType } from 'vue';
@@ -8,7 +8,7 @@ import { computed, defineComponent, h, ref } from 'vue';
 
 import { useVbenDrawer, useVbenForm, z } from '@vben/common-ui';
 
-import { updateConfig } from '@/api/devops/sysconfig';
+import { updateConfig } from '@flexboot4/admin-web/api/devops/sysconfig';
 import { Button, message, Select, Space } from 'ant-design-vue';
 
 import {

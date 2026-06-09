@@ -7,7 +7,7 @@ import { computed, defineComponent, h, ref } from 'vue';
 
 import { useVbenDrawer, useVbenForm, z } from '@vben/common-ui';
 
-import { createConfig } from '@/api/devops/sysconfig';
+import { createConfig } from '@flexboot4/admin-web/api/devops/sysconfig';
 import { Button, message, Select, Space } from 'ant-design-vue';
 
 import {

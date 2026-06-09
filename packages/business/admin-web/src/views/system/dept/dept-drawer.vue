@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { DeptRecord } from '@/api/system/dept';
+import type { DeptRecord } from '@flexboot4/admin-web/api/system/dept';
 
 import { ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { createDept, updateDept } from '@/api/system/dept';
+import { createDept, updateDept } from '@flexboot4/admin-web/api/system/dept';
 import { useVbenForm } from '@flexboot4/web-kit/adapter/form';
 import { message } from 'ant-design-vue';
 

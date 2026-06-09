@@ -1,10 +1,24 @@
 <script setup lang="ts">
+import type { KnowledgeBase } from '../../../api/knowledgebase';
+
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 
 import { IconifyIcon } from '@vben/icons';
 
-import { createSSEConnection } from '@flexboot4/admin-web/utils/sse';
-import { Button, Input, message, Spin, Tooltip } from 'ant-design-vue';
+import {
+  Button,
+  Dropdown,
+  Empty,
+  Input,
+  Menu,
+  MenuItem,
+  message,
+  Spin,
+  Tooltip,
+} from 'ant-design-vue';
+
+import { getKnowledgeBaseList } from '../../../api/knowledgebase';
+import { createSSEConnection } from '../../../utils/sse';
 
 interface ChatMessage {
   content: string;
@@ -14,15 +28,14 @@ interface ChatMessage {
   timestamp: number;
 }
 
-interface ChatCompletionMessage {
-  content: string;
-  role: 'assistant' | 'user';
-}
-
 const messages = ref<ChatMessage[]>([]);
 const inputValue = ref('');
 const isLoading = ref(false);
 const isStreaming = ref(false);
+const loadingKbs = ref(false);
+const kbDropdownOpen = ref(false);
+const knowledgeBaseList = ref<KnowledgeBase[]>([]);
+const selectedKb = ref<KnowledgeBase | null>(null);
 const chatContainerRef = ref<HTMLElement | null>(null);
 const inputRef = ref<any>(null);
 let abortController: AbortController | null = null;
@@ -34,6 +47,44 @@ const scrollToBottom = async () => {
   await nextTick();
   if (chatContainerRef.value) {
     chatContainerRef.value.scrollTop = chatContainerRef.value.scrollHeight;
+  }
+};
+
+async function fetchKnowledgeBases() {
+  loadingKbs.value = true;
+  try {
+    const list = await getKnowledgeBaseList({
+      pageNumber: 1,
+      pageSize: 1000,
+      logic: 'AND',
+      orders: [{ column: 'lastModifyTime', asc: false }],
+      items: [],
+    });
+    knowledgeBaseList.value = list || [];
+    if (!selectedKb.value && knowledgeBaseList.value.length > 0) {
+      selectedKb.value = knowledgeBaseList.value[0] || null;
+    }
+  } catch (error) {
+    console.error('加载知识库列表失败:', error);
+    message.error('加载知识库列表失败');
+  } finally {
+    loadingKbs.value = false;
+  }
+}
+
+const selectKnowledgeBase = (kb: KnowledgeBase) => {
+  if (isStreaming.value) {
+    message.warning('请先停止当前回答再切换知识库');
+    return;
+  }
+  selectedKb.value = kb;
+  kbDropdownOpen.value = false;
+};
+
+const abortCurrentConnection = () => {
+  if (abortController) {
+    abortController.abort();
+    abortController = null;
   }
 };
 
@@ -50,13 +101,6 @@ const resetStreamingState = (messageId?: string) => {
   isStreaming.value = false;
   abortController = null;
   markStreamingMessageDone(messageId);
-};
-
-const abortCurrentConnection = () => {
-  if (abortController) {
-    abortController.abort();
-    abortController = null;
-  }
 };
 
 const stopStreaming = () => {
@@ -78,19 +122,6 @@ const clearInputValue = async () => {
   inputValue.value = '';
 };
 
-const buildConversationMessages = (
-  nextUserContent: string,
-): ChatCompletionMessage[] => {
-  const history = messages.value
-    .filter((msg) => msg.content.trim() && !msg.isStreaming)
-    .map((msg) => ({
-      role: msg.role === 'ai' ? ('assistant' as const) : ('user' as const),
-      content: msg.content,
-    }));
-  history.push({ role: 'user', content: nextUserContent });
-  return history;
-};
-
 const sendMessage = async () => {
   if (isStreaming.value) {
     stopStreaming();
@@ -100,7 +131,11 @@ const sendMessage = async () => {
   const trimmedValue = inputValue.value.trim();
   if (!trimmedValue || isLoading.value) return;
 
-  const conversationMessages = buildConversationMessages(trimmedValue);
+  if (!selectedKb.value?.id) {
+    message.warning('请选择知识库后再提问');
+    return;
+  }
+
   const userMessage: ChatMessage = {
     id: generateId(),
     role: 'user',
@@ -124,9 +159,10 @@ const sendMessage = async () => {
 
   const aiMessageId = loadingMessage.id;
   abortController = createSSEConnection({
-    url: '/api/ai/chat/stream',
+    url: '/api/ai/rag/chat/stream',
     body: {
-      messages: conversationMessages,
+      kbId: selectedKb.value.id,
+      query: trimmedValue,
       stream: true,
     },
     onMessage: (data) => {
@@ -160,7 +196,7 @@ const sendMessage = async () => {
       }
     },
     onError: (error) => {
-      let errorMessage = 'AI 对话连接失败';
+      let errorMessage = '知识库问答连接失败';
       if (error?.message) {
         try {
           const errorData = JSON.parse(error.message);
@@ -178,6 +214,11 @@ const sendMessage = async () => {
   });
 };
 
+const clearChat = () => {
+  stopStreaming();
+  messages.value = [];
+};
+
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
@@ -185,27 +226,54 @@ const handleKeydown = (e: KeyboardEvent) => {
   }
 };
 
-const clearChat = () => {
-  stopStreaming();
-  messages.value = [];
-};
-
 onUnmounted(() => {
   stopStreaming();
 });
 
 onMounted(async () => {
+  await fetchKnowledgeBases();
   await nextTick();
   inputRef.value?.focus();
 });
 </script>
 
 <template>
-  <div class="ai-chat-container">
+  <div class="kb-chat-page">
     <div class="chat-header">
       <div class="header-title">
-        <IconifyIcon icon="lucide:sparkles" class="header-icon" />
-        <span>AI 对话</span>
+        <IconifyIcon icon="lucide:book-open-check" class="header-icon" />
+        <span>知识库问答</span>
+        <Dropdown
+          v-model:open="kbDropdownOpen"
+          :disabled="loadingKbs || knowledgeBaseList.length === 0"
+          trigger="click"
+        >
+          <Button size="small" class="kb-selector">
+            <template #icon>
+              <IconifyIcon icon="lucide:library" />
+            </template>
+            {{ selectedKb?.name || '选择知识库' }}
+            <IconifyIcon icon="lucide:chevron-down" />
+          </Button>
+          <template #overlay>
+            <Menu class="kb-dropdown-menu">
+              <MenuItem
+                v-for="kb in knowledgeBaseList"
+                :key="kb.id"
+                :class="{ selected: selectedKb?.id === kb.id }"
+                @click="selectKnowledgeBase(kb)"
+              >
+                <div class="kb-item">
+                  <span>{{ kb.name }}</span>
+                  <IconifyIcon
+                    v-if="selectedKb?.id === kb.id"
+                    icon="lucide:check"
+                  />
+                </div>
+              </MenuItem>
+            </Menu>
+          </template>
+        </Dropdown>
       </div>
       <Tooltip title="清空对话">
         <Button danger size="small" @click="clearChat">
@@ -218,10 +286,22 @@ onMounted(async () => {
     </div>
 
     <div ref="chatContainerRef" class="chat-messages">
-      <div v-if="messages.length === 0" class="welcome-message">
-        <IconifyIcon icon="lucide:bot-message-square" class="welcome-icon" />
-        <div class="welcome-title">有什么可以帮您的？</div>
-        <div class="welcome-subtitle">直接向当前配置的 AI 模型发起对话</div>
+      <div v-if="loadingKbs" class="loading-state">
+        <Spin />
+      </div>
+
+      <Empty
+        v-else-if="knowledgeBaseList.length === 0"
+        description="暂无可用知识库"
+        class="empty-state"
+      />
+
+      <div v-else-if="messages.length === 0" class="welcome-message">
+        <IconifyIcon icon="lucide:messages-square" class="welcome-icon" />
+        <div class="welcome-title">基于知识库提问</div>
+        <div class="welcome-subtitle">
+          当前知识库：{{ selectedKb?.name || '未选择' }}
+        </div>
       </div>
 
       <template v-else>
@@ -233,7 +313,7 @@ onMounted(async () => {
         >
           <div class="message-avatar">
             <IconifyIcon
-              :icon="msg.role === 'user' ? 'lucide:user' : 'lucide:bot'"
+              :icon="msg.role === 'user' ? 'lucide:user' : 'lucide:book-open'"
             />
           </div>
 
@@ -254,10 +334,16 @@ onMounted(async () => {
           <Input.TextArea
             ref="inputRef"
             v-model:value="inputValue"
-            :placeholder="isLoading ? 'AI 正在思考中...' : '输入消息'"
-            :disabled="isLoading"
+            :placeholder="
+              selectedKb
+                ? isLoading
+                  ? '知识库正在检索并生成回答...'
+                  : '输入知识库问题'
+                : '请先选择知识库'
+            "
+            :disabled="isLoading || !selectedKb"
             :rows="1"
-            auto-size=""
+            auto-size
             class="chat-input-field"
             @keydown="handleKeydown"
           />
@@ -266,21 +352,22 @@ onMounted(async () => {
         <Tooltip :title="isStreaming ? '停止生成' : '发送'">
           <Button
             class="send-button"
-            :class="{ disabled: !inputValue.trim() && !isStreaming }"
-            :disabled="!inputValue.trim() && !isStreaming"
+            :class="{
+              disabled: (!inputValue.trim() || !selectedKb) && !isStreaming,
+            }"
+            :disabled="(!inputValue.trim() || !selectedKb) && !isStreaming"
             html-type="button"
             @click="sendMessage"
           >
             <Spin v-if="isLoading || isStreaming" size="small" />
-            <IconifyIcon
-              v-else
-              :icon="isStreaming ? 'lucide:square' : 'lucide:send-horizontal'"
-            />
+            <IconifyIcon v-else icon="lucide:send-horizontal" />
           </Button>
         </Tooltip>
       </div>
 
-      <div class="input-disclaimer">AI 可能会产生错误信息，请核实重要内容</div>
+      <div class="input-disclaimer">
+        回答基于知识库检索片段生成，请核实重要内容
+      </div>
     </div>
   </div>
 </template>
@@ -298,7 +385,7 @@ onMounted(async () => {
   }
 }
 
-.ai-chat-container {
+.kb-chat-page {
   --chat-bg: hsl(var(--card));
   --chat-header-bg: hsl(var(--card));
   --chat-border: hsl(var(--border));
@@ -322,7 +409,7 @@ onMounted(async () => {
   border-radius: 8px;
 }
 
-:global(.dark) .ai-chat-container {
+:global(.dark) .kb-chat-page {
   --chat-ai-bg: hsl(var(--accent));
   --chat-scrollbar: hsl(var(--accent));
 }
@@ -340,13 +427,43 @@ onMounted(async () => {
     display: flex;
     gap: 8px;
     align-items: center;
+    min-width: 0;
     font-size: 16px;
     font-weight: 600;
     color: var(--chat-foreground);
   }
 
   .header-icon {
+    flex-shrink: 0;
     font-size: 20px;
+  }
+}
+
+.kb-selector {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 6px;
+}
+
+.kb-dropdown-menu {
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+
+  .kb-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .selected {
+    color: hsl(var(--primary));
+    background: color-mix(in srgb, hsl(var(--primary)), transparent 90%);
   }
 }
 
@@ -368,12 +485,17 @@ onMounted(async () => {
   }
 }
 
+.loading-state,
+.empty-state,
 .welcome-message {
   display: flex;
-  flex-direction: column;
+  flex: 1;
   align-items: center;
   justify-content: center;
-  height: 100%;
+}
+
+.welcome-message {
+  flex-direction: column;
   padding: 40px 20px;
   color: var(--chat-muted-foreground);
   text-align: center;
@@ -560,6 +682,14 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
+  .chat-header {
+    align-items: flex-start;
+
+    .header-title {
+      flex-wrap: wrap;
+    }
+  }
+
   .chat-messages {
     gap: 16px;
     padding: 16px;
