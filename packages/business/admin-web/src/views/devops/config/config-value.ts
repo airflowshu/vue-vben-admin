@@ -56,38 +56,72 @@ export function getConfigValuePlaceholder(type?: string) {
   }
 }
 
-export function getConfigValueRules(type?: string) {
+interface ConfigValueValidationOptions {
+  required?: boolean;
+}
+
+function isEmptyConfigValue(value: null | string | undefined) {
+  return value === undefined || value === null || value === '';
+}
+
+function getConfigValueStringRule(required: boolean, message: string) {
+  if (required) {
+    return z.string().min(1, message);
+  }
+
+  return z.preprocess(
+    (value) => (value === null || value === undefined ? '' : String(value)),
+    z.string(),
+  );
+}
+
+export function getConfigValueRules(
+  type?: string,
+  options: ConfigValueValidationOptions = {},
+) {
+  const required = options.required ?? true;
+
   switch (normalizeConfigValueType(type)) {
     case 'ARRAY': {
-      return z
-        .string()
-        .min(1, '请输入数组')
-        .refine((value) => isValidArray(value), {
+      const rule = getConfigValueStringRule(required, '请输入数组');
+      return rule.refine(
+        (value) =>
+          (!required && isEmptyConfigValue(value)) || isValidArray(value),
+        {
           message: '请输入有效的JSON数组格式',
-        });
+        },
+      );
     }
     case 'BOOLEAN': {
-      return z
-        .string()
-        .min(1, '请输入布尔值')
-        .regex(/^(?:true|false|0|1)$/i, '请输入 true、false、0 或 1');
+      const rule = getConfigValueStringRule(required, '请输入布尔值');
+      return rule.refine(
+        (value) =>
+          (!required && isEmptyConfigValue(value)) ||
+          /^(?:true|false|0|1)$/i.test(value),
+        '请输入 true、false、0 或 1',
+      );
     }
     case 'JSON': {
-      return z
-        .string()
-        .min(1, '请输入JSON')
-        .refine((value) => isValidJson(value), {
+      const rule = getConfigValueStringRule(required, '请输入JSON');
+      return rule.refine(
+        (value) =>
+          (!required && isEmptyConfigValue(value)) || isValidJson(value),
+        {
           message: '请输入有效的JSON格式',
-        });
+        },
+      );
     }
     case 'NUMBER': {
-      return z
-        .string()
-        .min(1, '请输入数字')
-        .regex(/^-?\d+(?:\.\d+)?$/, '请输入有效的数字');
+      const rule = getConfigValueStringRule(required, '请输入数字');
+      return rule.refine(
+        (value) =>
+          (!required && isEmptyConfigValue(value)) ||
+          /^-?\d+(?:\.\d+)?$/.test(value),
+        '请输入有效的数字',
+      );
     }
     default: {
-      return z.string().min(1, '请输入配置值');
+      return getConfigValueStringRule(required, '请输入配置值');
     }
   }
 }
@@ -113,23 +147,30 @@ export function getConfigValueComponentProps(type?: string) {
   };
 }
 
-export function validateConfigValue(value: string, type?: string) {
-  if (!value) {
-    return false;
+export function validateConfigValue(
+  value: null | string | undefined,
+  type?: string,
+  options: ConfigValueValidationOptions = {},
+) {
+  const required = options.required ?? true;
+
+  if (isEmptyConfigValue(value)) {
+    return !required;
   }
 
+  const configValue = String(value);
   switch (normalizeConfigValueType(type)) {
     case 'ARRAY': {
-      return isValidArray(value);
+      return isValidArray(configValue);
     }
     case 'BOOLEAN': {
-      return /^(?:true|false|0|1)$/i.test(value);
+      return /^(?:true|false|0|1)$/i.test(configValue);
     }
     case 'JSON': {
-      return isValidJson(value);
+      return isValidJson(configValue);
     }
     case 'NUMBER': {
-      return /^-?\d+(?:\.\d+)?$/.test(value);
+      return /^-?\d+(?:\.\d+)?$/.test(configValue);
     }
     default: {
       return true;

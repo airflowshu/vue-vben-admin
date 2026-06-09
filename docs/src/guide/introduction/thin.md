@@ -24,7 +24,7 @@ apps/web-naive
 
 ## 演示代码精简
 
-如果你不需要演示代码，你可以直接删除 `playground` 文件夹。
+当前项目已移除 `playground` 演示应用。
 
 ## 文档精简
 
@@ -61,11 +61,9 @@ pnpm install
     "build:ele": "pnpm run build --filter=@vben/web-ele",
     "build:naive": "pnpm run build --filter=@vben/web-naive",
     "build:tdesign": "pnpm run build --filter=@vben/web-tdesign",
-    "build:play": "pnpm run build --filter=@vben/playground",
     "dev:antd": "pnpm -F @vben/web-antd run dev",
     "dev:docs": "pnpm -F @vben/docs run dev",
     "dev:ele": "pnpm -F @vben/web-ele run dev",
-    "dev:play": "pnpm -F @vben/playground run dev",
     "dev:naive": "pnpm -F @vben/web-naive run dev"
   }
 }

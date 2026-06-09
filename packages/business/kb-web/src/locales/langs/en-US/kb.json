@@ -3,6 +3,9 @@
   "manage": {
     "title": "Knowledge Base Management"
   },
+  "chat": {
+    "title": "Knowledge Base Q&A"
+  },
   "member": {
     "list": "Knowledge Base Member List",
     "add": "Add Knowledge Base Member",

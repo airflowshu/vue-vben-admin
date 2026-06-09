@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import type { SmsConfig } from '@/api/sms';
 import type { SearchRequest } from '@flexboot4/web-kit';
 
 import type { Component } from 'vue';
-
-import type { SmsConfig } from '../../../api/sms';
 
 import { computed, nextTick, reactive, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
+import { getSmsConfigList, updateSmsConfig } from '@/api/sms';
 import {
   ApiOutlined,
   CloudServerOutlined,
@@ -18,9 +18,8 @@ import {
   SafetyCertificateOutlined,
   ThunderboltOutlined,
 } from '@ant-design/icons-vue';
-import { message } from 'ant-design-vue';
+import { message, Tag } from 'ant-design-vue';
 
-import { getSmsConfigList, updateSmsConfig } from '../../../api/sms';
 import CreateConfigModal from './components/create-config-modal.vue';
 import TestConfigModal from './components/test-config-modal.vue';
 import { SMS_SUPPLIER_PRESETS } from './constants';
@@ -386,9 +385,9 @@ fetchConfigs();
             </div>
           </div>
 
-          <a-tag class="type-tag" color="blue">
+          <Tag class="type-tag" color="blue">
             {{ card.config?.supplierTypeStr || card.supplierType }}
-          </a-tag>
+          </Tag>
         </div>
 
         <div class="summary-pills">

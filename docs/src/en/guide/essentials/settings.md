@@ -340,8 +340,7 @@ Only values within `10 ~ 200` and increasing by `10` will be saved. Values like 
 
 For complete examples, see:
 
-- `playground/src/preferences.ts`
-- `playground/src/views/demos/features/preferences-extension/index.vue`
+- `apps/web-antd/src/preferences.ts`
 
 ### Framework default configuration
 

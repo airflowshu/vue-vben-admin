@@ -7,9 +7,9 @@ import { computed, defineComponent, h, ref } from 'vue';
 
 import { useVbenDrawer, useVbenForm, z } from '@vben/common-ui';
 
+import { createConfig } from '@/api/devops/sysconfig';
 import { Button, message, Select, Space } from 'ant-design-vue';
 
-import { createConfig } from '../../../api/devops/sysconfig';
 import {
   CONFIG_TYPE_OPTIONS,
   formatStructuredConfigValue,
@@ -42,7 +42,7 @@ function updateValueRules(type: string) {
     {
       component: getConfigValueComponent(normalizedType),
       fieldName: 'configValue',
-      rules: getConfigValueRules(normalizedType),
+      rules: getConfigValueRules(normalizedType, { required: false }),
       componentProps: getConfigValueComponentProps(normalizedType),
     },
   ]);
@@ -132,7 +132,7 @@ const formOptions: VbenFormProps = {
       component: 'Input',
       fieldName: 'configValue',
       label: '配置值',
-      rules: z.string().min(1, '请输入配置值'),
+      rules: getConfigValueRules('STRING', { required: false }),
       componentProps: {
         placeholder: '请输入配置值',
       },
@@ -206,7 +206,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const data = await formApi.getValues();
 
       // 手动校验配置值格式
-      const isValid = validateConfigValue(data.configValue, data.configType);
+      const isValid = validateConfigValue(data.configValue, data.configType, {
+        required: false,
+      });
       if (!isValid) {
         message.error(getConfigValueInvalidMessage(data.configType));
         return;

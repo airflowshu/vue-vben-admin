@@ -20,6 +20,7 @@ import { useAuthStore } from '#/store';
 import { refreshTokenApi } from './core';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
+const REFRESHED_ACCESS_TOKEN_HEADER = 'x-access-token';
 
 function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   const client = new RequestClient({
@@ -73,6 +74,17 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
       return config;
+    },
+  });
+
+  client.addResponseInterceptor({
+    fulfilled: (response) => {
+      const accessStore = useAccessStore();
+      const refreshedToken = response.headers?.[REFRESHED_ACCESS_TOKEN_HEADER];
+      if (typeof refreshedToken === 'string' && refreshedToken) {
+        accessStore.setAccessToken(refreshedToken);
+      }
+      return response;
     },
   });
 

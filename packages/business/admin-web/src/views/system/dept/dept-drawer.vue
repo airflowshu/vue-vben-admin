@@ -1,19 +1,98 @@
 <script lang="ts" setup>
-import type { DeptRecord } from '../../../api/system/dept';
+import type { DeptRecord } from '@/api/system/dept';
 
 import { ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
+import { createDept, updateDept } from '@/api/system/dept';
 import { useVbenForm } from '@flexboot4/web-kit/adapter/form';
 import { message } from 'ant-design-vue';
-
-import { createDept, updateDept } from '../../../api/system/dept';
 
 const emit = defineEmits(['success']);
 
 const isUpdate = ref(false);
 const recordId = ref('');
+
+type DeptTreeNode = Omit<DeptRecord, 'children' | 'parentId'> & {
+  children?: DeptTreeNode[];
+  parentId?: null | string;
+};
+
+function normalizeParentId(parentId: unknown) {
+  if (parentId === '0' || parentId === 0 || parentId === null) {
+    return null;
+  }
+  return parentId ? String(parentId) : null;
+}
+
+function walkDeptTree(
+  deptTree: DeptTreeNode[],
+  callback: (node: DeptTreeNode) => void,
+) {
+  for (const node of deptTree) {
+    callback(node);
+    if (node.children?.length) {
+      walkDeptTree(node.children, callback);
+    }
+  }
+}
+
+function getExcludedDeptIds(deptTree: DeptTreeNode[], currentId: string) {
+  const excludedIds = new Set([currentId]);
+  const childIdMap = new Map<string, string[]>();
+
+  walkDeptTree(deptTree, (node) => {
+    const parentId = normalizeParentId(node.parentId);
+    if (!parentId) {
+      return;
+    }
+    const childIds = childIdMap.get(parentId) ?? [];
+    childIds.push(node.id);
+    childIdMap.set(parentId, childIds);
+  });
+
+  const queue = [currentId];
+  for (let index = 0; index < queue.length; index += 1) {
+    const parentId = queue[index];
+    if (parentId === undefined) {
+      continue;
+    }
+
+    for (const childId of childIdMap.get(parentId) ?? []) {
+      if (!excludedIds.has(childId)) {
+        excludedIds.add(childId);
+        queue.push(childId);
+      }
+    }
+  }
+
+  return excludedIds;
+}
+
+function filterSelectableDeptTree(deptTree: DeptRecord[], currentId?: string) {
+  if (!currentId) {
+    return deptTree;
+  }
+
+  const excludedIds = getExcludedDeptIds(deptTree as DeptTreeNode[], currentId);
+  const filterTree = (nodes: DeptTreeNode[]): DeptTreeNode[] => {
+    return nodes
+      .filter((node) => !excludedIds.has(node.id))
+      .map((node) => {
+        const nextNode: DeptTreeNode = { ...node };
+        const children = node.children?.length ? filterTree(node.children) : [];
+        if (children.length > 0) {
+          nextNode.children = children;
+        } else {
+          delete nextNode.children;
+        }
+        return nextNode;
+      });
+  };
+
+  return filterTree(deptTree as DeptTreeNode[]);
+}
 
 const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
@@ -105,10 +184,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
       isUpdate.value = !!data?.isUpdate;
 
       if (data?.deptTree) {
+        const treeData =
+          isUpdate.value && data.record
+            ? filterSelectableDeptTree(data.deptTree, data.record.id)
+            : data.deptTree;
+
         formApi.updateSchema([
           {
             componentProps: {
-              treeData: data.deptTree,
+              treeData,
             },
             fieldName: 'parentId',
           },

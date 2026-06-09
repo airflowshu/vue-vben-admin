@@ -18,7 +18,6 @@ pnpm dev:antd             # Ant Design version only
 pnpm dev:ele              # Element Plus version only
 pnpm dev:naive            # Naive UI version only
 pnpm dev:tdesign          # TDesign version only
-pnpm dev:play             # Playground
 
 # Building
 pnpm build                # All packages (8GB memory limit)
@@ -27,7 +26,6 @@ pnpm build:antd           # Specific UI framework
 pnpm build:ele            # Element Plus version
 pnpm build:naive          # Naive UI version
 pnpm build:tdesign        # TDesign version
-pnpm build:play           # Playground
 
 # Testing
 pnpm test:unit            # Unit tests (Vitest)

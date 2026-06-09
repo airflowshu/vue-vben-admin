@@ -339,8 +339,7 @@ updateCustomPreferences<ProjectPreferencesExtension>({
 
 完整示例可以参考：
 
-- `playground/src/preferences.ts`
-- `playground/src/views/demos/features/preferences-extension/index.vue`
+- `apps/web-antd/src/preferences.ts`
 
 ### 框架默认配置
 
