@@ -147,7 +147,7 @@ async function handleMfaVerify() {
 }
 
 function handleThirdPartyLogin(provider: { code: string }) {
-  if (provider.code !== 'github') {
+  if (!['github', 'qq'].includes(provider.code)) {
     message.warning('暂不支持该第三方登录方式');
     return;
   }
