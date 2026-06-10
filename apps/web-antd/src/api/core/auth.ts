@@ -29,7 +29,12 @@ export namespace AuthApi {
     codeLength?: number;
     cooldownSeconds?: number;
     enabled: boolean;
-    providers?: string[];
+    providers?: LoginProviderOption[];
+  }
+
+  export interface LoginProviderOption {
+    code: string;
+    enabled?: boolean;
   }
 
   export interface LoginOptions {
@@ -41,6 +46,37 @@ export namespace AuthApi {
       sms?: LoginMethodOption;
       thirdParty?: LoginMethodOption;
     };
+  }
+
+  export type OAuthCallbackStatus =
+    | 'BIND_REQUIRED'
+    | 'ERROR'
+    | 'LOGIN_SUCCESS'
+    | 'MFA_REQUIRED';
+
+  export interface OAuthUserSnapshot {
+    avatarUrl?: string;
+    email?: string;
+    emailVerified?: boolean;
+    nickname?: string;
+    provider?: string;
+    providerUsername?: string;
+  }
+
+  export interface OAuthBindCandidate {
+    emailMasked?: string;
+    realName?: string;
+    userId: string;
+    username: string;
+  }
+
+  export interface OAuthCallbackResult {
+    bindTicket?: string;
+    candidates?: OAuthBindCandidate[];
+    externalUser?: OAuthUserSnapshot;
+    login?: LoginResult;
+    message?: string;
+    status: OAuthCallbackStatus;
   }
 }
 
@@ -68,6 +104,38 @@ export async function verifyMfaApi(data: {
   return requestClient.post<AuthApi.LoginResult>(
     '/admin/auth/mfa/verify',
     data,
+  );
+}
+
+/**
+ * 获取第三方登录回调结果
+ */
+export async function getOAuthResultApi(ticket: string) {
+  return requestClient.get<AuthApi.OAuthCallbackResult>(
+    `/admin/auth/oauth/result/${encodeURIComponent(ticket)}`,
+    {
+      withCredentials: true,
+    },
+  );
+}
+
+/**
+ * 绑定第三方账号到已有系统账号
+ */
+export async function bindOAuthAccountApi(
+  provider: string,
+  data: {
+    bindTicket: string;
+    password: string;
+    username: string;
+  },
+) {
+  return requestClient.post<AuthApi.LoginResult>(
+    `/admin/auth/oauth/${encodeURIComponent(provider)}/bind`,
+    data,
+    {
+      withCredentials: true,
+    },
   );
 }
 

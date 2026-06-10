@@ -3,7 +3,10 @@ import type { Recordable } from '@vben/types';
 
 import type { VbenFormSchema } from '@vben-core/form-ui';
 
-import type { AuthenticationProps } from './types';
+import type {
+  AuthenticationProps,
+  AuthenticationThirdPartyProvider,
+} from './types';
 
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -39,11 +42,13 @@ const props = withDefaults(defineProps<Props>(), {
   showThirdPartyLogin: true,
   submitButtonText: '',
   subTitle: '',
+  thirdPartyProviders: () => [],
   title: '',
 });
 
 const emit = defineEmits<{
   submit: [Recordable<any>];
+  thirdPartyLogin: [AuthenticationThirdPartyProvider];
 }>();
 
 const [Form, formApi] = useVbenForm(
@@ -78,6 +83,10 @@ async function handleSubmit() {
 
 function handleGo(path: string) {
   router.push(path);
+}
+
+function handleThirdPartyLogin(provider: AuthenticationThirdPartyProvider) {
+  emit('thirdPartyLogin', provider);
 }
 
 onMounted(() => {
@@ -168,7 +177,11 @@ defineExpose({
 
     <!-- 第三方登录 -->
     <slot name="third-party-login">
-      <ThirdPartyLogin v-if="showThirdPartyLogin" />
+      <ThirdPartyLogin
+        v-if="showThirdPartyLogin"
+        :providers="thirdPartyProviders"
+        @login="handleThirdPartyLogin"
+      />
     </slot>
 
     <slot name="to-register">

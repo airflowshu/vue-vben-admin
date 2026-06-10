@@ -21,6 +21,13 @@ import { refreshTokenApi } from './core';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 const REFRESHED_ACCESS_TOKEN_HEADER = 'x-access-token';
+const LOGIN_EXPIRED_MESSAGE = '登录已过期，请重新登录';
+
+function getResponseMessage(error: any) {
+  const data = error?.response?.data ?? error?.data ?? error;
+  const errorMessage = data?.message || data?.error;
+  return typeof errorMessage === 'string' ? errorMessage : '';
+}
 
 function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   const client = new RequestClient({
@@ -31,9 +38,9 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   /**
    * 重新认证逻辑
    */
-  async function doReAuthenticate() {
+  async function doReAuthenticate(error?: any) {
     console.warn('Access token or refresh token is invalid or expired. ');
-    message.warning('登录已过期，请重新登录');
+    message.warning(getResponseMessage(error) || LOGIN_EXPIRED_MESSAGE);
     const accessStore = useAccessStore();
     const authStore = useAuthStore();
     accessStore.setAccessToken(null);
@@ -111,14 +118,16 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
+      if (error?.__isAuthErrorHandled) {
+        return;
+      }
       // 401错误由 authenticateResponseInterceptor 处理，这里不再重复提示
       if (error?.response?.status === 401) {
         return;
       }
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
       // 后端业务错误优先展示 message，error 作为技术兜底信息
-      const responseData = error?.response?.data ?? {};
-      const errorMessage = responseData?.message || responseData?.error || '';
+      const errorMessage = getResponseMessage(error);
       // 如果没有错误信息，则会根据状态码进行提示
       message.error(errorMessage || msg);
     }),

@@ -60,7 +60,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       // 如果成功获取到 accessToken
       if (accessToken) {
-        userInfo = await completeLogin(accessToken, onSuccess);
+        userInfo = await completeLoginWithToken(accessToken, onSuccess);
       }
     } finally {
       loginLoading.value = false;
@@ -86,7 +86,7 @@ export const useAuthStore = defineStore('auth', () => {
         code,
       });
       if (result.accessToken) {
-        userInfo = await completeLogin(result.accessToken, onSuccess);
+        userInfo = await completeLoginWithToken(result.accessToken, onSuccess);
         clearMfaChallenge();
       }
     } finally {
@@ -113,7 +113,7 @@ export const useAuthStore = defineStore('auth', () => {
     mfaChallenge.value = null;
   }
 
-  async function completeLogin(
+  async function completeLoginWithToken(
     accessToken: string,
     onSuccess?: () => Promise<void> | void,
   ) {
@@ -205,6 +205,7 @@ export const useAuthStore = defineStore('auth', () => {
     clearAuthAndRedirect,
     clearAuthState,
     clearMfaChallenge,
+    completeLoginWithToken,
     fetchLoginOptions,
     fetchUserInfo,
     loginLoading,

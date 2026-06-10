@@ -5,6 +5,7 @@ import type { BasicOption } from '@vben/types';
 import { computed, markRaw, onMounted, reactive, watch } from 'vue';
 
 import { AuthenticationLogin, SliderCaptcha, z } from '@vben/common-ui';
+import { useAppConfig } from '@vben/hooks';
 import { $t } from '@vben/locales';
 
 import { Form, Input, message, Modal } from 'ant-design-vue';
@@ -14,6 +15,7 @@ import { useAuthStore } from '#/store';
 defineOptions({ name: 'Login' });
 
 const authStore = useAuthStore();
+const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 const mfaForm = reactive({
   code: '',
 });
@@ -114,7 +116,12 @@ const showRegister = computed(
   () => loginMethods.value.register?.enabled ?? false,
 );
 const showThirdPartyLogin = computed(
-  () => loginMethods.value.thirdParty?.enabled ?? false,
+  () => thirdPartyProviders.value.length > 0,
+);
+const thirdPartyProviders = computed(() =>
+  (loginMethods.value.thirdParty?.providers ?? []).filter(
+    (provider) => provider.enabled !== false,
+  ),
 );
 
 onMounted(() => {
@@ -138,6 +145,17 @@ async function handleMfaVerify() {
   }
   await authStore.authVerifyMfa(code);
 }
+
+function handleThirdPartyLogin(provider: { code: string }) {
+  if (provider.code !== 'github') {
+    message.warning('暂不支持该第三方登录方式');
+    return;
+  }
+  const base = apiURL.replace(/\/$/, '');
+  window.location.href = `${base}/admin/auth/oauth/${encodeURIComponent(
+    provider.code,
+  )}/authorize`;
+}
 </script>
 
 <template>
@@ -150,6 +168,8 @@ async function handleMfaVerify() {
       :show-qrcode-login="showQrcodeLogin"
       :show-register="showRegister"
       :show-third-party-login="showThirdPartyLogin"
+      :third-party-providers="thirdPartyProviders"
+      @third-party-login="handleThirdPartyLogin"
       @submit="authStore.authLogin"
     />
     <Modal

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import type { AuthenticationThirdPartyProvider } from './types';
+
+import { computed } from 'vue';
+
 import { useAppConfig } from '@vben/hooks';
 import {
   SvgGithubIcon,
@@ -16,9 +20,50 @@ defineOptions({
   name: 'ThirdPartyLogin',
 });
 
+const props = withDefaults(
+  defineProps<{
+    providers?: AuthenticationThirdPartyProvider[];
+  }>(),
+  {
+    providers: () => [],
+  },
+);
+
+const emit = defineEmits<{
+  login: [AuthenticationThirdPartyProvider];
+}>();
+
 const {
   auth: { dingding: dingdingAuthConfig },
 } = useAppConfig(import.meta.env, import.meta.env.PROD);
+
+const enabledProviders = computed(() =>
+  props.providers.filter((provider) => provider.enabled !== false),
+);
+
+const showDingding = computed(() =>
+  enabledProviders.value.some((provider) => provider.code === 'dingding'),
+);
+
+function providerTooltip(provider: AuthenticationThirdPartyProvider) {
+  if (provider.code === 'github') {
+    return $t('authentication.githubLogin');
+  }
+  if (provider.code === 'google') {
+    return $t('authentication.googleLogin');
+  }
+  if (provider.code === 'qq') {
+    return $t('authentication.qqLogin');
+  }
+  if (provider.code === 'wechat') {
+    return $t('authentication.wechatLogin');
+  }
+  return provider.code;
+}
+
+function handleLogin(provider: AuthenticationThirdPartyProvider) {
+  emit('login', provider);
+}
 </script>
 
 <template>
@@ -33,35 +78,21 @@ const {
 
     <div class="mt-4 flex flex-wrap justify-center">
       <VbenIconButton
-        :tooltip="$t('authentication.wechatLogin')"
+        v-for="provider in enabledProviders"
+        :key="provider.code"
+        :tooltip="providerTooltip(provider)"
         tooltip-side="top"
         class="mb-3"
+        @click="handleLogin(provider)"
       >
-        <SvgWeChatIcon />
-      </VbenIconButton>
-      <VbenIconButton
-        :tooltip="$t('authentication.qqLogin')"
-        tooltip-side="top"
-        class="mb-3"
-      >
-        <SvgQQChatIcon />
-      </VbenIconButton>
-      <VbenIconButton
-        :tooltip="$t('authentication.githubLogin')"
-        tooltip-side="top"
-        class="mb-3"
-      >
-        <SvgGithubIcon />
-      </VbenIconButton>
-      <VbenIconButton
-        :tooltip="$t('authentication.googleLogin')"
-        tooltip-side="top"
-        class="mb-3"
-      >
-        <SvgGoogleIcon />
+        <SvgGithubIcon v-if="provider.code === 'github'" />
+        <SvgGoogleIcon v-else-if="provider.code === 'google'" />
+        <SvgQQChatIcon v-else-if="provider.code === 'qq'" />
+        <SvgWeChatIcon v-else-if="provider.code === 'wechat'" />
+        <SvgGithubIcon v-else />
       </VbenIconButton>
       <DingdingLogin
-        v-if="dingdingAuthConfig"
+        v-if="dingdingAuthConfig && showDingding"
         :corp-id="dingdingAuthConfig.corpId"
         :client-id="dingdingAuthConfig.clientId"
         class="mb-3"

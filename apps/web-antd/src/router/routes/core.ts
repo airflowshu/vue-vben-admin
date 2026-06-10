@@ -92,6 +92,15 @@ const coreRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        name: 'OAuthCallback',
+        path: 'oauth/callback',
+        component: () =>
+          import('#/views/_core/authentication/oauth-callback.vue'),
+        meta: {
+          title: 'OAuth Callback',
+        },
+      },
+      {
         name: 'Register',
         path: 'register',
         component: () => import('#/views/_core/authentication/register.vue'),
